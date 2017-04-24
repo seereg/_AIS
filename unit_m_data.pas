@@ -5,15 +5,23 @@ unit unit_m_data;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Controls, ActnList, Menus;
+  Classes, SysUtils, db, FileUtil, Controls, ActnList, Menus, ZConnection,
+  ZDataset;
 
 type
 
-  { TDataModule1 }
+  { TDataM }
 
-  TDataModule1 = class(TDataModule)
+  TDataM = class(TDataModule)
+    DSPasspList: TDataSource;
+    DSPasspTypeList: TDataSource;
     IL_16: TImageList;
     IL_64: TImageList;
+    ZConnection1: TZConnection;
+    ZQPasspList: TZQuery;
+    ZQPasspTypeList: TZQuery;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure ZQPasspTypeListAfterOpen(DataSet: TDataSet);
   private
     { private declarations }
   public
@@ -21,12 +29,22 @@ type
   end;
 
 var
-  DataModule1: TDataModule1;
+  DataM: TDataM;
 
 implementation
 
 {$R *.lfm}
+uses unit_m;
+{ TDataM }
 
-{ TDataModule1 }
+procedure TDataM.ZQPasspTypeListAfterOpen(DataSet: TDataSet);
+begin
+  FormM.PasspTypeListAfterUpdate();
+end;
+
+procedure TDataM.DataModuleCreate(Sender: TObject);
+begin
+end;
+
 end.
 
