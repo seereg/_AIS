@@ -7,7 +7,8 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
   ExtCtrls, Menus, ActnList, Buttons, StdCtrls, DbCtrls, CheckLst, Grids,
-  attabs, rxdbgrid, rxlookup, rxdbcomb, unit_m_data, db, unit_types_and_const;
+  ValEdit, attabs, rxdbgrid, rxlookup, rxdbcomb, RxVersInfo, unit_m_data, db,
+  unit_types_and_const, FramePassportProperties, FramePassportObjects, KGrids;
 
 type
 
@@ -26,8 +27,9 @@ type
     FilterList: TCheckListBox;
     Image1: TImage;
     Image2: TImage;
+    KGrid1: TKGrid;
     MI_Close: TMenuItem;
-    PageControl1: TPageControl;
+    PageControlPassport: TPageControl;
     PageControl2: TPageControl;
     Panel1: TPanel;
     PanelMap: TPanel;
@@ -67,6 +69,8 @@ type
     procedure RxDBGrid1AfterQuickSearch(Sender: TObject; Field: TField;
       var AValue: string);
     procedure RxDBGrid1DblClick(Sender: TObject);
+    procedure ValueListEditor1Click(Sender: TObject);
+    procedure ValueListEditor1EditingDone(Sender: TObject);
   private
     { private declarations }
   public
@@ -83,6 +87,8 @@ var
    PanelList_Show:boolean;
    PanelList_Width:integer;
   end;
+  FPassportProperties:TFramePassportProperties;
+  FPassportObjects   :TFramePassportObjects;
 
 implementation
 
@@ -166,6 +172,16 @@ begin
  ActionOpenPaspExecute(Sender)
 end;
 
+procedure TFormM.ValueListEditor1Click(Sender: TObject);
+begin
+
+end;
+
+procedure TFormM.ValueListEditor1EditingDone(Sender: TObject);
+begin
+
+end;
+
 procedure TFormM.PasspTypeListAfterUpdate;
 begin
   DataM.ZQPasspTypeList.First;
@@ -238,6 +254,9 @@ begin
 end;
 
 procedure TFormM.ActionOpenPaspExecute(Sender: TObject);
+var
+  i:integer;
+  TabSheet:TTabSheet;
 begin
   if ActivPaspID=const_pasNew
   then  begin
@@ -248,6 +267,23 @@ begin
     t0.AddTab(-1, DataM.ZQPasspList.FieldByName('pass_name').AsString);
     t0.TabIndex:=t0.TabCount-1;
   end;
+  for i:=(PageControlPassport.PageCount-1) downto 0
+   do PageControlPassport.Pages[i].Destroy;
+
+  TabSheet:=PageControlPassport.AddTabSheet;
+  TabSheet.Caption:='Свойства';
+  FPassportProperties:=TFramePassportProperties.Create(TabSheet);
+  FPassportProperties.Parent:=TabSheet;
+
+  TabSheet:=PageControlPassport.AddTabSheet;
+  TabSheet.Caption:='Путь 1';
+  FPassportObjects:=TFramePassportObjects.Create(TabSheet);
+  FPassportObjects.Parent:=TabSheet;
+  TabSheet:=PageControlPassport.AddTabSheet;
+  TabSheet.Caption:='Резервная ветка';
+  FPassportObjects:=TFramePassportObjects.Create(TabSheet);
+  FPassportObjects.Parent:=TabSheet;
+
 end;
 
 procedure TFormM.ActionNewPassportExecute(Sender: TObject);

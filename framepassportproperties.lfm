@@ -1,0 +1,72 @@
+object FramePassportProperties: TFramePassportProperties
+  Left = 0
+  Height = 431
+  Top = 0
+  Width = 606
+  Align = alClient
+  ClientHeight = 431
+  ClientWidth = 606
+  TabOrder = 0
+  DesignLeft = 806
+  DesignTop = 351
+  object ValueListEditor1: TValueListEditor
+    Left = 0
+    Height = 100
+    Top = 331
+    Width = 606
+    Align = alBottom
+    DefaultColWidth = 44
+    RowCount = 3
+    TabOrder = 0
+    TitleStyle = tsNative
+    Strings.Strings = (
+      '1=Путь 1'
+      '2=Резервная ветка'
+    )
+    TitleCaptions.Strings = (
+      'Набор'
+      'Наименование'
+    )
+    ColWidths = (
+      44
+      558
+    )
+  end
+  object Label1: TLabel
+    Left = 0
+    Height = 15
+    Top = 316
+    Width = 606
+    Align = alBottom
+    Caption = '  Наборы элементов (пути, ветки)'
+    ParentColor = False
+  end
+  object ValueListEditor2: TValueListEditor
+    Left = 0
+    Height = 316
+    Top = 0
+    Width = 606
+    Align = alClient
+    DefaultColWidth = 90
+    FixedCols = 0
+    RowCount = 6
+    TabOrder = 1
+    TitleStyle = tsNative
+    DisplayOptions = [doAutoColResize, doKeyColFixed]
+    Strings.Strings = (
+      'Тип паспорта:=Участок'
+      '№ паспорта:=7'
+      'Путь по:=ул. Ивановская'
+      'Свойство 1:='
+      'Свойство 2:='
+      'Свойство 3:='
+    )
+    TitleCaptions.Strings = (
+      ''
+    )
+    ColWidths = (
+      90
+      512
+    )
+  end
+end

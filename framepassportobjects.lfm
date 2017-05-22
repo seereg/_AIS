@@ -1,0 +1,35 @@
+object FramePassportObjects: TFramePassportObjects
+  Left = 0
+  Height = 240
+  Top = 0
+  Width = 320
+  Align = alClient
+  ClientHeight = 240
+  ClientWidth = 320
+  TabOrder = 0
+  DesignLeft = 761
+  DesignTop = 285
+  object KGrid: TKGrid
+    Left = 0
+    Height = 240
+    Top = 0
+    Width = 320
+    Align = alClient
+    Options = [goAlwaysShowEditor, goDrawFocusSelected, goEnterMoves, goFixedHorzLine, goFixedVertLine, goHeaderAlignment, goHorzLine, goIndicateHiddenCells, goMouseCanHideCells, goMouseOverCells, goRowMoving, goThemes, goThemedCells, goVertLine]
+    TabOrder = 0
+    ColWidths = (
+      64
+      64
+      64
+      64
+      64
+    )
+    RowHeights = (
+      21
+      21
+      21
+      21
+      21
+    )
+  end
+end

@@ -3,3 +3,4 @@ lib/
 backup/
 pic/
 dll/
+*.7z

@@ -11645,7 +11645,7 @@ object FormM: TFormM
     end
     object RxDBGrid1: TRxDBGrid
       Left = 0
-      Height = 364
+      Height = 413
       Top = 149
       Width = 251
       AfterQuickSearch = RxDBGrid1AfterQuickSearch
@@ -11750,8 +11750,8 @@ object FormM: TFormM
     end
     object BBNewPassport: TSpeedButton
       Left = 0
-      Height = 68
-      Top = 513
+      Height = 19
+      Top = 562
       Width = 251
       Action = ActionNewPassport
       Align = alBottom
@@ -11770,20 +11770,44 @@ object FormM: TFormM
     ClientHeight = 577
     ClientWidth = 480
     TabOrder = 3
-    object PageControl1: TPageControl
+    object PageControlPassport: TPageControl
       Left = 0
       Height = 577
       Top = 0
       Width = 480
-      ActivePage = TabSheet2
+      ActivePage = TabSheet1
       Align = alClient
-      TabIndex = 1
+      TabIndex = 0
       TabOrder = 0
       object TabSheet1: TTabSheet
         Caption = 'Общие'
       end
       object TabSheet2: TTabSheet
         Caption = 'Путь n'
+        ClientHeight = 549
+        ClientWidth = 472
+        object KGrid1: TKGrid
+          Left = 0
+          Height = 549
+          Top = 0
+          Width = 472
+          Align = alClient
+          TabOrder = 0
+          ColWidths = (
+            64
+            64
+            64
+            64
+            64
+          )
+          RowHeights = (
+            21
+            21
+            21
+            21
+            21
+          )
+        end
       end
     end
   end

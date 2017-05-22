@@ -8,7 +8,7 @@ uses
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, unit_m, unit_fr_pasport, unit_m_data, zcomponent, rxnew,
-unit_types_and_const
+unit_types_and_const, FramePassportProperties, FramePassportObjects
   { you can add units after this };
 
 {$R *.res}
