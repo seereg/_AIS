@@ -5,7 +5,8 @@ unit FramePassportProperties;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, ValEdit, StdCtrls;
+  Classes, SysUtils, FileUtil, Forms, Controls, ValEdit, StdCtrls, ExtCtrls,
+  DbCtrls, unit_m_data, rxdbgrid;
 
 type
 
@@ -13,6 +14,7 @@ type
 
   TFramePassportProperties = class(TFrame)
     Label1: TLabel;
+    RxDBGrid1: TRxDBGrid;
     ValueListEditor1: TValueListEditor;
     ValueListEditor2: TValueListEditor;
   private

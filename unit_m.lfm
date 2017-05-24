@@ -11781,6 +11781,7 @@ object FormM: TFormM
       TabOrder = 0
       object TabSheet1: TTabSheet
         Caption = 'Общие'
+        OnContextPopup = TabSheet1ContextPopup
       end
       object TabSheet2: TTabSheet
         Caption = 'Путь n'

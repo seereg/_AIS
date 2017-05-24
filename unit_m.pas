@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
   ExtCtrls, Menus, ActnList, Buttons, StdCtrls, DbCtrls, CheckLst, Grids,
   ValEdit, attabs, rxdbgrid, rxlookup, rxdbcomb, RxVersInfo, unit_m_data, db,
-  unit_types_and_const, FramePassportProperties, FramePassportObjects, KGrids;
+  unit_types_and_const, FramePassportProperties, FramePassportObjects, KGrids, Types;
 
 type
 
@@ -69,6 +69,8 @@ type
     procedure RxDBGrid1AfterQuickSearch(Sender: TObject; Field: TField;
       var AValue: string);
     procedure RxDBGrid1DblClick(Sender: TObject);
+    procedure TabSheet1ContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
     procedure ValueListEditor1Click(Sender: TObject);
     procedure ValueListEditor1EditingDone(Sender: TObject);
   private
@@ -172,6 +174,12 @@ begin
  ActionOpenPaspExecute(Sender)
 end;
 
+procedure TFormM.TabSheet1ContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+begin
+
+end;
+
 procedure TFormM.ValueListEditor1Click(Sender: TObject);
 begin
 
@@ -248,6 +256,7 @@ begin
      ZConnection1.Connect;
      ZQPasspList.Open;
      ZQPasspTypeList.Open;
+     ZQPasspProperties.Open;
      ActionShowCadExecute(nil);
      ActionShowCadExecute(nil);
    end;

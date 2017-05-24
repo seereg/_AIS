@@ -1,10 +1,9 @@
 object DataM: TDataM
-  OnCreate = DataModuleCreate
   OldCreateOrder = False
-  Height = 188
+  Height = 440
   HorizontalOffset = 538
   VerticalOffset = 237
-  Width = 364
+  Width = 645
   object IL_64: TImageList
     Height = 64
     Width = 64
@@ -2119,15 +2118,15 @@ object DataM: TDataM
   end
   object DSPasspList: TDataSource
     DataSet = ZQPasspList
-    left = 280
-    top = 82
+    left = 296
+    top = 88
   end
   object ZConnection1: TZConnection
     ControlsCodePage = cCP_UTF8
-    AutoEncodeStrings = False
     Properties.Strings = (
       'AutoEncodeStrings=ON'
     )
+    Connected = True
     Port = 0
     Database = 'C:\_work\_else\_AIS\db\tramways.db'
     Protocol = 'sqlite-3'
@@ -2154,5 +2153,44 @@ object DataM: TDataM
     DataSet = ZQPasspTypeList
     left = 296
     top = 136
+  end
+  object ZQPasspProperties: TZQuery
+    Connection = ZConnection1
+    AfterOpen = ZQPasspTypeListAfterOpen
+    SQL.Strings = (
+      'SELECT'
+      ' localiz.name_text name,'
+      ' val.value value '
+      'FROM'
+      'passports pas'
+      'LEFT JOIN'
+      'passport_prop_year_built val'
+      'ON val.pass_id=pas.id'
+      'LEFT JOIN'
+      'localization_fields localiz'
+      'ON localiz.id=1'
+      'WHERE pas.id=4'
+      'UNION'
+      'SELECT'
+      ' localiz.name_text name,'
+      ' val.value value '
+      'FROM'
+      'passports pas'
+      'LEFT JOIN'
+      'passport_prop_comment val'
+      'ON val.pass_id=pas.id'
+      'LEFT JOIN'
+      'localization_fields localiz'
+      'ON localiz.id=2'
+      'WHERE pas.id=4'
+    )
+    Params = <>
+    left = 192
+    top = 200
+  end
+  object DSPasspProperties: TDataSource
+    DataSet = ZQPasspProperties
+    left = 296
+    top = 200
   end
 end

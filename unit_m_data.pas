@@ -15,12 +15,13 @@ type
   TDataM = class(TDataModule)
     DSPasspList: TDataSource;
     DSPasspTypeList: TDataSource;
+    DSPasspProperties: TDataSource;
     IL_16: TImageList;
     IL_64: TImageList;
     ZConnection1: TZConnection;
     ZQPasspList: TZQuery;
     ZQPasspTypeList: TZQuery;
-    procedure DataModuleCreate(Sender: TObject);
+    ZQPasspProperties: TZQuery;
     procedure ZQPasspTypeListAfterOpen(DataSet: TDataSet);
   private
     { private declarations }
@@ -40,10 +41,6 @@ uses unit_m;
 procedure TDataM.ZQPasspTypeListAfterOpen(DataSet: TDataSet);
 begin
   FormM.PasspTypeListAfterUpdate();
-end;
-
-procedure TDataM.DataModuleCreate(Sender: TObject);
-begin
 end;
 
 end.

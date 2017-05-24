@@ -8,9 +8,10 @@
       <Unit0>
         <Filename Value="project_rails.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos Y="20"/>
-        <UsageCount Value="83"/>
+        <EditorIndex Value="5"/>
+        <CursorPos X="24" Y="13"/>
+        <UsageCount Value="86"/>
+        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="unit_m.pas"/>
@@ -18,9 +19,9 @@
         <ComponentName Value="FormM"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="250"/>
-        <CursorPos X="48" Y="284"/>
-        <UsageCount Value="83"/>
+        <TopLine Value="227"/>
+        <CursorPos X="67" Y="241"/>
+        <UsageCount Value="86"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -31,7 +32,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="81"/>
+        <UsageCount Value="84"/>
       </Unit2>
       <Unit3>
         <Filename Value="unit_m_data.pas"/>
@@ -39,10 +40,12 @@
         <ComponentName Value="DataM"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="5"/>
-        <CursorPos X="41" Y="36"/>
-        <UsageCount Value="77"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="11"/>
+        <CursorPos X="105" Y="24"/>
+        <UsageCount Value="80"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit3>
       <Unit4>
         <Filename Value="attabs.pas"/>
@@ -51,14 +54,14 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="75"/>
+        <UsageCount Value="78"/>
       </Unit4>
       <Unit5>
         <Filename Value="unit_types_and_const.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="22" Y="16"/>
-        <UsageCount Value="25"/>
+        <UsageCount Value="28"/>
       </Unit5>
       <Unit6>
         <Filename Value="framepassportproperties.pas"/>
@@ -67,9 +70,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="FramePassportProperties"/>
-        <EditorIndex Value="2"/>
-        <CursorPos X="70" Y="14"/>
-        <UsageCount Value="22"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="3"/>
+        <CursorPos X="9" Y="13"/>
+        <UsageCount Value="25"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit6>
@@ -80,11 +84,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="FramePassportObjects"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="4"/>
         <TopLine Value="17"/>
         <CursorPos Y="35"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="23"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit7>
@@ -186,11 +189,10 @@
       </Unit20>
       <Unit21>
         <Filename Value="C:\Users\Developer\Downloads\_dist_окружение\lasarus\rxfpc-1.1.5.98\rxfpc\dbutils.pas"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="384"/>
         <CursorPos X="26" Y="402"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
       </Unit21>
       <Unit22>
         <Filename Value="C:\Users\Developer\Downloads\_dist_окружение\lasarus\rx_lib_lazarus-ccr-svn-5836\components\rx\version\2.1\tooledit.pas"/>
@@ -209,151 +211,149 @@
       </Unit23>
       <Unit24>
         <Filename Value="C:\Users\Developer\Downloads\_dist_окружение\lasarus\rx_lib_lazarus-ccr-svn-5836\components\rx\version\2.1\dbdateedit.pas"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="51"/>
         <CursorPos X="15" Y="69"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
       </Unit24>
       <Unit25>
         <Filename Value="C:\lazarus\1.6.2-64-3.0.0\lcl\lclproc.pas"/>
         <UnitName Value="LCLProc"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="2"/>
         <TopLine Value="884"/>
         <CursorPos X="34" Y="901"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="13"/>
         <Loaded Value="True"/>
       </Unit25>
       <Unit26>
         <Filename Value="C:\lazarus\1.6.2-64-3.0.0\lcl\forms.pp"/>
         <UnitName Value="Forms"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="268"/>
         <CursorPos Y="289"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit26>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="C:\Users\Developer\Downloads\_dist_окружение\lasarus\rxfpc-1.1.5.98\rxfpc\dbutils.pas"/>
-        <Caret Line="403" Column="37" TopLine="369"/>
+        <Filename Value="unit_m.pas"/>
+        <Caret Line="91" Column="22" TopLine="60"/>
       </Position1>
       <Position2>
-        <Filename Value="framepassportproperties.pas"/>
-        <Caret Line="8" Column="75"/>
+        <Filename Value="unit_m.pas"/>
+        <Caret Line="272" Column="33" TopLine="240"/>
       </Position2>
       <Position3>
         <Filename Value="unit_m.pas"/>
-        <Caret Line="188" Column="32" TopLine="181"/>
+        <Caret Line="268" TopLine="240"/>
       </Position3>
       <Position4>
         <Filename Value="unit_m.pas"/>
-        <Caret Line="187" Column="32" TopLine="180"/>
+        <Caret Line="272" TopLine="240"/>
       </Position4>
       <Position5>
         <Filename Value="unit_m.pas"/>
-        <Caret Line="186" Column="32" TopLine="179"/>
+        <Caret Line="274" Column="48" TopLine="243"/>
       </Position5>
       <Position6>
         <Filename Value="unit_m.pas"/>
-        <Caret Line="185" Column="32" TopLine="178"/>
+        <Caret Line="273" Column="66" TopLine="254"/>
       </Position6>
       <Position7>
-        <Filename Value="unit_m.pas"/>
-        <Caret Line="170" Column="23" TopLine="167"/>
+        <Filename Value="framepassportproperties.pas"/>
+        <Caret Line="28" Column="37"/>
       </Position7>
       <Position8>
-        <Filename Value="unit_m.pas"/>
-        <Caret Line="267" Column="35" TopLine="236"/>
+        <Filename Value="framepassportobjects.pas"/>
+        <Caret Line="31" Column="54" TopLine="10"/>
       </Position8>
       <Position9>
-        <Filename Value="unit_m.pas"/>
-        <Caret Line="269" Column="62" TopLine="238"/>
+        <Filename Value="framepassportobjects.pas"/>
+        <Caret Line="19" TopLine="10"/>
       </Position9>
       <Position10>
-        <Filename Value="unit_m.pas"/>
-        <Caret Line="267" TopLine="249"/>
+        <Filename Value="framepassportobjects.pas"/>
+        <Caret Line="35" Column="14" TopLine="25"/>
       </Position10>
       <Position11>
-        <Filename Value="unit_m.pas"/>
-        <Caret Line="268" TopLine="249"/>
+        <Filename Value="framepassportproperties.pas"/>
+        <Caret Line="14" Column="70"/>
       </Position11>
       <Position12>
-        <Filename Value="unit_m.pas"/>
-        <Caret Line="267" Column="11" TopLine="249"/>
+        <Filename Value="framepassportproperties.pas"/>
+        <Caret Line="16" Column="49"/>
       </Position12>
       <Position13>
-        <Filename Value="unit_m.pas"/>
-        <Caret Line="90" Column="26" TopLine="66"/>
+        <Filename Value="framepassportproperties.pas"/>
+        <Caret Line="17" Column="49"/>
       </Position13>
       <Position14>
-        <Filename Value="unit_m.pas"/>
-        <Caret Line="273" Column="28" TopLine="249"/>
+        <Filename Value="framepassportproperties.pas"/>
+        <Caret Line="18" Column="49"/>
       </Position14>
       <Position15>
-        <Filename Value="unit_m.pas"/>
-        <Caret Line="272" Column="32" TopLine="254"/>
+        <Filename Value="framepassportproperties.pas"/>
+        <Caret Line="17" Column="49"/>
       </Position15>
       <Position16>
-        <Filename Value="unit_m.pas"/>
-        <Caret Line="90" Column="26" TopLine="72"/>
+        <Filename Value="framepassportproperties.pas"/>
+        <Caret Line="16" Column="49"/>
       </Position16>
       <Position17>
-        <Filename Value="unit_m.pas"/>
-        <Caret Line="171" Column="23" TopLine="141"/>
+        <Filename Value="framepassportproperties.pas"/>
+        <Caret Line="17" Column="49"/>
       </Position17>
       <Position18>
-        <Filename Value="unit_m.pas"/>
-        <Caret Line="255" Column="39" TopLine="225"/>
+        <Filename Value="framepassportproperties.pas"/>
+        <Caret Line="16" Column="57"/>
       </Position18>
       <Position19>
-        <Filename Value="unit_m.pas"/>
-        <Caret Line="270" Column="31" TopLine="249"/>
+        <Filename Value="framepassportproperties.pas"/>
+        <Caret Line="15" Column="70"/>
       </Position19>
       <Position20>
-        <Filename Value="unit_m.pas"/>
-        <Caret Line="11" Column="48"/>
+        <Filename Value="unit_m_data.pas"/>
+        <Caret Line="36" Column="41" TopLine="5"/>
       </Position20>
       <Position21>
-        <Filename Value="unit_m.pas"/>
-        <Caret Line="91" Column="22" TopLine="60"/>
+        <Filename Value="unit_m_data.pas"/>
+        <Caret Line="37" Column="41" TopLine="5"/>
       </Position21>
       <Position22>
         <Filename Value="unit_m.pas"/>
-        <Caret Line="272" Column="33" TopLine="240"/>
+        <Caret Line="292" Column="48" TopLine="258"/>
       </Position22>
       <Position23>
-        <Filename Value="unit_m.pas"/>
-        <Caret Line="268" TopLine="240"/>
+        <Filename Value="unit_m_data.pas"/>
+        <Caret Line="22" Column="16" TopLine="5"/>
       </Position23>
       <Position24>
         <Filename Value="unit_m.pas"/>
-        <Caret Line="272" TopLine="240"/>
+        <Caret Line="208" Column="45" TopLine="177"/>
       </Position24>
       <Position25>
-        <Filename Value="unit_m.pas"/>
-        <Caret Line="274" Column="48" TopLine="243"/>
+        <Filename Value="project_rails.lpr"/>
+        <Caret Line="20"/>
       </Position25>
       <Position26>
-        <Filename Value="unit_m.pas"/>
-        <Caret Line="273" Column="66" TopLine="254"/>
+        <Filename Value="unit_m_data.pas"/>
+        <Caret Line="28" Column="90" TopLine="5"/>
       </Position26>
       <Position27>
-        <Filename Value="framepassportproperties.pas"/>
-        <Caret Line="28" Column="37"/>
+        <Filename Value="unit_m_data.pas"/>
+        <Caret Line="26" TopLine="8"/>
       </Position27>
       <Position28>
-        <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="31" Column="54" TopLine="10"/>
+        <Filename Value="unit_m_data.pas"/>
+        <Caret Line="44" Column="33" TopLine="16"/>
       </Position28>
       <Position29>
-        <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="19" TopLine="10"/>
+        <Filename Value="unit_m_data.pas"/>
+        <Caret Line="26" Column="39" TopLine="6"/>
       </Position29>
       <Position30>
-        <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="35" Column="14" TopLine="25"/>
+        <Filename Value="unit_m_data.pas"/>
+        <Caret Line="45" TopLine="11"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>
