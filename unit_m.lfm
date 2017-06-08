@@ -11575,18 +11575,20 @@ object FormM: TFormM
     FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
   }
   OnShow = FormShow
-  LCLVersion = '1.6.2.0'
+  LCLVersion = '1.6.4.0'
   object Splitter1: TSplitter
     Left = 740
     Height = 581
     Top = 94
     Width = 5
+    ResizeStyle = rsLine
   end
   object Splitter2: TSplitter
     Left = 251
     Height = 581
     Top = 94
     Width = 5
+    ResizeStyle = rsLine
   end
   object PanelList: TPanel
     Left = 0
@@ -11599,7 +11601,6 @@ object FormM: TFormM
     ClientHeight = 581
     ClientWidth = 251
     TabOrder = 2
-    OnClick = PanelListClick
     object Panel1: TPanel
       Left = 0
       Height = 144
@@ -11649,6 +11650,7 @@ object FormM: TFormM
       Top = 149
       Width = 251
       AfterQuickSearch = RxDBGrid1AfterQuickSearch
+      ColumnDefValues.BlobText = '(данные)'
       TitleButtons = False
       AutoSort = True
       Columns = <      
@@ -11661,8 +11663,10 @@ object FormM: TFormM
           EditButtons = <>
           Filter.DropDownRows = 0
           Filter.EmptyValue = '(Нет)'
+          Filter.AllValue = '(Все значения)'
           Filter.EmptyFont.Style = [fsItalic]
           Filter.ItemIndex = -1
+          Footers = <>
         end>
       KeyStrokes = <      
         item
@@ -11720,6 +11724,9 @@ object FormM: TFormM
           ShortCut = 16451
           Enabled = True
         end>
+      FooterOptions.DrawFullLine = False
+      SearchOptions.QuickSearchOptions = [loCaseInsensitive, loPartialKey]
+      SearchOptions.FromStart = False
       OptionsRx = [rdgAllowColumnsForm, rdgAllowDialogFind, rdgAllowQuickFilter]
       Align = alClient
       AutoFillColumns = True
@@ -11732,7 +11739,6 @@ object FormM: TFormM
       DataSource = DataM.DSPasspList
       FixedCols = 0
       Options = [dgTitles, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgAutoSizeColumns]
-      ParentColor = False
       Scrollbars = ssNone
       TabOrder = 1
       TitleStyle = tsNative
@@ -11767,50 +11773,7 @@ object FormM: TFormM
     BevelOuter = bvNone
     BorderStyle = bsSingle
     Caption = 'Область паспартов'
-    ClientHeight = 577
-    ClientWidth = 480
     TabOrder = 3
-    object PageControlPassport: TPageControl
-      Left = 0
-      Height = 577
-      Top = 0
-      Width = 480
-      ActivePage = TabSheet1
-      Align = alClient
-      TabIndex = 0
-      TabOrder = 0
-      object TabSheet1: TTabSheet
-        Caption = 'Общие'
-        OnContextPopup = TabSheet1ContextPopup
-      end
-      object TabSheet2: TTabSheet
-        Caption = 'Путь n'
-        ClientHeight = 549
-        ClientWidth = 472
-        object KGrid1: TKGrid
-          Left = 0
-          Height = 549
-          Top = 0
-          Width = 472
-          Align = alClient
-          TabOrder = 0
-          ColWidths = (
-            64
-            64
-            64
-            64
-            64
-          )
-          RowHeights = (
-            21
-            21
-            21
-            21
-            21
-          )
-        end
-      end
-    end
   end
   object PanelCAD: TPanel
     Left = 760
@@ -11832,7 +11795,6 @@ object FormM: TFormM
       Top = -736
       Width = 3506
       AutoSize = True
-      OnClick = Image1Click
       Picture.Data = {
         0A544A706567496D616765185B0900FFD8FFE000104A46494600010100000100
         010000FFDB00430006040506050406060506070706080A100A0A09090A140E0F
@@ -36537,11 +36499,14 @@ object FormM: TFormM
     ParentColor = False
     TabOrder = 6
   end
+  object TabSheet1: TTabSheet
+    Caption = 'Общие'
+  end
   object PopupMenuTabs: TPopupMenu
     left = 88
     top = 96
     object MI_Close: TMenuItem
-      Action = ActionTabClose
+      Caption = 'Закрыть всё'
       RightJustify = True
     end
   end
@@ -36549,9 +36514,6 @@ object FormM: TFormM
     Images = DataM.IL_64
     left = 24
     top = 96
-    object ActionTabClose: TAction
-      Caption = 'Закрыть всё'
-    end
     object ActionShowList: TAction
       AutoCheck = True
       Caption = 'ActionShowList'

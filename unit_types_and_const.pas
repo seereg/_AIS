@@ -7,9 +7,10 @@ uses
   Classes, SysUtils;
 
 const
- const_pasNew = -1;
+ const_pasNew = 0;
  RT_VERSION   = MakeIntResource(16);
-function GetMyVersion:string;
+ function GetMyVersion:string;
+ function GetSQL(iden:string;param:integer):string;
 
 implementation
 
@@ -33,6 +34,95 @@ begin
     end;
   s.Free;
   except; end;
+end;
+
+function GetSQL(iden: string; param: integer): string;
+var SQL:string;
+begin
+  //нужно переделать на внешнее хранение в файлах а iden на список значений(const:int)
+
+  if iden='prop' then
+  begin
+    sql:=
+     '     SELECT                                  '
+    +'      pas.pass_type,                         '
+    +'      pas.pass_name,                         '
+    +'      val1.value year_built,                 '
+    +'      val2.value comment                     '
+    +'      FROM passports pas                     '
+    +'     LEFT JOIN passport_prop_year_built val1 '
+    +'      ON val1.pass_id=pas.id                 '
+    +'     LEFT JOIN passport_prop_comment val2    '
+    +'      ON val2.pass_id=pas.id                 '
+    +'      Where pas.id='+inttostr(param)
+    ;
+  end;
+  //-----------------------
+  if iden='prop0' then
+  begin
+    sql:=
+     ' SELECT                             '
+    +'  localiz.name_text name,           '
+    +'  val.value value                   '
+    +' FROM                               '
+    +' passports pas                      '
+    +' LEFT JOIN                          '
+    +' passport_prop_year_built val       '
+    +' ON val.pass_id=pas.id              '
+    +' LEFT JOIN                          '
+    +' localization_fields localiz        '
+    +' ON localiz.id=1                    '
+    +' WHERE pas.id='+inttostr(param)
+    +' UNION                              '
+    +' SELECT                             '
+    +'  localiz.name_text name,           '
+    +'  val.value value                   '
+    +' FROM                               '
+    +' passports pas                      '
+    +' LEFT JOIN                          '
+    +' passport_prop_comment val          '
+    +' ON val.pass_id=pas.id              '
+    +' LEFT JOIN                          '
+    +' localization_fields localiz        '
+    +' ON localiz.id=2                    '
+    +' WHERE pas.id='+inttostr(param)
+    ;
+  end;
+    //-----------------------
+  if iden='branchs' then
+  begin
+    sql:=' select * from branch'
+        +' where pass_id='+inttostr(param)
+        +' '
+        ;
+  end;
+  //-----------------------
+  if iden='objects' then
+  begin
+    sql:=' '
+        +' select objects.id id, objects_type.obj_type_name obj_type,'
+        +' rad,length, pos from objects                              '
+        +' LEFT JOIN objects_type                                    '
+        +' on objects.obj_type=objects_type.id                       '
+        +' where branch_id='+inttostr(param);
+  end;
+  //-----------------------
+  if iden='objects_type' then
+  begin
+    sql:=' select * from objects_type'
+        +' '
+        ;
+  end;
+  //-----------------------
+  if iden='elements' then
+  begin
+    sql:=' select * from elements'
+        +' where object_id='+inttostr(param)
+        +' '
+        ;
+  end;
+  //-----------------------
+  result:=sql;
 end;
 
 end.

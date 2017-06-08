@@ -1,14 +1,15 @@
 unit unit_m;
 
-{$mode objfpc}{$H+}
+//{$mode objfpc}{$H+}
+{$mode delphi}{$H+} //для TabCloseEvent
 
 interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
-  ExtCtrls, Menus, ActnList, Buttons, StdCtrls, DbCtrls, CheckLst, Grids,
-  ValEdit, attabs, rxdbgrid, rxlookup, rxdbcomb, RxVersInfo, unit_m_data, db,
-  unit_types_and_const, FramePassportProperties, FramePassportObjects, KGrids, Types;
+  ExtCtrls, Menus, ActnList, Buttons, StdCtrls, DbCtrls, CheckLst,
+  attabs, rxdbgrid, unit_m_data, db,
+  unit_types_and_const, FramePassport, KGrids, Types;
 
 type
 
@@ -23,13 +24,10 @@ type
     ActionShowPasp: TAction;
     ActionList1: TActionList;
     ActionShowList: TAction;
-    ActionTabClose: TAction;
     FilterList: TCheckListBox;
     Image1: TImage;
     Image2: TImage;
-    KGrid1: TKGrid;
     MI_Close: TMenuItem;
-    PageControlPassport: TPageControl;
     PageControl2: TPageControl;
     Panel1: TPanel;
     PanelMap: TPanel;
@@ -44,7 +42,6 @@ type
     Splitter2: TSplitter;
     Splitter3: TSplitter;
     TabSheet1: TTabSheet;
-    TabSheet2: TTabSheet;
     TabSheet4: TTabSheet;
     ToolBar1: TToolBar;
     ToolBar2: TToolBar;
@@ -60,24 +57,21 @@ type
     procedure ActionShowListExecute(Sender: TObject);
     procedure ActionShowMapExecute(Sender: TObject);
     procedure ActionShowPaspExecute(Sender: TObject);
-    procedure ActionTabCloseExecute(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure Image1Click(Sender: TObject);
-    procedure PageControlPasportChange(Sender: TObject);
-    procedure PanelListClick(Sender: TObject);
     procedure RxDBGrid1AfterQuickSearch(Sender: TObject; Field: TField;
       var AValue: string);
     procedure RxDBGrid1DblClick(Sender: TObject);
-    procedure TabSheet1ContextPopup(Sender: TObject; MousePos: TPoint;
-      var Handled: Boolean);
-    procedure ValueListEditor1Click(Sender: TObject);
-    procedure ValueListEditor1EditingDone(Sender: TObject);
   private
     { private declarations }
+    {TATTabs}
+    procedure TabCloseEvent(Sender: TObject; ATabIndex: Integer; var ACanClose,
+         ACanContinue: boolean);
+    procedure TabChangeQueryEvent (Sender: TObject; ANewTabIndex: Integer;
+    var ACanChange: boolean);
+    {TATTabs - end}
   public
+    PasTabs: TATTabs;
     { public declarations }
-    t0: TATTabs;
     procedure PasspTypeListAfterUpdate();
   end;
 
@@ -89,78 +83,56 @@ var
    PanelList_Show:boolean;
    PanelList_Width:integer;
   end;
-  FPassportProperties:TFramePassportProperties;
-  FPassportObjects   :TFramePassportObjects;
+
+  FPassport:TFramePassport;
+  PassportsArr:array of TFramePassport;
 
 implementation
 
 {$R *.lfm}
 
 { TFormM }
-
-
-procedure TFormM.ActionTabCloseExecute(Sender: TObject);
-begin
-//  if (Sender is TTabSheet) then   TTabSheet(sender).Free;
-end;
-
-procedure TFormM.Button1Click(Sender: TObject);
-begin
-  //
-end;
+uses
+  unit_login;
 
 procedure TFormM.FormShow(Sender: TObject);
 begin
  DataM.ZConnection1.Disconnect;
  Caption:=Caption+' - '+GetMyVersion+' - alfa';
  //Firefox rectangle tabs
- t0:= TATTabs.Create(PanelPassport);
- t0.Parent:= PanelPassport;
- t0.Align:= alTop;
- t0.Font.Size:= 8;
+ PasTabs:= TATTabs.Create(PanelPassport);
+ PasTabs.Parent:= PanelPassport;
+ PasTabs.Align:= alTop;
+ PasTabs.OnTabClose:= TabCloseEvent;
+ PasTabs.OnTabChangeQuery:= TabChangeQueryEvent;
+ PasTabs.Font.Size:= 8;
 
- t0.TabShowPlus:= false;
- t0.Height:= 42;
- t0.TabAngle:= 0;
- t0.TabIndentInter:= 2;
- t0.TabIndentInit:= 2;
- t0.TabIndentTop:= 4;
- t0.TabIndentXSize:= 13;
- t0.TabWidthMin:= 18;
- t0.TabDragEnabled:= true;
+ PasTabs.TabShowPlus:= false;
+ PasTabs.Height:= 42;
+ PasTabs.TabAngle:= 0;
+ PasTabs.TabIndentInter:= 2;
+ PasTabs.TabIndentInit:= 2;
+ PasTabs.TabIndentTop:= 4;
+ PasTabs.TabIndentXSize:= 13;
+ PasTabs.TabWidthMin:= 18;
+ PasTabs.TabDragEnabled:= false;
 
- t0.Font.Color:= clBlack;
- t0.ColorBg:=PanelPassport.Color;// $F9EADB;
- t0.ColorBorderActive:={PanelPassport.Color;//} $ACA196;
- t0.ColorBorderPassive:= $ACA196;
- t0.ColorTabActive:=PanelPassport.Color;// $FCF5ED;
- t0.ColorTabPassive:= $E0D3C7;
- t0.ColorTabOver:= $F2E4D7;
- t0.ColorCloseBg:= clNone;
- t0.ColorCloseBgOver:= $D5C9BD;
- t0.ColorCloseBorderOver:= $B0B0B0;
- t0.ColorCloseX:= $7B6E60;
- t0.ColorArrow:= $5C5751;
- t0.ColorArrowOver:= t0.ColorArrow;
-{
- t0.AddTab(-1, 'Участок №7');
- t0.AddTab(-1, 'Участок №8', nil, false, clGreen);
- t0.AddTab(-1, 'Узел №9', nil, false, clBlue);    }
-end;
+ PasTabs.Font.Color:= clBlack;
+ PasTabs.ColorBg:=PanelPassport.Color;// $F9EADB;
+ PasTabs.ColorBorderActive:={PanelPassport.Color;//} $ACA196;
+ PasTabs.ColorBorderPassive:= $ACA196;
+ PasTabs.ColorTabActive:=PanelPassport.Color;// $FCF5ED;
+ PasTabs.ColorTabPassive:= $E0D3C7;
+ PasTabs.ColorTabOver:= $F2E4D7;
+ PasTabs.ColorCloseBg:= clNone;
+ PasTabs.ColorCloseBgOver:= $D5C9BD;
+ PasTabs.ColorCloseBorderOver:= $B0B0B0;
+ PasTabs.ColorCloseX:= $7B6E60;
+ PasTabs.ColorArrow:= $5C5751;
+ PasTabs.ColorArrowOver:= PasTabs.ColorArrow;
 
-procedure TFormM.Image1Click(Sender: TObject);
-begin
-
-end;
-
-procedure TFormM.PageControlPasportChange(Sender: TObject);
-begin
-
-end;
-
-procedure TFormM.PanelListClick(Sender: TObject);
-begin
-
+ SetLength(PassportsArr,0);
+ FormLogin.ShowModal;
 end;
 
 procedure TFormM.RxDBGrid1AfterQuickSearch(Sender: TObject; Field: TField;
@@ -174,20 +146,36 @@ begin
  ActionOpenPaspExecute(Sender)
 end;
 
-procedure TFormM.TabSheet1ContextPopup(Sender: TObject; MousePos: TPoint;
-  var Handled: Boolean);
+procedure TFormM.TabCloseEvent(Sender: TObject; ATabIndex: Integer;
+    var ACanClose, ACanContinue: boolean);
+var
+  i,i2:integer;
 begin
-
+ for i:=0 to High(PassportsArr) do
+   if PassportsArr[i]<>nil then
+    if ATabIndex=PassportsArr[i].TabIndex then
+     begin
+      PassportsArr[i].Destroy;
+      PassportsArr[i]:=nil;
+      for i2:=i to  High(PassportsArr) do
+       if PassportsArr[i2]<>nil then
+        PassportsArr[i2].TabIndex:=PassportsArr[i2].TabIndex-1;
+      exit;
+     end;
 end;
 
-procedure TFormM.ValueListEditor1Click(Sender: TObject);
+procedure TFormM.TabChangeQueryEvent(Sender: TObject; ANewTabIndex: Integer;
+  var ACanChange: boolean);
+var
+  i:integer;
 begin
-
-end;
-
-procedure TFormM.ValueListEditor1EditingDone(Sender: TObject);
-begin
-
+ for i:=0 to High(PassportsArr) do
+    if PassportsArr[i]<>nil then begin
+     if ANewTabIndex=PassportsArr[i].TabIndex
+     then PassportsArr[i].Show
+     else PassportsArr[i].Hide;
+    end;
+ ACanChange:=true;
 end;
 
 procedure TFormM.PasspTypeListAfterUpdate;
@@ -204,26 +192,12 @@ end;
 procedure TFormM.ActionShowListExecute(Sender: TObject);
 begin
    PanelList.Visible:=ActionShowList.Checked;
- {if  ActionShowList.Checked then
-  begin
-    DefaultSettings.PanelList_Width:=PanelList.Width;
-    PanelList.Width:=0;
-  end
-  else
-  begin
-    if DefaultSettings.PanelList_Width<10
-     then DefaultSettings.PanelList_Width:=100;
-    PanelList.Width:=DefaultSettings.PanelList_Width;
-  end;      }
 end;
 
 procedure TFormM.ActionShowMapExecute(Sender: TObject);
 begin
   PanelCAD.Align:=alRight;
   PanelMap.Align:=alRight;
- { if not(ActionShowMap.Checked and ActionShowMap.Checked)
-   then PanelPassport.Align:=alLeft
-   else PanelPassport.Align:=alClient; }
   PanelCAD.Visible:=ActionShowCad.Checked;
   PanelMap.Visible:=ActionShowMap.Checked;
   PanelCAD.Align:=alClient;
@@ -234,9 +208,6 @@ procedure TFormM.ActionShowCadExecute(Sender: TObject);
 begin
   PanelCAD.Align:=alRight;
   PanelMap.Align:=alRight;
- { if not(ActionShowMap.Checked and ActionShowMap.Checked)
-   then PanelPassport.Align:=alLeft
-   else PanelPassport.Align:=alClient; }
   PanelCAD.Visible:=ActionShowCad.Checked;
   PanelMap.Visible:=ActionShowMap.Checked;
   PanelCAD.Align:=alClient;
@@ -256,7 +227,7 @@ begin
      ZConnection1.Connect;
      ZQPasspList.Open;
      ZQPasspTypeList.Open;
-     ZQPasspProperties.Open;
+     ZQPasspElType.Open;
      ActionShowCadExecute(nil);
      ActionShowCadExecute(nil);
    end;
@@ -265,34 +236,22 @@ end;
 procedure TFormM.ActionOpenPaspExecute(Sender: TObject);
 var
   i:integer;
-  TabSheet:TTabSheet;
+  passpAlreadyExist:boolean=false;
 begin
-  if ActivPaspID=const_pasNew
-  then  begin
-    t0.AddTab(-1, 'Новый паспорт');
-    t0.TabIndex:=t0.TabCount-1;
-  end
-  else begin
-    t0.AddTab(-1, DataM.ZQPasspList.FieldByName('pass_name').AsString);
-    t0.TabIndex:=t0.TabCount-1;
-  end;
-  for i:=(PageControlPassport.PageCount-1) downto 0
-   do PageControlPassport.Pages[i].Destroy;
-
-  TabSheet:=PageControlPassport.AddTabSheet;
-  TabSheet.Caption:='Свойства';
-  FPassportProperties:=TFramePassportProperties.Create(TabSheet);
-  FPassportProperties.Parent:=TabSheet;
-
-  TabSheet:=PageControlPassport.AddTabSheet;
-  TabSheet.Caption:='Путь 1';
-  FPassportObjects:=TFramePassportObjects.Create(TabSheet);
-  FPassportObjects.Parent:=TabSheet;
-  TabSheet:=PageControlPassport.AddTabSheet;
-  TabSheet.Caption:='Резервная ветка';
-  FPassportObjects:=TFramePassportObjects.Create(TabSheet);
-  FPassportObjects.Parent:=TabSheet;
-
+ for i:=0 to High(PassportsArr) do
+   if PassportsArr[i]<>nil then begin
+    if PassportsArr[i].PasspID=ActivPaspID
+    then
+    begin
+     PassportsArr[i].Show;
+     PasTabs.TabIndex:=PassportsArr[i].TabIndex;
+     passpAlreadyExist:=true;
+    end
+    else PassportsArr[i].Hide;
+   end;
+ if passpAlreadyExist then exit;
+ SetLength(PassportsArr,Length(PassportsArr)+1);
+ PassportsArr[High(PassportsArr)]:=TFramePassport.Create(PanelPassport,PasTabs,ActivPaspID);
 end;
 
 procedure TFormM.ActionNewPassportExecute(Sender: TObject);
@@ -305,8 +264,5 @@ procedure TFormM.ActionShowPaspExecute(Sender: TObject);
 begin
    PanelPassport.Visible:=ActionShowPasp.Checked;
 end;
-
-
-
 end.
 

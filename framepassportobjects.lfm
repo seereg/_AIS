@@ -1,35 +1,139 @@
 object FramePassportObjects: TFramePassportObjects
   Left = 0
-  Height = 240
+  Height = 399
   Top = 0
-  Width = 320
+  Width = 559
   Align = alClient
-  ClientHeight = 240
-  ClientWidth = 320
+  ClientHeight = 399
+  ClientWidth = 559
   TabOrder = 0
   DesignLeft = 761
   DesignTop = 285
-  object KGrid: TKGrid
+  object GroupBox1: TGroupBox
     Left = 0
-    Height = 240
+    Height = 169
     Top = 0
-    Width = 320
-    Align = alClient
-    Options = [goAlwaysShowEditor, goDrawFocusSelected, goEnterMoves, goFixedHorzLine, goFixedVertLine, goHeaderAlignment, goHorzLine, goIndicateHiddenCells, goMouseCanHideCells, goMouseOverCells, goRowMoving, goThemes, goThemedCells, goVertLine]
+    Width = 559
+    Align = alTop
+    Caption = 'Объекты'
+    ClientHeight = 149
+    ClientWidth = 555
     TabOrder = 0
-    ColWidths = (
-      64
-      64
-      64
-      64
-      64
-    )
-    RowHeights = (
-      21
-      21
-      21
-      21
-      21
-    )
+    object KGridObj: TKGrid
+      Left = 0
+      Height = 126
+      Top = 23
+      Width = 555
+      Align = alClient
+      ColCount = 3
+      FixedRows = 0
+      Options = [goAlignLastCol, goAlwaysShowEditor, goDrawFocusSelected, goEditing, goEnterMoves, goFixedHorzLine, goFixedVertLine, goHeaderAlignment, goHorzLine, goIndicateHiddenCells, goMouseCanHideCells, goMouseOverCells, goRowMoving, goThemes, goThemedCells, goVertLine]
+      RowCount = 1
+      TabOrder = 0
+      OnEditorCreate = KGridObjEditorCreate
+      ColWidths = (
+        64
+        64
+        421
+      )
+      RowHeights = (
+        21
+      )
+    end
+    object DBComboBoxType1: TDBLookupComboBox
+      Left = 0
+      Height = 23
+      Top = 0
+      Width = 555
+      Align = alTop
+      DataField = 'id'
+      DataSource = DSPassObjType
+      KeyField = 'id'
+      ListField = 'obj_type_name'
+      ListFieldIndex = 0
+      ListSource = DSPassObjType
+      LookupCache = False
+      TabOrder = 1
+      Visible = False
+    end
+  end
+  object GroupBox2: TGroupBox
+    Left = 0
+    Height = 225
+    Top = 174
+    Width = 559
+    Align = alClient
+    Caption = 'Элементы'
+    ClientHeight = 205
+    ClientWidth = 555
+    TabOrder = 1
+    object KGridEl: TKGrid
+      Left = 0
+      Height = 181
+      Top = 24
+      Width = 555
+      Align = alClient
+      Options = [goAlwaysShowEditor, goDrawFocusSelected, goEnterMoves, goFixedHorzLine, goFixedVertLine, goHeaderAlignment, goHorzLine, goIndicateHiddenCells, goMouseCanHideCells, goMouseOverCells, goRowMoving, goThemes, goThemedCells, goVertLine]
+      TabOrder = 0
+      ColWidths = (
+        64
+        64
+        64
+        64
+        64
+      )
+      RowHeights = (
+        21
+        21
+        21
+        21
+        21
+      )
+    end
+    object DBComboBoxType: TDBLookupComboBox
+      Left = 0
+      Height = 24
+      Top = 0
+      Width = 555
+      Align = alTop
+      ArrowKeysTraverseList = False
+      AutoComplete = True
+      DataField = 'id'
+      DataSource = DataM.DSPasspElType
+      KeyField = 'id'
+      ListField = 'elem_type_name'
+      ListFieldIndex = 1
+      ListSource = DataM.DSPasspElType
+      LookupCache = False
+      Style = csOwnerDrawFixed
+      TabOrder = 1
+    end
+  end
+  object Splitter1: TSplitter
+    Cursor = crVSplit
+    Left = 0
+    Height = 5
+    Top = 169
+    Width = 559
+    Align = alTop
+    ResizeAnchor = akTop
+    ResizeStyle = rsLine
+  end
+  object ZQObjects: TZQuery
+    Connection = DataM.ZConnection1
+    Params = <>
+    left = 452
+    top = 42
+  end
+  object ZQPassObjType: TZQuery
+    Connection = DataM.ZConnection1
+    Params = <>
+    left = 452
+    top = 104
+  end
+  object DSPassObjType: TDataSource
+    DataSet = ZQPassObjType
+    left = 360
+    top = 104
   end
 end

@@ -2,179 +2,314 @@ object FramePassportProperties: TFramePassportProperties
   Left = 0
   Height = 431
   Top = 0
-  Width = 607
+  Width = 606
   Align = alClient
   ClientHeight = 431
-  ClientWidth = 607
+  ClientWidth = 606
   TabOrder = 0
-  DesignLeft = 806
-  DesignTop = 351
-  object ValueListEditor1: TValueListEditor
-    Left = 0
-    Height = 100
-    Top = 331
-    Width = 607
-    Align = alBottom
-    DefaultColWidth = 44
-    FixedCols = 0
-    RowCount = 3
-    TabOrder = 0
-    TitleStyle = tsNative
-    Strings.Strings = (
-      '1=Путь 1'
-      '2=Резервная ветка'
-    )
-    TitleCaptions.Strings = (
-      'Набор'
-      'Наименование'
-    )
-    ColWidths = (
-      44
-      559
-    )
-  end
+  DesignLeft = 1062
+  DesignTop = 243
   object Label1: TLabel
     Left = 0
     Height = 15
-    Top = 316
-    Width = 607
+    Top = 416
+    Width = 606
     Align = alBottom
     Caption = '  Наборы элементов (пути, ветки)'
     ParentColor = False
   end
-  object ValueListEditor2: TValueListEditor
+  object PanelVL: TPanel
     Left = 0
-    Height = 116
-    Top = 200
-    Width = 607
-    Align = alBottom
-    DefaultColWidth = 90
-    FixedCols = 0
-    RowCount = 6
-    TabOrder = 1
-    TitleStyle = tsNative
-    DisplayOptions = [doAutoColResize, doKeyColFixed]
-    Strings.Strings = (
-      'Тип паспорта:=Участок'
-      '№ паспорта:=7'
-      'Путь по:=ул. Ивановская'
-      'Свойство 1:='
-      'Свойство 2:='
-      'Свойство 3:='
-    )
-    TitleCaptions.Strings = (
-      ''
-    )
-    ColWidths = (
-      90
-      496
-    )
-  end
-  object RxDBGrid1: TRxDBGrid
-    Left = 0
-    Height = 200
+    Height = 112
     Top = 0
-    Width = 607
-    TitleButtons = False
-    AutoSort = True
-    Columns = <    
-      item
-        Title.Alignment = taCenter
-        Title.Orientation = toHorizontal
-        Title.Caption = 'name'
-        Width = 301
-        FieldName = 'name'
-        EditButtons = <>
-        Filter.DropDownRows = 0
-        Filter.EmptyValue = '(Нет)'
-        Filter.EmptyFont.Style = [fsItalic]
-        Filter.ItemIndex = -1
-      end    
-      item
-        Title.Alignment = taCenter
-        Title.Orientation = toHorizontal
-        Title.Caption = 'value'
-        Width = 302
-        FieldName = 'value'
-        EditButtons = <>
-        Filter.DropDownRows = 0
-        Filter.EmptyValue = '(Нет)'
-        Filter.EmptyFont.Style = [fsItalic]
-        Filter.ItemIndex = -1
-      end>
-    KeyStrokes = <    
-      item
-        Command = rxgcShowFindDlg
-        ShortCut = 16454
-        Enabled = True
-      end    
-      item
-        Command = rxgcShowColumnsDlg
-        ShortCut = 16471
-        Enabled = True
-      end    
-      item
-        Command = rxgcShowFilterDlg
-        ShortCut = 16468
-        Enabled = True
-      end    
-      item
-        Command = rxgcShowSortDlg
-        ShortCut = 16467
-        Enabled = True
-      end    
-      item
-        Command = rxgcShowQuickFilter
-        ShortCut = 16465
-        Enabled = True
-      end    
-      item
-        Command = rxgcHideQuickFilter
-        ShortCut = 16456
-        Enabled = True
-      end    
-      item
-        Command = rxgcSelectAll
-        ShortCut = 16449
-        Enabled = True
-      end    
-      item
-        Command = rxgcDeSelectAll
-        ShortCut = 16429
-        Enabled = True
-      end    
-      item
-        Command = rxgcInvertSelection
-        ShortCut = 16426
-        Enabled = True
-      end    
-      item
-        Command = rxgcOptimizeColumnsWidth
-        ShortCut = 16427
-        Enabled = True
-      end    
-      item
-        Command = rxgcCopyCellValue
-        ShortCut = 16451
-        Enabled = True
-      end>
-    OptionsRx = [rdgAllowColumnsForm, rdgAllowDialogFind, rdgAllowQuickFilter]
-    Align = alClient
-    AutoFillColumns = True
+    Width = 606
+    Align = alTop
+    BevelOuter = bvNone
+    Caption = 'PanelVL'
+    ClientHeight = 112
+    ClientWidth = 606
     Color = clWindow
-    DrawFullLine = False
-    FocusColor = clSkyBlue
-    SelectedColor = clGradientActiveCaption
-    GridLineColor = cl3DLight
-    GridLineStyle = psSolid
-    DataSource = DataM.DSPasspProperties
-    DefaultColWidth = 20
-    FixedCols = 0
-    Options = [dgColumnResize, dgColLines, dgRowLines, dgAlwaysShowEditor, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgAutoSizeColumns]
     ParentColor = False
-    Scrollbars = ssNone
-    TabOrder = 2
-    TitleStyle = tsNative
-    UseXORFeatures = True
+    TabOrder = 1
+    object PanelL: TPanel
+      Left = 0
+      Height = 112
+      Top = 0
+      Width = 104
+      Align = alLeft
+      AutoSize = True
+      BevelOuter = bvNone
+      Caption = 'PanelL'
+      ClientHeight = 112
+      ClientWidth = 104
+      TabOrder = 0
+      object Lab1: TLabel
+        Left = 1
+        Height = 22
+        Top = 1
+        Width = 102
+        Align = alTop
+        AutoSize = False
+        BidiMode = bdRightToLeftNoAlign
+        BorderSpacing.Around = 1
+        Caption = '   :Имя паспорта   '
+        Color = clWindow
+        Layout = tlCenter
+        ParentBidiMode = False
+        ParentColor = False
+        Transparent = False
+      end
+      object Lab2: TLabel
+        Left = 1
+        Height = 22
+        Top = 24
+        Width = 102
+        Align = alTop
+        AutoSize = False
+        BidiMode = bdRightToLeftNoAlign
+        BorderSpacing.Around = 1
+        Caption = '   :Тип паспорта   '
+        Color = clWindow
+        Layout = tlCenter
+        ParentBidiMode = False
+        ParentColor = False
+        Transparent = False
+      end
+      object Lab4: TLabel
+        Left = 1
+        Height = 22
+        Top = 70
+        Width = 102
+        Align = alTop
+        AutoSize = False
+        BidiMode = bdRightToLeftNoAlign
+        BorderSpacing.Around = 1
+        Caption = '   :Комментарии   '
+        Color = clWindow
+        Layout = tlCenter
+        ParentBidiMode = False
+        ParentColor = False
+        Transparent = False
+      end
+      object Lab3: TLabel
+        Left = 1
+        Height = 22
+        Top = 47
+        Width = 102
+        Align = alTop
+        AutoSize = False
+        BidiMode = bdRightToLeftNoAlign
+        BorderSpacing.Around = 1
+        Caption = '   :Год постройки   '
+        Color = clWindow
+        Layout = tlCenter
+        ParentBidiMode = False
+        ParentColor = False
+        Transparent = False
+      end
+    end
+    object PanelV: TPanel
+      Left = 109
+      Height = 112
+      Top = 0
+      Width = 497
+      Align = alClient
+      BevelOuter = bvNone
+      Caption = 'PanelV'
+      ClientHeight = 112
+      ClientWidth = 497
+      TabOrder = 1
+      object EdName: TEdit
+        Left = 0
+        Height = 23
+        Top = 0
+        Width = 497
+        Align = alTop
+        TabOrder = 0
+        Text = 'EdName'
+      end
+      object EdYearBuilt: TEdit
+        Left = 0
+        Height = 23
+        Top = 46
+        Width = 497
+        Align = alTop
+        TabOrder = 1
+        Text = 'EdYearBuilt'
+      end
+      object MemoComment: TMemo
+        Left = 0
+        Height = 43
+        Top = 69
+        Width = 497
+        Align = alClient
+        Lines.Strings = (
+          'MemoComment'
+        )
+        TabOrder = 2
+      end
+      object DBComboBoxType: TDBLookupComboBox
+        Left = 0
+        Height = 23
+        Top = 23
+        Width = 497
+        Align = alTop
+        ListFieldIndex = 0
+        ListSource = DataM.DSPasspTypeList
+        LookupCache = False
+        TabOrder = 3
+      end
+    end
+    object SplitterVL: TSplitter
+      Left = 104
+      Height = 112
+      Top = 0
+      Width = 5
+    end
+  end
+  object GroupBox1: TGroupBox
+    Left = 0
+    Height = 299
+    Top = 117
+    Width = 606
+    Align = alClient
+    Caption = 'Ветки (пути)'
+    ClientHeight = 279
+    ClientWidth = 602
+    TabOrder = 0
+    object DBGridBranches: TDBGrid
+      Left = 0
+      Height = 254
+      Top = 0
+      Width = 602
+      Align = alClient
+      AutoFillColumns = True
+      BorderStyle = bsNone
+      Color = clWindow
+      Columns = <      
+        item
+          Title.Caption = 'id'
+          Width = 0
+          Visible = False
+          FieldName = 'id'
+        end      
+        item
+          Title.Caption = 'pass_id'
+          Width = 0
+          Visible = False
+          FieldName = 'pass_id'
+        end      
+        item
+          Title.Caption = 'branch_name'
+          Width = 292
+          FieldName = 'branch_name'
+        end      
+        item
+          ButtonStyle = cbsPickList
+          Title.Caption = 'pos'
+          Width = 293
+          FieldName = 'pos'
+        end>
+      DataSource = DSBranches
+      FixedCols = 0
+      Options = [dgEditing, dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+      Scrollbars = ssVertical
+      TabOrder = 0
+      TitleStyle = tsNative
+      OnEditingDone = DBGridBranchesEditingDone
+      OnSelectEditor = DBGridBranchesSelectEditor
+    end
+    object DBNavigator1: TDBNavigator
+      Left = 0
+      Height = 25
+      Top = 254
+      Width = 602
+      Align = alBottom
+      BevelOuter = bvNone
+      ChildSizing.EnlargeHorizontal = crsScaleChilds
+      ChildSizing.EnlargeVertical = crsScaleChilds
+      ChildSizing.ShrinkHorizontal = crsScaleChilds
+      ChildSizing.ShrinkVertical = crsScaleChilds
+      ChildSizing.Layout = cclLeftToRightThenTopToBottom
+      ChildSizing.ControlsPerLine = 100
+      ClientHeight = 25
+      ClientWidth = 602
+      DataSource = DSBranches
+      Options = []
+      TabOrder = 1
+    end
+  end
+  object Splitter1: TSplitter
+    Cursor = crVSplit
+    Left = 0
+    Height = 5
+    Top = 112
+    Width = 606
+    Align = alTop
+    ResizeAnchor = akTop
+    ResizeStyle = rsLine
+  end
+  object ZQProp: TZQuery
+    Connection = DataM.ZConnection1
+    Params = <>
+    left = 24
+    top = 152
+  end
+  object DSBranches: TDataSource
+    DataSet = ZTBranches
+    left = 112
+    top = 208
+  end
+  object ZTBranches: TZTable
+    Connection = DataM.ZConnection1
+    SortedFields = 'pos,id'
+    AfterRefresh = ZTBranchesAfterRefresh
+    Filtered = True
+    BeforePost = ZTBranchesBeforePost
+    AfterPost = ZTBranchesAfterPost
+    TableName = 'branch'
+    IndexFieldNames = 'pos Asc,id Asc'
+    left = 112
+    top = 152
+    object ZTBranchesid: TLargeintField
+      FieldKind = fkData
+      FieldName = 'id'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object ZTBranchespass_id: TStringField
+      FieldKind = fkData
+      FieldName = 'pass_id'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 1020
+    end
+    object ZTBranchesname: TStringField
+      FieldKind = fkData
+      FieldName = 'branch_name'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object ZTBranchespos: TFloatField
+      FieldKind = fkData
+      FieldName = 'pos'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = 2
+    end
   end
 end
