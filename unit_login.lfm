@@ -11,7 +11,7 @@ object FormLogin: TFormLogin
   FormStyle = fsSystemStayOnTop
   Position = poScreenCenter
   ShowInTaskBar = stNever
-  LCLVersion = '1.6.4.0'
+  LCLVersion = '1.6.2.0'
   object Panel2: TPanel
     Left = 264
     Height = 219
@@ -140,7 +140,7 @@ object FormLogin: TFormLogin
       Top = 160
       Width = 75
       Caption = 'Отмена'
-      ModalResult = 1
+      ModalResult = 2
       OnClick = BitBtn2Click
       TabOrder = 5
     end

@@ -9,15 +9,6 @@ object FramePassportProperties: TFramePassportProperties
   TabOrder = 0
   DesignLeft = 1062
   DesignTop = 243
-  object Label1: TLabel
-    Left = 0
-    Height = 15
-    Top = 416
-    Width = 606
-    Align = alBottom
-    Caption = '  Наборы элементов (пути, ветки)'
-    ParentColor = False
-  end
   object PanelVL: TPanel
     Left = 0
     Height = 112
@@ -125,6 +116,7 @@ object FramePassportProperties: TFramePassportProperties
         Top = 0
         Width = 497
         Align = alTop
+        OnChange = EdNameChange
         TabOrder = 0
         Text = 'EdName'
       end
@@ -134,6 +126,7 @@ object FramePassportProperties: TFramePassportProperties
         Top = 46
         Width = 497
         Align = alTop
+        OnChange = EdYearBuiltChange
         TabOrder = 1
         Text = 'EdYearBuilt'
       end
@@ -146,6 +139,7 @@ object FramePassportProperties: TFramePassportProperties
         Lines.Strings = (
           'MemoComment'
         )
+        OnChange = MemoCommentChange
         TabOrder = 2
       end
       object DBComboBoxType: TDBLookupComboBox
@@ -157,6 +151,7 @@ object FramePassportProperties: TFramePassportProperties
         ListFieldIndex = 0
         ListSource = DataM.DSPasspTypeList
         LookupCache = False
+        OnChange = DBComboBoxTypeChange
         TabOrder = 3
       end
     end
@@ -169,17 +164,17 @@ object FramePassportProperties: TFramePassportProperties
   end
   object GroupBox1: TGroupBox
     Left = 0
-    Height = 299
+    Height = 314
     Top = 117
     Width = 606
     Align = alClient
     Caption = 'Ветки (пути)'
-    ClientHeight = 279
+    ClientHeight = 294
     ClientWidth = 602
     TabOrder = 0
     object DBGridBranches: TDBGrid
       Left = 0
-      Height = 254
+      Height = 294
       Top = 0
       Width = 602
       Align = alClient
@@ -200,43 +195,27 @@ object FramePassportProperties: TFramePassportProperties
           FieldName = 'pass_id'
         end      
         item
-          Title.Caption = 'branch_name'
+          MinSize = 100
+          MaxSize = 400
+          SizePriority = 0
+          Title.Caption = 'Наименование'
           Width = 292
           FieldName = 'branch_name'
         end      
         item
           ButtonStyle = cbsPickList
-          Title.Caption = 'pos'
+          MaxSize = 50
+          Title.Caption = 'Порядковый номер'
           Width = 293
           FieldName = 'pos'
         end>
       DataSource = DSBranches
       FixedCols = 0
       Options = [dgEditing, dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+      PopupMenu = PPMGridBranches
       Scrollbars = ssVertical
       TabOrder = 0
       TitleStyle = tsNative
-      OnEditingDone = DBGridBranchesEditingDone
-      OnSelectEditor = DBGridBranchesSelectEditor
-    end
-    object DBNavigator1: TDBNavigator
-      Left = 0
-      Height = 25
-      Top = 254
-      Width = 602
-      Align = alBottom
-      BevelOuter = bvNone
-      ChildSizing.EnlargeHorizontal = crsScaleChilds
-      ChildSizing.EnlargeVertical = crsScaleChilds
-      ChildSizing.ShrinkHorizontal = crsScaleChilds
-      ChildSizing.ShrinkVertical = crsScaleChilds
-      ChildSizing.Layout = cclLeftToRightThenTopToBottom
-      ChildSizing.ControlsPerLine = 100
-      ClientHeight = 25
-      ClientWidth = 602
-      DataSource = DSBranches
-      Options = []
-      TabOrder = 1
     end
   end
   object Splitter1: TSplitter
@@ -266,7 +245,9 @@ object FramePassportProperties: TFramePassportProperties
     AfterRefresh = ZTBranchesAfterRefresh
     Filtered = True
     BeforePost = ZTBranchesBeforePost
-    AfterPost = ZTBranchesAfterPost
+    AfterPost = ZTBranchesAfterRefresh
+    BeforeDelete = ZTBranchesBeforeDelete
+    AfterDelete = ZTBranchesAfterRefresh
     TableName = 'branch'
     IndexFieldNames = 'pos Asc,id Asc'
     left = 112
@@ -310,6 +291,29 @@ object FramePassportProperties: TFramePassportProperties
       MaxValue = 0
       MinValue = 0
       Precision = 2
+    end
+  end
+  object PPMGridBranches: TPopupMenu
+    left = 208
+    top = 152
+    object MenuItem1: TMenuItem
+      Action = ActionAddBranch
+    end
+    object MenuItem2: TMenuItem
+      Action = ActionDeleteBranch
+    end
+  end
+  object ActionList: TActionList
+    left = 344
+    top = 152
+    object ActionDeleteBranch: TAction
+      Caption = 'Удалить ветку'
+      OnExecute = ActionDeleteBranchExecute
+      ShortCut = 16430
+    end
+    object ActionAddBranch: TAction
+      Caption = 'Добавить ветку'
+      ShortCut = 16429
     end
   end
 end

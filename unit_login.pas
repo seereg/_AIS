@@ -50,7 +50,6 @@ end;
 
 procedure TFormLogin.BitBtn2Click(Sender: TObject);
 begin
-  Application.Destroy;
 end;
 
 end.

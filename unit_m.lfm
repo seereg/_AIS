@@ -11575,7 +11575,7 @@ object FormM: TFormM
     FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
   }
   OnShow = FormShow
-  LCLVersion = '1.6.4.0'
+  LCLVersion = '1.6.2.0'
   object Splitter1: TSplitter
     Left = 740
     Height = 581

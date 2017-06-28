@@ -2123,13 +2123,12 @@ object DataM: TDataM
   end
   object ZConnection1: TZConnection
     ControlsCodePage = cCP_UTF8
+    AutoEncodeStrings = False
     Properties.Strings = (
       'AutoEncodeStrings=ON'
     )
     AutoCommit = False
-    Connected = True
     Port = 0
-    Database = 'C:\GIT\_AIS\db\tramways.db'
     Protocol = 'sqlite-3'
     LibraryLocation = 'C:\GIT\_AIS\dll\sqlite3.dll'
     left = 24

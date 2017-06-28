@@ -132,7 +132,7 @@ begin
  PasTabs.ColorArrowOver:= PasTabs.ColorArrow;
 
  SetLength(PassportsArr,0);
- FormLogin.ShowModal;
+ if FormLogin.ShowModal<>mrOK then Close;
 end;
 
 procedure TFormM.RxDBGrid1AfterQuickSearch(Sender: TObject; Field: TField;
