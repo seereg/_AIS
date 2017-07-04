@@ -6,28 +6,60 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, StdCtrls, ExtCtrls, DbCtrls,
-  unit_types_and_const, db, KGrids, KFunctions, ZDataset;
+  ActnList, Menus, unit_types_and_const, db, KGrids, KFunctions, ZDataset;
+
+type  //переделать в класс
+  TPassObj = record
+  obj_type:string;
+  len:integer;   //автовычисление
+  rad1:integer;  //0-120=120-0=120
+  rad2:integer;  //0-120=120-0=120
+  tang1:integer; //0-120=120-0=120
+  tang2:integer; //0-120=120-0=120
+  branch:integer;//связь с веткой стрелки
+  {стрелка - отдельный паспорт со своими ветками,
+   например две ветки 1-2(прям) и 1-3(крив) состоящие
+   из простых объектов}
+end;
 
 type
 
   { TFramePassportObjects }
 
   TFramePassportObjects = class(TFrame)
+    ActionObjDel: TAction;
+    ActionObjAdd: TAction;
+    ActionListObjElem: TActionList;
+    ComboBox1: TComboBox;
     DSPassObjType: TDataSource;
-    DBComboBoxType: TDBLookupComboBox;
-    DBComboBoxType1: TDBLookupComboBox;
-    GroupBox1: TGroupBox;
-    GroupBox2: TGroupBox;
+    DBComboBoxTypeEl: TDBLookupComboBox;
+    DBComboBoxTypeObj: TDBLookupComboBox;
+    GroupBoxObjProp: TGroupBox;
+    GroupBoxObj: TGroupBox;
+    GroupBoxElem: TGroupBox;
     KGridEl: TKGrid;
     KGridObj: TKGrid;
+    KGridObjProp: TKGrid;
+    MenuItem1: TMenuItem;
+    MenuItem2: TMenuItem;
+    PopupMenuObj: TPopupMenu;
     Splitter1: TSplitter;
+    Splitter2: TSplitter;
     ZQObjects: TZQuery;
     ZQPassObjType: TZQuery;
+    procedure ActionObjAddExecute(Sender: TObject);
+    procedure ActionObjDelExecute(Sender: TObject);
+    procedure ComboBox1Change(Sender: TObject);
+    procedure DBComboBoxTypeObjChange(Sender: TObject);
+    procedure KGridObjCellChanging(Sender: TObject; AOldCol, AOldRow, ANewCol,
+      ANewRow: Integer);
+    procedure KGridObjChanged(Sender: TObject; ACol, ARow: Integer);
+    procedure KGridObjClick(Sender: TObject);
     procedure KGridObjEditorCreate(Sender: TObject; ACol, ARow: Integer;
       var AEditor: TWinControl);
   private
     { private declarations }
-    procedure AddObject(ARow: integer;obj_type:string;len:integer);
+    procedure AddObject(ARow: integer;obj:TPassObj);
     procedure AddElement(ARow:integer);
     procedure GetObjects();
     procedure GetElements();
@@ -65,62 +97,84 @@ begin
  // create custom editors
  case InitialCol of
    1:
-   {begin
-     AEditor := TDBLookupComboBox.Create(nil);
-     with TDBLookupComboBox(AEditor) do begin
-       DataField:='id';
-       DataSource:=DSPassObjType;
-       KeyField:='id';
-       ListField:='obj_type_name';
-       ListSource:=DSPassObjType;
-     end;
-   end; }
    begin
      AEditor := TComboBox.Create(nil);
-     TComboBox(AEditor).Style := csDropDown; // cannot set height on Win!
+     TComboBox(AEditor).Style := csDropDownList; // cannot set height on Win!
+     TComboBox(AEditor).OnChange:=DBComboBoxTypeObj.OnChange;
      ZQPassObjType.First;
      while not(ZQPassObjType.EOF) do begin
-      //переделать на tStringList
+      //переделать на tStringList, чтобы не гонять в цикле
       TComboBox(AEditor).Items.Add(ZQPassObjType.FieldByName('obj_type_name').AsString);
       ZQPassObjType.Next;
      end;
    end;
-{   3:
-   begin
-     AEditor := TButton.Create(nil);
-   end;
-   4:
-   begin
-     AEditor := TCheckBox.Create(nil);
-     TCheckBox(AEditor).Font.Color := clRed; // applies only without OS themes (in Delphi)
-   end;
-   5:
-   begin
-     AEditor := TScrollBar.Create(nil);
-     TScrollBar(AEditor).Max := 10;
-   end;
-   6:
-   begin
-     AEditor := {$IFDEF FPC}TMemo{$ELSE}TRichEdit{$ENDIF}.Create(nil);
-     AEditor.Cursor:= crIBeam;
-   end;
-   7:
-   begin
-     AEditor := TMaskEdit.Create(nil);
-   end  }
  else
    if gxEditFixedCols in KGridObj.OptionsEx then
      AEditor := TEdit.Create(nil);
  end;
 end;
 
-procedure TFramePassportObjects.AddObject(ARow: integer; obj_type: string;
-  len: integer);
+procedure TFramePassportObjects.KGridObjClick(Sender: TObject);
 begin
-  KGridObj.Cells[0, ARow] := inttostr(ARow);
-//  KGridObj.CellSpan[1, ARow] := MakeCellSpan(3, 1);
-  KGridObj.Cells[1, ARow] :=(obj_type);
-  KGridObj.Cells[2, ARow] := CurrToStr(len)+' м.';
+  GroupBoxObjProp.Caption:='Объект №'+KGridObj.Cells[0,KGridObj.Row]+': '+KGridObj.Cells[1,KGridObj.Row];
+  //надо обновить свойства GroupBoxObjProp
+end;
+
+procedure TFramePassportObjects.ActionObjDelExecute(Sender: TObject);
+begin
+   KGridObj.DeleteRow(KGridObj.Row);
+   //Здесь удаляем объект и все элеметы
+end;
+
+procedure TFramePassportObjects.ComboBox1Change(Sender: TObject);
+begin
+end;
+
+procedure TFramePassportObjects.DBComboBoxTypeObjChange(Sender: TObject);
+begin
+// KGridObj.FocusCell(2,KGridObj.Row);     Падает с ошибкой
+ KGridObjProp.SetFocus;
+ KGridObjClick(Sender);
+end;
+
+procedure TFramePassportObjects.KGridObjCellChanging(Sender: TObject; AOldCol,
+  AOldRow, ANewCol, ANewRow: Integer);
+begin
+end;
+
+procedure TFramePassportObjects.KGridObjChanged(Sender: TObject; ACol,
+  ARow: Integer);
+begin
+    caption:='ok';
+
+end;
+
+procedure TFramePassportObjects.ActionObjAddExecute(Sender: TObject);
+var
+  obj:TPassObj;
+begin
+ //нужно реализовать добавку нового объекта
+ obj.obj_type:=KGridObj.Cells[1,KGridObj.Row];
+ obj.len:=0;
+ //PassObjList.Add(obj)
+ AddObject(-1,obj);
+end;
+
+procedure TFramePassportObjects.AddObject(ARow: integer; obj:TPassObj);
+begin
+  if  KGridObj.Cells[1, 0]=''
+   then ARow:=0
+  else
+   begin
+     KGridObj.RowCount:=KGridObj.RowCount+1;
+     ARow:=KGridObj.RowCount-1;
+   end;
+  with obj do begin
+    KGridObj.Cells[0, ARow] := inttostr(ARow+1);
+    KGridObj.Cells[1, ARow] :=(obj_type);
+    KGridObj.Cells[2, ARow] := CurrToStr(len)+' м.';
+  end;
+//  if ARow=0 then  KGridObj.Rows[0].Destroy; //пустая строка
 end;
 
 procedure TFramePassportObjects.AddElement(ARow: integer);
@@ -138,14 +192,20 @@ end;
 
 procedure TFramePassportObjects.GetObjects;
 var
+  obj:TPassObj;
   row:integer;
 begin
  ZQObjects.Open;
  ZQObjects.First;
+ row:=0;
+ ActionObjAddExecute(nil);//пустой
+// AddObject(0,obj);
+ KGridObj.Rows[0].Destroy; //пустая строка неформатированная
  while not(ZQObjects.EOF) do begin
-   KGridObj.RowCount:=KGridObj.RowCount+1;
-   row:=KGridObj.RowCount-1;
-   AddObject(row,ZQObjects.FieldByName('obj_type').AsString,ZQObjects.FieldByName('length').AsInteger);
+   obj.obj_type:=ZQObjects.FieldByName('obj_type').AsString;
+   obj.len:=ZQObjects.FieldByName('length').AsInteger;
+   AddObject(row,obj);
+   row:=row-1;
    ZQObjects.Next;
  end;
  ZQObjects.Close;
@@ -170,9 +230,9 @@ constructor TFramePassportObjects.Create(TheOwner: TComponent;
   pBranch_id: integer);
 begin
   inherited Create(TheOwner);
-  DBComboBoxType.KeyField:='id';
-  DBComboBoxType.ListField:='elem_type_name';
-  DBComboBoxType.ListFieldIndex:=0;
+  DBComboBoxTypeEl.KeyField:='id';
+  DBComboBoxTypeEl.ListField:='elem_type_name';
+  DBComboBoxTypeEl.ListFieldIndex:=0;
   ZQObjects.SQL.Clear;
   Branch_id:=pBranch_id;
   ZQObjects.SQL.Add(GetSQL('objects',branch_id));
@@ -180,17 +240,10 @@ begin
   ZQPassObjType.SQL.Add(GetSQL('objects_type',0));
   ZQPassObjType.Open;
   KGridObj.ColWidths[0]:=30;
-  KGridObj.ColWidths[1]:=300;//(KGridObj.Width-70);
+  KGridObj.ColWidths[1]:=300;
   KGridObj.RowCount:=0;
   GetObjects;
-  KGridObj.Rows[0].Destroy;
-  {
-  KGridEl.Cells[0, 0] := '№';
-  KGridEl.CellSpan[1, 0] := MakeCellSpan(3, 1);
-  KGridEl.Cells[1, 0] := 'Тип';
-  KGridEl.Cells[4, 0] := 'Длина';
-  AddObject(0,1);
-  AddElement(0,2); }
+  KGridObjClick(nil);//показать свойства
 end;
 
 end.

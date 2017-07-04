@@ -30,7 +30,6 @@ object FramePassportProperties: TFramePassportProperties
       Align = alLeft
       AutoSize = True
       BevelOuter = bvNone
-      Caption = 'PanelL'
       ClientHeight = 112
       ClientWidth = 104
       TabOrder = 0

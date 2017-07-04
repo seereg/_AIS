@@ -1,35 +1,41 @@
 object FramePassportObjects: TFramePassportObjects
   Left = 0
-  Height = 399
+  Height = 525
   Top = 0
   Width = 559
   Align = alClient
-  ClientHeight = 399
+  ClientHeight = 525
   ClientWidth = 559
   TabOrder = 0
   DesignLeft = 761
   DesignTop = 285
-  object GroupBox1: TGroupBox
+  object GroupBoxObj: TGroupBox
     Left = 0
-    Height = 169
+    Height = 287
     Top = 0
     Width = 559
     Align = alTop
     Caption = 'Объекты'
-    ClientHeight = 149
+    ClientHeight = 267
     ClientWidth = 555
     TabOrder = 0
     object KGridObj: TKGrid
       Left = 0
-      Height = 126
+      Height = 139
       Top = 23
       Width = 555
       Align = alClient
       ColCount = 3
+      Colors.FixedThemedCellLines = clWindow
+      Colors.FixedThemedCellShadow = clWindow
       FixedRows = 0
       Options = [goAlignLastCol, goAlwaysShowEditor, goDrawFocusSelected, goEditing, goEnterMoves, goFixedHorzLine, goFixedVertLine, goHeaderAlignment, goHorzLine, goIndicateHiddenCells, goMouseCanHideCells, goMouseOverCells, goRowMoving, goThemes, goThemedCells, goVertLine]
+      PopupMenu = PopupMenuObj
       RowCount = 1
       TabOrder = 0
+      OnCellChanging = KGridObjCellChanging
+      OnChanged = KGridObjChanged
+      OnClick = KGridObjClick
       OnEditorCreate = KGridObjEditorCreate
       ColWidths = (
         64
@@ -40,7 +46,7 @@ object FramePassportObjects: TFramePassportObjects
         21
       )
     end
-    object DBComboBoxType1: TDBLookupComboBox
+    object DBComboBoxTypeObj: TDBLookupComboBox
       Left = 0
       Height = 23
       Top = 0
@@ -53,23 +59,75 @@ object FramePassportObjects: TFramePassportObjects
       ListFieldIndex = 0
       ListSource = DSPassObjType
       LookupCache = False
+      OnChange = DBComboBoxTypeObjChange
       TabOrder = 1
       Visible = False
     end
+    object GroupBoxObjProp: TGroupBox
+      Left = 0
+      Height = 100
+      Top = 167
+      Width = 555
+      Align = alBottom
+      Caption = 'Объект такой-то, свойства'
+      ClientHeight = 80
+      ClientWidth = 551
+      TabOrder = 2
+      object KGridObjProp: TKGrid
+        Left = 0
+        Height = 80
+        Top = 0
+        Width = 551
+        Align = alClient
+        ColCount = 2
+        Colors.FixedThemedCellLines = clWindow
+        Colors.FixedThemedCellShadow = clWindow
+        FixedRows = 0
+        Options = [goAlignLastCol, goAlwaysShowEditor, goDrawFocusSelected, goEditing, goEnterMoves, goFixedHorzLine, goFixedVertLine, goHeaderAlignment, goHorzLine, goIndicateHiddenCells, goMouseCanHideCells, goMouseOverCells, goRowMoving, goThemes, goThemedCells, goVertLine]
+        RowCount = 1
+        TabOrder = 0
+        ColWidths = (
+          64
+          482
+        )
+        RowHeights = (
+          21
+        )
+      end
+    end
+    object Splitter2: TSplitter
+      Cursor = crVSplit
+      Left = 0
+      Height = 5
+      Top = 162
+      Width = 555
+      Align = alBottom
+      ResizeAnchor = akBottom
+      ResizeStyle = rsLine
+    end
+    object ComboBox1: TComboBox
+      Left = 48
+      Height = 23
+      Top = 83
+      Width = 100
+      ItemHeight = 15
+      TabOrder = 4
+      Text = 'ComboBox1'
+    end
   end
-  object GroupBox2: TGroupBox
+  object GroupBoxElem: TGroupBox
     Left = 0
-    Height = 225
-    Top = 174
+    Height = 233
+    Top = 292
     Width = 559
     Align = alClient
-    Caption = 'Элементы'
-    ClientHeight = 205
+    Caption = 'Элементы, сгруппированные по типу'
+    ClientHeight = 213
     ClientWidth = 555
     TabOrder = 1
     object KGridEl: TKGrid
       Left = 0
-      Height = 181
+      Height = 189
       Top = 24
       Width = 555
       Align = alClient
@@ -90,7 +148,7 @@ object FramePassportObjects: TFramePassportObjects
         21
       )
     end
-    object DBComboBoxType: TDBLookupComboBox
+    object DBComboBoxTypeEl: TDBLookupComboBox
       Left = 0
       Height = 24
       Top = 0
@@ -113,7 +171,7 @@ object FramePassportObjects: TFramePassportObjects
     Cursor = crVSplit
     Left = 0
     Height = 5
-    Top = 169
+    Top = 287
     Width = 559
     Align = alTop
     ResizeAnchor = akTop
@@ -135,5 +193,29 @@ object FramePassportObjects: TFramePassportObjects
     DataSet = ZQPassObjType
     left = 360
     top = 104
+  end
+  object ActionListObjElem: TActionList
+    left = 264
+    top = 104
+    object ActionObjAdd: TAction
+      Category = 'Objects'
+      Caption = 'Добавить элемент'
+      OnExecute = ActionObjAddExecute
+    end
+    object ActionObjDel: TAction
+      Category = 'Objects'
+      Caption = 'Удалить объект (со всеми элементами)'
+      OnExecute = ActionObjDelExecute
+    end
+  end
+  object PopupMenuObj: TPopupMenu
+    left = 168
+    top = 104
+    object MenuItem1: TMenuItem
+      Action = ActionObjAdd
+    end
+    object MenuItem2: TMenuItem
+      Action = ActionObjDel
+    end
   end
 end
