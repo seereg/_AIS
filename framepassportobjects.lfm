@@ -37,6 +37,7 @@ object FramePassportObjects: TFramePassportObjects
       OnChanged = KGridObjChanged
       OnClick = KGridObjClick
       OnEditorCreate = KGridObjEditorCreate
+      OnRowMoved = KGridObjRowMoved
       ColWidths = (
         64
         64
@@ -104,15 +105,6 @@ object FramePassportObjects: TFramePassportObjects
       Align = alBottom
       ResizeAnchor = akBottom
       ResizeStyle = rsLine
-    end
-    object ComboBox1: TComboBox
-      Left = 48
-      Height = 23
-      Top = 83
-      Width = 100
-      ItemHeight = 15
-      TabOrder = 4
-      Text = 'ComboBox1'
     end
   end
   object GroupBoxElem: TGroupBox
@@ -217,5 +209,22 @@ object FramePassportObjects: TFramePassportObjects
     object MenuItem2: TMenuItem
       Action = ActionObjDel
     end
+  end
+  object ZQElements: TZQuery
+    Connection = DataM.ZConnection1
+    Params = <>
+    left = 448
+    top = 344
+  end
+  object ZQElemType: TZQuery
+    Connection = DataM.ZConnection1
+    Params = <>
+    left = 448
+    top = 400
+  end
+  object DSElemType: TDataSource
+    DataSet = ZQElemType
+    left = 352
+    top = 400
   end
 end

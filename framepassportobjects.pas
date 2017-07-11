@@ -8,20 +8,6 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, StdCtrls, ExtCtrls, DbCtrls,
   ActnList, Menus, unit_types_and_const, db, KGrids, KFunctions, ZDataset;
 
-type  //переделать в класс
-  TPassObj = record
-  obj_type:string;
-  len:integer;   //автовычисление
-  rad1:integer;  //0-120=120-0=120
-  rad2:integer;  //0-120=120-0=120
-  tang1:integer; //0-120=120-0=120
-  tang2:integer; //0-120=120-0=120
-  branch:integer;//связь с веткой стрелки
-  {стрелка - отдельный паспорт со своими ветками,
-   например две ветки 1-2(прям) и 1-3(крив) состоящие
-   из простых объектов}
-end;
-
 type
 
   { TFramePassportObjects }
@@ -30,10 +16,10 @@ type
     ActionObjDel: TAction;
     ActionObjAdd: TAction;
     ActionListObjElem: TActionList;
-    ComboBox1: TComboBox;
     DSPassObjType: TDataSource;
     DBComboBoxTypeEl: TDBLookupComboBox;
     DBComboBoxTypeObj: TDBLookupComboBox;
+    DSElemType: TDataSource;
     GroupBoxObjProp: TGroupBox;
     GroupBoxObj: TGroupBox;
     GroupBoxElem: TGroupBox;
@@ -46,7 +32,9 @@ type
     Splitter1: TSplitter;
     Splitter2: TSplitter;
     ZQObjects: TZQuery;
+    ZQElements: TZQuery;
     ZQPassObjType: TZQuery;
+    ZQElemType: TZQuery;
     procedure ActionObjAddExecute(Sender: TObject);
     procedure ActionObjDelExecute(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
@@ -57,6 +45,7 @@ type
     procedure KGridObjClick(Sender: TObject);
     procedure KGridObjEditorCreate(Sender: TObject; ACol, ARow: Integer;
       var AEditor: TWinControl);
+    procedure KGridObjRowMoved(Sender: TObject; FromIndex, ToIndex: Integer);
   private
     { private declarations }
     procedure AddObject(ARow: integer;obj:TPassObj);
@@ -114,6 +103,20 @@ begin
  end;
 end;
 
+procedure TFramePassportObjects.KGridObjRowMoved(Sender: TObject; FromIndex,
+  ToIndex: Integer);
+var
+  i,count:integer;
+begin
+ if  FromIndex > ToIndex
+ then count := FromIndex
+ else count := ToIndex;
+  for i:=0 to count do
+  begin
+    KGridObj.Cells[0,i]:=inttostr(i+1);
+  end;
+end;
+
 procedure TFramePassportObjects.KGridObjClick(Sender: TObject);
 begin
   GroupBoxObjProp.Caption:='Объект №'+KGridObj.Cells[0,KGridObj.Row]+': '+KGridObj.Cells[1,KGridObj.Row];
@@ -131,8 +134,15 @@ begin
 end;
 
 procedure TFramePassportObjects.DBComboBoxTypeObjChange(Sender: TObject);
+var
+ InRow,InCol:integer;
 begin
-// KGridObj.FocusCell(2,KGridObj.Row);     Падает с ошибкой
+if sender is TComboBox then
+ begin
+  InCol := KGridObj.Selection.Col1; // map column indexes
+  InRow := KGridObj.Selection.Row1; // map row indexes
+  KGridObj.Cells[InCol,InRow]:= TComboBox(sender).Text;
+ end;
  KGridObjProp.SetFocus;
  KGridObjClick(Sender);
 end;
@@ -212,8 +222,24 @@ begin
 end;
 
 procedure TFramePassportObjects.GetElements;
+var
+  elem:TPassElem;
+  row:integer;
 begin
-
+ ZQElements.Open;
+ ZQElements.First;
+ row:=0;
+ ActionObjAddExecute(nil);//пустая для пустого списка
+// !!! дальше не формат
+ KGridEl.Rows[0].Destroy; //пустая строка неформатированная
+ while not(ZQElements.EOF) do begin
+   elem.elem_type:=ZQElements.FieldByName('elem_type').AsString;
+   elem.len:=ZQElements.FieldByName('length').AsInteger;
+   AddElement(row{,elem});
+   row:=row-1;
+   ZQElements.Next;
+ end;
+ ZQElements.Close;
 end;
 
 procedure TFramePassportObjects.SetObjects;
