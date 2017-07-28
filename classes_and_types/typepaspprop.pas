@@ -1,11 +1,11 @@
-unit typepaspprop;
+unit typePaspProp;
 
 {$mode objfpc}{$H+}
 
 interface
 
 uses
-  Classes, SysUtils,ZDataset, ZConnection, unit_types_and_const;
+  Classes, SysUtils, ZDataset, ZConnection, unit_types_and_const;
 
 type
 

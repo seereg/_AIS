@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, StdCtrls, ExtCtrls, DbCtrls,
-  ActnList, Menus, unit_types_and_const, db, KGrids, KFunctions, ZDataset;
+  ActnList, Menus, unit_types_and_const, unit_m_data, typepaspBranch,
+  typepaspobj, db, KGrids, KFunctions, ZDataset;
 
 type
 
@@ -56,8 +57,8 @@ type
     procedure SetElements();
   public
     { public declarations }
+    PassBranch:TPassBranch;
     pass_id:integer;
-    branch_id:integer;
     constructor Create(TheOwner: TComponent;pBranch_id:integer); //override;
   end;
 
@@ -164,8 +165,9 @@ var
   obj:TPassObj;
 begin
  //нужно реализовать добавку нового объекта
+ obj:=PassBranch.addPasObject();
  obj.obj_type:=KGridObj.Cells[1,KGridObj.Row];
- obj.len:=0;
+ //obj.obj_len:=0; //при создании само
  //PassObjList.Add(obj)
  AddObject(-1,obj);
 end;
@@ -179,10 +181,11 @@ begin
      KGridObj.RowCount:=KGridObj.RowCount+1;
      ARow:=KGridObj.RowCount-1;
    end;
-  with obj do begin
+  if obj<>nil then
+  begin
     KGridObj.Cells[0, ARow] := inttostr(ARow+1);
-    KGridObj.Cells[1, ARow] :=(obj_type);
-    KGridObj.Cells[2, ARow] := CurrToStr(len)+' м.';
+    KGridObj.Cells[1, ARow] :=(obj.obj_type);
+    KGridObj.Cells[2, ARow] :=(obj.obj_len)+' м.';
   end;
 //  if ARow=0 then  KGridObj.Rows[0].Destroy; //пустая строка
 end;
@@ -204,21 +207,27 @@ procedure TFramePassportObjects.GetObjects;
 var
   obj:TPassObj;
   row:integer;
+  i:integer;
 begin
- ZQObjects.Open;
- ZQObjects.First;
  row:=0;
  ActionObjAddExecute(nil);//пустой
 // AddObject(0,obj);
- KGridObj.Rows[0].Destroy; //пустая строка неформатированная
- while not(ZQObjects.EOF) do begin
-   obj.obj_type:=ZQObjects.FieldByName('obj_type').AsString;
-   obj.len:=ZQObjects.FieldByName('length').AsInteger;
+ZQObjects.SQL.Text:=GetSQL('objects',PassBranch.branch_id);
+ZQObjects.Open;
+ZQObjects.First;
+ if ZQObjects.RecordCount=0
+ then   begin
+   obj:=PassBranch.getPasObject(-1);
    AddObject(row,obj);
-   row:=row-1;
+end;
+ while not(ZQObjects.EOF) do begin
+   obj:=PassBranch.getPasObject(ZQObjects.FieldByName('id').AsInteger);
+   AddObject(row,obj);
+   row:=row+1;
    ZQObjects.Next;
  end;
  ZQObjects.Close;
+ KGridObj.Rows[0].Destroy; //пустая строка неформатированная
 end;
 
 procedure TFramePassportObjects.GetElements;
@@ -226,7 +235,7 @@ var
   elem:TPassElem;
   row:integer;
 begin
- ZQElements.Open;
+{ ZQElements.Open;
  ZQElements.First;
  row:=0;
  ActionObjAddExecute(nil);//пустая для пустого списка
@@ -239,7 +248,7 @@ begin
    row:=row-1;
    ZQElements.Next;
  end;
- ZQElements.Close;
+ ZQElements.Close;  }
 end;
 
 procedure TFramePassportObjects.SetObjects;
@@ -256,17 +265,16 @@ constructor TFramePassportObjects.Create(TheOwner: TComponent;
   pBranch_id: integer);
 begin
   inherited Create(TheOwner);
+  PassBranch:=TPassBranch.Create(pBranch_id,DataM.ZConnection1);
   DBComboBoxTypeEl.KeyField:='id';
   DBComboBoxTypeEl.ListField:='elem_type_name';
   DBComboBoxTypeEl.ListFieldIndex:=0;
-  ZQObjects.SQL.Clear;
-  Branch_id:=pBranch_id;
-  ZQObjects.SQL.Add(GetSQL('objects',branch_id));
   ZQPassObjType.SQL.Clear;
   ZQPassObjType.SQL.Add(GetSQL('objects_type',0));
   ZQPassObjType.Open;
   KGridObj.ColWidths[0]:=30;
   KGridObj.ColWidths[1]:=300;
+  KGridObj.ColWidths[3]:=0;
   KGridObj.RowCount:=0;
   GetObjects;
   KGridObjClick(nil);//показать свойства

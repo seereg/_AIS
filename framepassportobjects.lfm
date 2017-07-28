@@ -25,7 +25,7 @@ object FramePassportObjects: TFramePassportObjects
       Top = 23
       Width = 555
       Align = alClient
-      ColCount = 3
+      ColCount = 4
       Colors.FixedThemedCellLines = clWindow
       Colors.FixedThemedCellShadow = clWindow
       FixedRows = 0
@@ -41,7 +41,8 @@ object FramePassportObjects: TFramePassportObjects
       ColWidths = (
         64
         64
-        421
+        393
+        27
       )
       RowHeights = (
         21

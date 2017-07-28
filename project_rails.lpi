@@ -49,7 +49,7 @@
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="12">
+    <Units Count="13">
       <Unit0>
         <Filename Value="project_rails.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -116,13 +116,17 @@
         <ResourceBaseClass Value="Form"/>
       </Unit9>
       <Unit10>
-        <Filename Value="classes_and_types\typepaspprop.pas"/>
+        <Filename Value="classes_and_types\typePaspProp.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit10>
       <Unit11>
-        <Filename Value="classes_and_types\typepaspobj.pas"/>
+        <Filename Value="classes_and_types\typePaspObj.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit11>
+      <Unit12>
+        <Filename Value="classes_and_types\typePaspBranch.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit12>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

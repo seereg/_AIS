@@ -17,7 +17,7 @@ type
     table:string;
   end;
 
-type  //переделать в класс
+{type  //переделать в класс
   TPassObj = record
   obj_type:string;
   len:integer;   //автовычисление
@@ -29,7 +29,7 @@ type  //переделать в класс
   {стрелка - отдельный паспорт со своими ветками,
    например две ветки 1-2(прям) и 1-3(крив) состоящие
    из простых объектов}
-end;
+end;        }
 
 type  //переделать в класс
   TPassElem = record
@@ -134,7 +134,9 @@ begin
         +' rad,length, pos from objects                              '
         +' LEFT JOIN objects_type                                    '
         +' on objects.obj_type=objects_type.id                       '
-        +' where branch_id='+inttostr(param);
+        +' where branch_id='+inttostr(param)
+        +' order by pos                                              '
+        ;
   end;
   //-----------------------
   if iden='objects_type' then
