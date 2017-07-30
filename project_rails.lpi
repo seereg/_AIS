@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="9"/>
+    <Version Value="10"/>
     <PathDelim Value="\"/>
     <General>
       <SessionStorage Value="InProjectDir"/>
@@ -49,7 +49,7 @@
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="13">
+    <Units Count="14">
       <Unit0>
         <Filename Value="project_rails.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -116,17 +116,24 @@
         <ResourceBaseClass Value="Form"/>
       </Unit9>
       <Unit10>
-        <Filename Value="classes_and_types\typePaspProp.pas"/>
+        <Filename Value="classes_and_types\typepaspprop.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="typePaspProp"/>
       </Unit10>
       <Unit11>
-        <Filename Value="classes_and_types\typePaspObj.pas"/>
+        <Filename Value="classes_and_types\typepaspobj.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="typePaspObj"/>
       </Unit11>
       <Unit12>
         <Filename Value="classes_and_types\typePaspBranch.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit12>
+      <Unit13>
+        <Filename Value="classes_and_types\typepaspelem.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="typePaspElem"/>
+      </Unit13>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

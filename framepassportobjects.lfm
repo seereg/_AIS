@@ -33,8 +33,6 @@ object FramePassportObjects: TFramePassportObjects
       PopupMenu = PopupMenuObj
       RowCount = 1
       TabOrder = 0
-      OnCellChanging = KGridObjCellChanging
-      OnChanged = KGridObjChanged
       OnClick = KGridObjClick
       OnEditorCreate = KGridObjEditorCreate
       OnRowMoved = KGridObjRowMoved
@@ -118,29 +116,6 @@ object FramePassportObjects: TFramePassportObjects
     ClientHeight = 213
     ClientWidth = 555
     TabOrder = 1
-    object KGridEl: TKGrid
-      Left = 0
-      Height = 189
-      Top = 24
-      Width = 555
-      Align = alClient
-      Options = [goAlwaysShowEditor, goDrawFocusSelected, goEnterMoves, goFixedHorzLine, goFixedVertLine, goHeaderAlignment, goHorzLine, goIndicateHiddenCells, goMouseCanHideCells, goMouseOverCells, goRowMoving, goThemes, goThemedCells, goVertLine]
-      TabOrder = 0
-      ColWidths = (
-        64
-        64
-        64
-        64
-        64
-      )
-      RowHeights = (
-        21
-        21
-        21
-        21
-        21
-      )
-    end
     object DBComboBoxTypeEl: TDBLookupComboBox
       Left = 0
       Height = 24
@@ -157,7 +132,32 @@ object FramePassportObjects: TFramePassportObjects
       ListSource = DataM.DSPasspElType
       LookupCache = False
       Style = csOwnerDrawFixed
+      TabOrder = 0
+    end
+    object KGridElem: TKGrid
+      Left = 0
+      Height = 189
+      Top = 24
+      Width = 555
+      Align = alClient
+      ColCount = 4
+      Colors.FixedThemedCellLines = clWindow
+      Colors.FixedThemedCellShadow = clWindow
+      FixedRows = 0
+      Options = [goAlignLastCol, goAlwaysShowEditor, goDrawFocusSelected, goEditing, goEnterMoves, goFixedHorzLine, goFixedVertLine, goHeaderAlignment, goHorzLine, goIndicateHiddenCells, goMouseCanHideCells, goMouseOverCells, goRowMoving, goThemes, goThemedCells, goVertLine]
+      PopupMenu = PopupMenuElem
+      RowCount = 1
       TabOrder = 1
+      OnRowMoved = KGridElemRowMoved
+      ColWidths = (
+        64
+        64
+        393
+        27
+      )
+      RowHeights = (
+        21
+      )
     end
   end
   object Splitter1: TSplitter
@@ -188,11 +188,11 @@ object FramePassportObjects: TFramePassportObjects
     top = 104
   end
   object ActionListObjElem: TActionList
-    left = 264
-    top = 104
+    left = 24
+    top = 42
     object ActionObjAdd: TAction
       Category = 'Objects'
-      Caption = 'Добавить элемент'
+      Caption = 'Добавить объект'
       OnExecute = ActionObjAddExecute
     end
     object ActionObjDel: TAction
@@ -200,12 +200,22 @@ object FramePassportObjects: TFramePassportObjects
       Caption = 'Удалить объект (со всеми элементами)'
       OnExecute = ActionObjDelExecute
     end
+    object ActionElemAdd: TAction
+      Category = 'Elements'
+      Caption = 'Добавить элемент'
+      OnExecute = ActionElemAddExecute
+    end
+    object ActionElemDel: TAction
+      Category = 'Elements'
+      Caption = 'Удолить элемент'
+    end
   end
   object PopupMenuObj: TPopupMenu
     left = 168
     top = 104
     object MenuItem1: TMenuItem
       Action = ActionObjAdd
+      ShortCut = 45
     end
     object MenuItem2: TMenuItem
       Action = ActionObjDel
@@ -225,7 +235,17 @@ object FramePassportObjects: TFramePassportObjects
   end
   object DSElemType: TDataSource
     DataSet = ZQElemType
-    left = 352
+    left = 360
     top = 400
+  end
+  object PopupMenuElem: TPopupMenu
+    left = 168
+    top = 400
+    object MenuAddElem: TMenuItem
+      Action = ActionElemAdd
+    end
+    object MenuDelElem: TMenuItem
+      Action = ActionElemDel
+    end
   end
 end

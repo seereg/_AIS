@@ -17,20 +17,6 @@ type
     table:string;
   end;
 
-{type  //переделать в класс
-  TPassObj = record
-  obj_type:string;
-  len:integer;   //автовычисление
-  rad1:integer;  //0-120=120-0=120
-  rad2:integer;  //0-120=120-0=120
-  tang1:integer; //0-120=120-0=120
-  tang2:integer; //0-120=120-0=120
-  branch:integer;//связь с веткой стрелки
-  {стрелка - отдельный паспорт со своими ветками,
-   например две ветки 1-2(прям) и 1-3(крив) состоящие
-   из простых объектов}
-end;        }
-
 type  //переделать в класс
   TPassElem = record
   elem_type:string;
@@ -86,7 +72,7 @@ begin
     +'      ON val2.pass_id=pas.id                 '
     +'      Where pas.id='+inttostr(param)
     ;
-  end;
+  end else
   //-----------------------
   if iden='prop0' then
   begin
@@ -117,34 +103,68 @@ begin
     +' ON localiz.id=2                    '
     +' WHERE pas.id='+inttostr(param)
     ;
-  end;
+  end else
     //-----------------------
   if iden='branchs' then
   begin
     sql:=' select * from branch'
         +' where pass_id='+inttostr(param)
-        +' '
         ;
-  end;
+  end else
+  //-----------------------
+  if iden='obj_new_id' then
+  begin
+    sql:=' select (max(id)+1) id from objects'
+        ;
+  end else
+  //-----------------------
+  if iden='obj_del_id' then
+  begin
+    sql:=' delete from objects'
+    +' where id='+inttostr(param)
+        ;
+  end else
+  //-----------------------
+  if iden='elem_new_id' then
+  begin
+    sql:=' select (max(id)+1) id from elements'
+        ;
+  end else
+  //-----------------------
+  if iden='elem_del_id' then
+  begin
+    sql:=' delete from elements'
+    +' where id='+inttostr(param)
+        ;
+  end else
   //-----------------------
   if iden='objects' then
   begin
     sql:=' '
         +' select objects.id id, objects_type.obj_type_name obj_type,'
-        +' rad,length, pos from objects                              '
-        +' LEFT JOIN objects_type                                    '
-        +' on objects.obj_type=objects_type.id                       '
+        +' rad,length, pos, tan from objects '
+        +' LEFT JOIN objects_type            '
+        +' on objects.obj_type=objects_type.id'
+        +' where branch_id='+inttostr(param)
+        +' order by pos                       '
+        ;
+  end else
+  //------------------------
+  if iden='obj_prop' then
+  begin
+    sql:=' '
+        +' select*from objects'
         +' where branch_id='+inttostr(param)
         +' order by pos                                              '
         ;
-  end;
+  end else
   //-----------------------
   if iden='objects_type' then
   begin
     sql:=' select * from objects_type'
         +' '
         ;
-  end;
+  end else
   //-----------------------
   if iden='elements' then
   begin
