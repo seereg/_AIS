@@ -125,19 +125,19 @@ object FramePassportObjects: TFramePassportObjects
       ArrowKeysTraverseList = False
       AutoComplete = True
       DataField = 'id'
-      DataSource = DataM.DSPasspElType
+      DataSource = DSElemType
       KeyField = 'id'
-      ListField = 'elem_type_name'
       ListFieldIndex = 1
-      ListSource = DataM.DSPasspElType
+      ListSource = DSElemType
       LookupCache = False
+      OnChange = DBComboBoxTypeElChange
       Style = csOwnerDrawFixed
       TabOrder = 0
     end
     object KGridElem: TKGrid
       Left = 0
-      Height = 189
-      Top = 24
+      Height = 166
+      Top = 47
       Width = 555
       Align = alClient
       ColCount = 4
@@ -148,6 +148,7 @@ object FramePassportObjects: TFramePassportObjects
       PopupMenu = PopupMenuElem
       RowCount = 1
       TabOrder = 1
+      OnEditorCreate = KGridElemEditorCreate
       OnRowMoved = KGridElemRowMoved
       ColWidths = (
         64
@@ -158,6 +159,22 @@ object FramePassportObjects: TFramePassportObjects
       RowHeights = (
         21
       )
+    end
+    object DBComboBoxTypeEl_minor: TDBLookupComboBox
+      Left = 0
+      Height = 23
+      Top = 24
+      Width = 555
+      Align = alTop
+      DataField = 'id'
+      DataSource = DSElemTypeMinor
+      KeyField = 'id'
+      ListField = 'elem_type_name'
+      ListFieldIndex = 0
+      ListSource = DSElemTypeMinor
+      LookupCache = False
+      TabOrder = 2
+      Visible = False
     end
   end
   object Splitter1: TSplitter
@@ -247,5 +264,16 @@ object FramePassportObjects: TFramePassportObjects
     object MenuDelElem: TMenuItem
       Action = ActionElemDel
     end
+  end
+  object DSElemTypeMinor: TDataSource
+    DataSet = ZQElemTypeMinor
+    left = 360
+    top = 456
+  end
+  object ZQElemTypeMinor: TZQuery
+    Connection = DataM.ZConnection1
+    Params = <>
+    left = 452
+    top = 456
   end
 end

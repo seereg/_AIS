@@ -5,7 +5,7 @@ unit typePaspObj;
 interface
 
 uses
-  Classes, SysUtils,ZDataset, ZConnection, unit_types_and_const;
+  Classes, SysUtils,ZDataset, ZConnection, unit_types_and_const, typePaspElem;
 
 type
 
@@ -22,7 +22,8 @@ type
     f_obj_rad    :TMyField;
     f_obj_tan    :TMyField;
     f_conn       :TZConnection;
-    ZQProp: TZQuery;
+    ZQProp       : TZQuery;
+    PassElem     : TPassElem;
     function  getValue(Index:Integer):string;
     procedure setValue(Index:Integer; Value:string);
     function  getNewID:integer;
@@ -40,6 +41,8 @@ type
     constructor Create(TheOwner: TComponent;p_obj_id:integer;p_conn:TZConnection);
     function getPasObj():boolean;
     function DelPasObj():boolean;
+   function getPasElem(elem_id:integer):TPassElem;
+   function addPasElem(elem_id:integer=-1):TPassElem;
   end;
 
 implementation
@@ -182,6 +185,24 @@ begin
     result:=true;
   end;
   FreeAndNil(ZQ);
+end;
+
+function TPassObj.getPasElem(elem_id: integer): TPassElem;
+var i:integer;
+begin
+  result:=nil;
+  for i:=0 to self.ComponentCount-1 do try
+   if TPassElem(Components[i]).elem_id=inttostr(elem_id)
+   then result:=TPassElem(Components[i]);
+  except end;
+end;
+
+function TPassObj.addPasElem(elem_id: integer): TPassElem;
+begin
+  PassElem:=TPassElem.Create(self,elem_id,f_conn);
+  PassElem.connecting:=false;
+  PassElem.elem_obj:=f_obj_id.value;
+  PassElem.connecting:=true;
 end;
 
 end.

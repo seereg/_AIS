@@ -17,14 +17,6 @@ type
     table:string;
   end;
 
-type  //переделать в класс
-  TPassElem = record
-  elem_type:string;
-  len:integer;   //автовычисление
-  color:integer;//связь с веткой стрелки
-end;
-
-
  function GetMyVersion:string;
  function GetSQL(iden:string;param:integer):string;
 
@@ -163,6 +155,21 @@ begin
   begin
     sql:=' select * from objects_type'
         +' '
+        ;
+  end else
+  //-----------------------
+  if iden='elements_group' then
+  begin
+    sql:=' select * from elements_group'
+        +' where id>0'
+        ;
+  end else
+  //-----------------------
+  if iden='elements_type' then
+  begin
+    sql:=' select * from elements_type'
+        +' where elem_group_id in(0,'+inttostr(param)
+        +' )'
         ;
   end else
   //-----------------------

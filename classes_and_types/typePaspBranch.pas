@@ -26,7 +26,7 @@ public
   property branch_id    :integer read f_branch_id;
   constructor Create(p_pas_id,p_branch_id:integer;conn:TZConnection);
   function getPasObject(obj_id:integer):TPassObj;
-  function addPasObject():TPassObj;
+  function addPasObject: TPassObj;
 end;
 
 implementation
