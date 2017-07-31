@@ -136,11 +136,10 @@ object FramePassportObjects: TFramePassportObjects
     end
     object KGridElem: TKGrid
       Left = 0
-      Height = 166
-      Top = 47
+      Height = 165
+      Top = 48
       Width = 555
       Align = alClient
-      ColCount = 4
       Colors.FixedThemedCellLines = clWindow
       Colors.FixedThemedCellShadow = clWindow
       FixedRows = 0
@@ -154,25 +153,30 @@ object FramePassportObjects: TFramePassportObjects
         64
         64
         393
-        27
+        16
+        10
       )
       RowHeights = (
         21
       )
     end
-    object DBComboBoxTypeEl_minor: TDBLookupComboBox
+    object DBComboBoxElemTypeMinor: TDBLookupComboBox
       Left = 0
-      Height = 23
+      Height = 24
       Top = 24
       Width = 555
       Align = alTop
+      ArrowKeysTraverseList = False
+      AutoComplete = True
       DataField = 'id'
       DataSource = DSElemTypeMinor
       KeyField = 'id'
-      ListField = 'elem_type_name'
-      ListFieldIndex = 0
+      ListFieldIndex = 1
       ListSource = DSElemTypeMinor
       LookupCache = False
+      NullValueKey = 48
+      OnChange = DBComboBoxTypeEl_minorChange
+      Style = csOwnerDrawFixed
       TabOrder = 2
       Visible = False
     end

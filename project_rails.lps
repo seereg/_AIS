@@ -2,13 +2,13 @@
 <CONFIG>
   <ProjectSession>
     <PathDelim Value="\"/>
-    <Version Value="9"/>
+    <Version Value="10"/>
     <BuildModes Active="Default"/>
-    <Units Count="52">
+    <Units Count="53">
       <Unit0>
         <Filename Value="project_rails.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="13"/>
         <CursorPos Y="24"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
@@ -19,8 +19,8 @@
         <ComponentName Value="FormM"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="149"/>
-        <CursorPos X="6" Y="87"/>
+        <TopLine Value="86"/>
+        <CursorPos X="60" Y="103"/>
         <UsageCount Value="212"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -40,7 +40,7 @@
         <ComponentName Value="DataM"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="12"/>
         <CursorPos X="17" Y="22"/>
         <UsageCount Value="206"/>
         <Loaded Value="True"/>
@@ -58,10 +58,11 @@
       <Unit5>
         <Filename Value="unit_types_and_const.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="4"/>
-        <TopLine Value="152"/>
-        <CursorPos Y="185"/>
-        <UsageCount Value="182"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="12"/>
+        <CursorPos X="11" Y="20"/>
+        <UsageCount Value="184"/>
         <Loaded Value="True"/>
       </Unit5>
       <Unit6>
@@ -74,7 +75,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="150"/>
         <CursorPos Y="180"/>
-        <UsageCount Value="179"/>
+        <UsageCount Value="181"/>
       </Unit6>
       <Unit7>
         <Filename Value="framepassportobjects.pas"/>
@@ -83,11 +84,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="FramePassportObjects"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="151"/>
-        <CursorPos X="4" Y="111"/>
-        <UsageCount Value="177"/>
+        <TopLine Value="234"/>
+        <CursorPos X="65" Y="257"/>
+        <UsageCount Value="179"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit7>
@@ -100,7 +100,7 @@
         <UnitName Value="FramePassport"/>
         <EditorIndex Value="1"/>
         <CursorPos X="3" Y="16"/>
-        <UsageCount Value="169"/>
+        <UsageCount Value="171"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit8>
@@ -113,43 +113,44 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="16"/>
         <CursorPos Y="49"/>
-        <UsageCount Value="134"/>
+        <UsageCount Value="136"/>
       </Unit9>
       <Unit10>
-        <Filename Value="classes_and_types\typePaspProp.pas"/>
+        <Filename Value="classes_and_types\typepaspprop.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="5"/>
+        <UnitName Value="typePaspProp"/>
+        <EditorIndex Value="7"/>
         <TopLine Value="55"/>
         <CursorPos Y="64"/>
-        <UsageCount Value="99"/>
+        <UsageCount Value="101"/>
         <Loaded Value="True"/>
       </Unit10>
       <Unit11>
         <Filename Value="classes_and_types\typepaspobj.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="typePaspObj"/>
-        <EditorIndex Value="7"/>
-        <TopLine Value="122"/>
+        <EditorIndex Value="9"/>
+        <TopLine Value="176"/>
         <CursorPos Y="202"/>
-        <UsageCount Value="97"/>
+        <UsageCount Value="99"/>
         <Loaded Value="True"/>
       </Unit11>
       <Unit12>
         <Filename Value="classes_and_types\typePaspBranch.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="8"/>
         <CursorPos X="78" Y="8"/>
-        <UsageCount Value="48"/>
+        <UsageCount Value="50"/>
         <Loaded Value="True"/>
       </Unit12>
       <Unit13>
         <Filename Value="classes_and_types\typepaspelem.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="typePaspElem"/>
-        <EditorIndex Value="8"/>
-        <TopLine Value="107"/>
-        <CursorPos Y="120"/>
-        <UsageCount Value="26"/>
+        <EditorIndex Value="10"/>
+        <TopLine Value="135"/>
+        <CursorPos Y="151"/>
+        <UsageCount Value="28"/>
         <Loaded Value="True"/>
       </Unit13>
       <Unit14>
@@ -290,10 +291,11 @@
       </Unit31>
       <Unit32>
         <Filename Value="C:\lazarus\1.6.4\_my_components\ZEOSDBO-7.1.4-stable\src\component\ZAbstractRODataset.pas"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="3"/>
         <TopLine Value="609"/>
-        <CursorPos Y="615"/>
+        <CursorPos Y="629"/>
         <UsageCount Value="12"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit32>
       <Unit33>
@@ -314,10 +316,11 @@
       <Unit35>
         <Filename Value="C:\lazarus\1.6.4\_my_components\7_kcontrols_1.7\source\kgrids.pas"/>
         <UnitName Value="KGrids"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="766"/>
-        <CursorPos X="42" Y="784"/>
-        <UsageCount Value="5"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="7369"/>
+        <CursorPos Y="7387"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
       </Unit35>
       <Unit36>
         <Filename Value="C:\lazarus\1.6.2-64-3.0.0\fpc\3.0.0\source\rtl\objpas\objpas.pp"/>
@@ -339,7 +342,6 @@
         <TopLine Value="40"/>
         <CursorPos X="14" Y="52"/>
         <UsageCount Value="7"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit38>
       <Unit39>
         <Filename Value="C:\Users\Developer\Downloads\_dist_окружение\lasarus\ZEOSDBO-7.1.4-stable\src\component\ZConnection.pas"/>
@@ -347,7 +349,6 @@
         <TopLine Value="49"/>
         <CursorPos X="15" Y="71"/>
         <UsageCount Value="7"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit39>
       <Unit40>
         <Filename Value="C:\Users\Developer\Downloads\_dist_окружение\lasarus\ZEOSDBO-7.1.4-stable\src\component\ZAbstractRODataset.pas"/>
@@ -355,7 +356,6 @@
         <TopLine Value="661"/>
         <CursorPos Y="639"/>
         <UsageCount Value="10"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit40>
       <Unit41>
         <Filename Value="C:\lazarus\1.6.2-64-3.0.0\lcl\stdctrls.pp"/>
@@ -367,11 +367,10 @@
       </Unit41>
       <Unit42>
         <Filename Value="C:\lazarus\1.6.2-64-3.0.0\lcl\include\customcombobox.inc"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="383"/>
         <CursorPos Y="401"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit42>
       <Unit43>
         <Filename Value="C:\Users\Developer\Downloads\_dist_окружение\lasarus\7_kcontrols_1.7\source\kgrids.pas"/>
@@ -409,7 +408,6 @@
         <TopLine Value="126"/>
         <CursorPos X="17" Y="144"/>
         <UsageCount Value="8"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit47>
       <Unit48>
         <Filename Value="C:\lazarus\1.6.2-64-3.0.0\fpc\3.0.0\source\packages\fcl-db\src\base\db.pas"/>
@@ -435,144 +433,168 @@
       </Unit50>
       <Unit51>
         <Filename Value="C:\lazarus\1.6.4\lcl\include\customcombobox.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="905"/>
-        <CursorPos Y="926"/>
-        <UsageCount Value="9"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="180"/>
+        <CursorPos Y="197"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
       </Unit51>
+      <Unit52>
+        <Filename Value="C:\lazarus\1.6.4\_my_components\ZEOSDBO-7.1.4-stable\src\component\ZAbstractConnection.pas"/>
+        <EditorIndex Value="11"/>
+        <TopLine Value="1140"/>
+        <CursorPos Y="1159"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit52>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="409" TopLine="390"/>
+        <Filename Value="classes_and_types\typepaspelem.pas"/>
+        <Caret Line="141" TopLine="115"/>
       </Position1>
       <Position2>
-        <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="410" TopLine="390"/>
+        <Filename Value="classes_and_types\typepaspelem.pas"/>
+        <Caret Line="142" TopLine="115"/>
       </Position2>
       <Position3>
-        <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="411" TopLine="390"/>
+        <Filename Value="classes_and_types\typepaspelem.pas"/>
+        <Caret Line="143" TopLine="115"/>
       </Position3>
       <Position4>
-        <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="412" TopLine="390"/>
+        <Filename Value="classes_and_types\typepaspelem.pas"/>
+        <Caret Line="144" TopLine="116"/>
       </Position4>
       <Position5>
-        <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="413" TopLine="390"/>
+        <Filename Value="classes_and_types\typepaspelem.pas"/>
+        <Caret Line="145" TopLine="117"/>
       </Position5>
       <Position6>
-        <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="403" TopLine="390"/>
+        <Filename Value="classes_and_types\typepaspelem.pas"/>
+        <Caret Line="146" TopLine="118"/>
       </Position6>
       <Position7>
-        <Filename Value="classes_and_types\typepaspobj.pas"/>
-        <Caret Line="202" Column="49" TopLine="173"/>
+        <Filename Value="classes_and_types\typepaspelem.pas"/>
+        <Caret Line="147" TopLine="119"/>
       </Position7>
       <Position8>
         <Filename Value="classes_and_types\typepaspelem.pas"/>
-        <Caret Line="120" TopLine="107"/>
+        <Caret Line="148" TopLine="120"/>
       </Position8>
       <Position9>
-        <Filename Value="classes_and_types\typepaspobj.pas"/>
-        <Caret Line="202" Column="6" TopLine="173"/>
+        <Filename Value="classes_and_types\typepaspelem.pas"/>
+        <Caret Line="149" TopLine="121"/>
       </Position9>
       <Position10>
-        <Filename Value="classes_and_types\typepaspobj.pas"/>
-        <Caret Line="203" Column="3" TopLine="173"/>
+        <Filename Value="classes_and_types\typepaspelem.pas"/>
+        <Caret Line="150" TopLine="123"/>
       </Position10>
       <Position11>
-        <Filename Value="classes_and_types\typepaspobj.pas"/>
-        <Caret Line="128" Column="35" TopLine="110"/>
+        <Filename Value="classes_and_types\typepaspelem.pas"/>
+        <Caret Line="123" TopLine="106"/>
       </Position11>
       <Position12>
-        <Filename Value="classes_and_types\typepaspobj.pas"/>
-        <Caret Line="127" TopLine="110"/>
+        <Filename Value="classes_and_types\typepaspelem.pas"/>
+        <Caret Line="151" TopLine="135"/>
       </Position12>
       <Position13>
         <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="403" TopLine="390"/>
+        <Caret Line="198" TopLine="182"/>
       </Position13>
       <Position14>
         <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="275" Column="53" TopLine="266"/>
+        <Caret Line="199" TopLine="182"/>
       </Position14>
       <Position15>
         <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="380" Column="22" TopLine="353"/>
+        <Caret Line="201" TopLine="182"/>
       </Position15>
       <Position16>
-        <Filename Value="classes_and_types\typepaspobj.pas"/>
-        <Caret Line="133" Column="38" TopLine="109"/>
+        <Filename Value="framepassportobjects.pas"/>
+        <Caret Line="202" TopLine="182"/>
       </Position16>
       <Position17>
-        <Filename Value="classes_and_types\typepaspobj.pas"/>
-        <Caret Line="127" TopLine="109"/>
+        <Filename Value="framepassportobjects.pas"/>
+        <Caret Line="203" TopLine="182"/>
       </Position17>
       <Position18>
-        <Filename Value="classes_and_types\typepaspobj.pas"/>
-        <Caret Line="202" TopLine="173"/>
+        <Filename Value="framepassportobjects.pas"/>
+        <Caret Line="188" TopLine="182"/>
       </Position18>
       <Position19>
-        <Filename Value="classes_and_types\typepaspelem.pas"/>
-        <Caret Line="120" TopLine="107"/>
+        <Filename Value="framepassportobjects.pas"/>
+        <Caret Line="239" TopLine="226"/>
       </Position19>
       <Position20>
-        <Filename Value="classes_and_types\typepaspobj.pas"/>
-        <Caret Line="127" TopLine="109"/>
+        <Filename Value="framepassportobjects.pas"/>
+        <Caret Line="240" TopLine="226"/>
       </Position20>
       <Position21>
         <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="421" Column="11" TopLine="400"/>
+        <Caret Line="242" TopLine="226"/>
       </Position21>
       <Position22>
         <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="422" Column="11" TopLine="400"/>
+        <Caret Line="244" TopLine="226"/>
       </Position22>
       <Position23>
         <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="423" Column="11" TopLine="400"/>
+        <Caret Line="251" TopLine="236"/>
       </Position23>
       <Position24>
         <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="431" Column="11" TopLine="400"/>
+        <Caret Line="254" TopLine="236"/>
       </Position24>
       <Position25>
         <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="31" Column="13" TopLine="13"/>
+        <Caret Line="257" TopLine="236"/>
       </Position25>
       <Position26>
         <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="33" Column="13" TopLine="13"/>
+        <Caret Line="269" TopLine="250"/>
       </Position26>
       <Position27>
         <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="55" Column="23" TopLine="26"/>
+        <Caret Line="189" TopLine="182"/>
       </Position27>
       <Position28>
         <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="56" Column="23" TopLine="27"/>
+        <Caret Line="239" TopLine="222"/>
       </Position28>
       <Position29>
         <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="58" Column="23" TopLine="29"/>
+        <Caret Line="240" TopLine="222"/>
       </Position29>
       <Position30>
-        <Filename Value="framepassportobjects.pas"/>
-        <Caret Line="80" Column="41" TopLine="50"/>
+        <Filename Value="unit_m.pas"/>
+        <Caret Line="103" Column="60" TopLine="86"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>
   <Debugging>
-    <BreakPoints Count="1">
+    <BreakPoints Count="3">
       <Item1>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
-        <Source Value="classes_and_types\typepaspobj.pas"/>
-        <Line Value="202"/>
+        <Source Value="framepassportobjects.pas"/>
+        <Line Value="201"/>
       </Item1>
+      <Item2>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="framepassportobjects.pas"/>
+        <Line Value="189"/>
+      </Item2>
+      <Item3>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="framepassportobjects.pas"/>
+        <Line Value="239"/>
+      </Item3>
     </BreakPoints>
     <Watches Count="1">
       <Item1>

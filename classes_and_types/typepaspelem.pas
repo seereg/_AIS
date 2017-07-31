@@ -20,6 +20,7 @@ type
     f_elem_len   :TMyField;
     f_elem_colour:TMyField;
     f_elem_pos   :TMyField;
+    f_elem_year  :TMyField;
     f_conn       :TZConnection;
     ZQProp: TZQuery;
     function  getValue(Index:Integer):string;
@@ -34,6 +35,7 @@ type
     property elem_len    :string  Index 2 read getValue  write setValue;
     property elem_colour :string  Index 3 read getValue  write setValue;
     property elem_pos    :string  Index 4 read getValue  write setValue;
+    property elem_year    :string  Index 5 read getValue  write setValue;
 
     constructor Create(TheOwner: TComponent;p_elem_id:integer;p_conn:TZConnection);
     function getPasElem():boolean;
@@ -55,6 +57,7 @@ begin
     2: fld:=addr(f_elem_len);
     3: fld:=addr(f_elem_colour);
     4: fld:=addr(f_elem_pos);
+    5: fld:=addr(f_elem_year);
     else exit;
     end;
     result:=fld^.Value;
@@ -75,6 +78,7 @@ begin
     2: fld:=addr(f_elem_len);
     3: fld:=addr(f_elem_colour);
     4: fld:=addr(f_elem_pos);
+    5: fld:=addr(f_elem_year);
     else exit;
     end;
     if Value=fld^.Value then exit;
@@ -140,6 +144,9 @@ begin
   f_elem_pos.Value     := '0';
   f_elem_pos.name      := 'pos';
   f_elem_pos.table     := 'elements';
+  f_elem_year.Value     := '1905';
+  f_elem_year.name      := 'year';
+  f_elem_year.table     := 'elements';
   connecting:=true;
 end;
 
@@ -152,6 +159,7 @@ begin
     f_elem_len    .value :=ZQProp.FieldByName(f_elem_len   .name).AsString;
     f_elem_colour .value :=ZQProp.FieldByName(f_elem_colour.name).AsString;
     f_elem_pos    .value :=ZQProp.FieldByName(f_elem_pos   .name).AsString;
+    f_elem_year   .value :=ZQProp.FieldByName(f_elem_year  .name).AsString;
   except
     result:=false;
   end;
