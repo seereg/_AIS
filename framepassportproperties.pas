@@ -46,15 +46,10 @@ type
     ZTBranchespos: TFloatField;
     procedure ActionDeleteBranchExecute(Sender: TObject);
     procedure DBComboBoxTypeChange(Sender: TObject);
-    procedure DBGridBranchesEditingDone(Sender: TObject);
-    procedure DBGridBranchesSelectEditor(Sender: TObject; Column: TColumn;
-      var Editor: TWinControl);
     procedure EdNameChange(Sender: TObject);
     procedure EdYearBuiltChange(Sender: TObject);
     procedure MemoCommentChange(Sender: TObject);
-    procedure ZTBranchesAfterPost(DataSet: TDataSet);
     procedure ZTBranchesAfterRefresh(DataSet: TDataSet);
-    procedure ZTBranchesBeforeDelete(DataSet: TDataSet);
     procedure ZTBranchesBeforePost(DataSet: TDataSet);
   private
     { private declarations }
@@ -77,6 +72,7 @@ var
 
 procedure TFramePassportProperties.ZTBranchesBeforePost(DataSet: TDataSet);
 begin
+//  if pass_id<0 then exit;
   ZTBranches.FieldByName('pass_id').AsInteger:=pass_id;
   if    ZTBranches.FieldByName('branch_name').AsString=''
    then ZTBranches.FieldByName('branch_name').AsString:='Новый путь';
@@ -92,25 +88,10 @@ begin
   end;
 end;
 
-procedure TFramePassportProperties.ZTBranchesBeforeDelete(DataSet: TDataSet);
-begin
-
-end;
-
-procedure TFramePassportProperties.ZTBranchesAfterPost(DataSet: TDataSet);
-begin
-
-end;
-
-procedure TFramePassportProperties.DBGridBranchesSelectEditor(Sender: TObject;
-  Column: TColumn; var Editor: TWinControl);
-begin
-
-end;
-
 procedure TFramePassportProperties.EdNameChange(Sender: TObject);
 begin
  PassProp.pass_name:=EdName.Text;
+ pass_id:=StrToIntDef(PassProp.pass_id,-1);
 end;
 
 procedure TFramePassportProperties.EdYearBuiltChange(Sender: TObject);
@@ -121,11 +102,6 @@ end;
 procedure TFramePassportProperties.MemoCommentChange(Sender: TObject);
 begin
   PassProp.comment:=MemoComment.Text;
-end;
-
-procedure TFramePassportProperties.DBGridBranchesEditingDone(Sender: TObject);
-begin
-
 end;
 
 procedure TFramePassportProperties.ActionDeleteBranchExecute(Sender: TObject);
@@ -139,6 +115,7 @@ end;
 procedure TFramePassportProperties.DBComboBoxTypeChange(Sender: TObject);
 begin
   PassProp.pass_type:=DBComboBoxType.KeyValue;
+  pass_id:=StrToIntDef(PassProp.pass_id,-1);
 end;
 
 procedure TFramePassportProperties.getDate;

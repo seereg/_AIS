@@ -11759,7 +11759,7 @@ object FormM: TFormM
       Height = 19
       Top = 562
       Width = 251
-      Action = ActionNewPassport
+      Action = ActionPassportNew
       Align = alBottom
       AutoSize = True
     end
@@ -36553,10 +36553,39 @@ object FormM: TFormM
       ImageIndex = 3
       OnExecute = ActionOpenPaspExecute
     end
-    object ActionNewPassport: TAction
+    object ActionPassportNew: TAction
       Caption = 'Новый паспорт'
       ImageIndex = 3
-      OnExecute = ActionNewPassportExecute
+      OnExecute = ActionPassportNewExecute
+    end
+    object ActionPassportDel: TAction
+      Caption = 'Удалить паспорт'
+      ImageIndex = 3
+      OnExecute = ActionPassportDelExecute
+    end
+    object ActionPassportEdit: TAction
+      Caption = 'Редактировать паспорт'
+      ImageIndex = 3
+    end
+    object ActionPassportPost: TAction
+      Caption = 'Утвердить паспорт'
+      ImageIndex = 3
+    end
+  end
+  object PopupMenuList: TPopupMenu
+    left = 184
+    top = 296
+    object MenuItem1: TMenuItem
+      Action = ActionPassportNew
+    end
+    object MenuItem2: TMenuItem
+      Action = ActionPassportEdit
+    end
+    object MenuItem4: TMenuItem
+      Action = ActionPassportPost
+    end
+    object MenuItem3: TMenuItem
+      Action = ActionPassportDel
     end
   end
 end

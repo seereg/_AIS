@@ -19,9 +19,12 @@ type
     f_pass_name  :TMyField;
     f_year_built :TMyField;
     f_comment    :TMyField;
-    ZQProp: TZQuery;
+    f_conn       : TZConnection;
+    ZQProp       : TZQuery;
     function  getValue(Index:Integer):string;
     procedure setValue(Index:Integer; Value:string);
+    function  getNewID:integer;
+    procedure rewValue(Index:Integer);
   public
     { public declarations }
     property pass_id     :string          read f_pass_id.Value  write f_pass_id.Value;
@@ -29,7 +32,7 @@ type
     property pass_name   :string  Index 1 read getValue  write setValue;
     property year_built  :string  Index 2 read getValue  write setValue;
     property comment     :string  Index 3 read getValue  write setValue;
-    constructor Create(p_pass_id:integer;conn:TZConnection);
+    constructor Create(p_pass_id:integer;p_conn:TZConnection);
     function getDate():boolean;
   end;
 
@@ -70,36 +73,93 @@ begin
     else exit;
     end;
     if Value=fld^.Value then exit;
-    ZQProp.SQL.Clear;
-    if fld^.table='passports'
-    then  st:='Update '+ fld^.table+' set '+fld^.name+'="'+Value+'" where id='+f_pass_id.Value
-    else
-      begin
-        st:='INSERT OR IGNORE INTO '+ fld^.table+' (pass_id) VALUES ('+f_pass_id.Value+')';
-        ZQProp.SQL.Add(st);
-        ZQProp.ExecSQL;
-        ZQProp.SQL.Clear;
-        st:='Update '+ fld^.table+' set value ="'+Value+'" where pass_id='+f_pass_id.Value;
-      end;
-    ZQProp.SQL.Add(st);
-    ZQProp.ExecSQL;
+{    if (StrToIntDef(f_pass_id.Value,-1)<0) and (index in [0,1]) //ненужно пока
+       then begin
+         f_pass_id.Value:=inttostr(getNewID);
+         st:='INSERT INTO passports (id) VALUES ('+f_pass_id.Value+')';
+         rewValue(0);//переписать по id
+         rewValue(1);//переписать по id
+         rewValue(2);//переписать по id
+         rewValue(3);//переписать по id
+       end;     }
+    if not(StrToIntDef(f_pass_id.Value,-1)<0) then
+    begin
+      ZQProp.SQL.Clear;
+      if fld^.table='passports'
+      then  st:='Update '+ fld^.table+' set '+fld^.name+'="'+Value+'" where id='+f_pass_id.Value
+      else
+        begin
+          st:='INSERT OR IGNORE INTO '+ fld^.table+' (pass_id) VALUES ('+f_pass_id.Value+')';
+          ZQProp.SQL.Add(st);
+          ZQProp.ExecSQL;
+          ZQProp.SQL.Clear;
+          st:='Update '+ fld^.table+' set value ="'+Value+'" where pass_id='+f_pass_id.Value;
+        end;
+      ZQProp.SQL.Add(st);
+      ZQProp.ExecSQL;
+    end;
     fld^.Value:=Value;
   except
   end;
 end;
 
-constructor TPassProp.Create(p_pass_id: integer; conn: TZConnection);
+function TPassProp.getNewID: integer;
+var
+  ZQ: TZQuery;
+begin
+    ZQ:= TZQuery.Create(nil);
+    ZQ.Connection:=f_conn;
+    ZQ.SQL.Text:=GetSQL('pass_new_id',0);
+    ZQ.Open;
+  try
+    result:=ZQ.FieldByName('id').AsInteger;
+  except
+    result:=0;
+  end;
+  FreeAndNil(ZQ);
+end;
+
+procedure TPassProp.rewValue(Index: Integer);
+var
+  fld:^TMyField;
+  st:string;
+begin
+  case index of
+    0: fld:=addr(f_pass_type);
+    1: fld:=addr(f_pass_name);
+    2: fld:=addr(f_year_built);
+    3: fld:=addr(f_comment);
+  else exit;
+  end;
+  st:=fld^.Value;
+  fld^.Value:='';
+  setValue(Index,st); //переписать по id
+end;
+
+constructor TPassProp.Create(p_pass_id: integer;p_conn: TZConnection);
 begin
   inherited Create;
   ZQProp:= TZQuery.Create(nil);
-  ZQProp.Connection:=conn;
+  f_conn:= p_conn;
+  ZQProp.Connection:=f_conn;
   f_pass_id.value:=inttostr(p_pass_id);
   getDate();
 end;
 
 function TPassProp.getDate: boolean;
+var
+  st:string;
 begin
   try
+  if  (StrToIntDef(f_pass_id.Value,-1)<0) then
+  begin
+     f_pass_id.Value:=inttostr(getNewID);
+     st:='INSERT INTO passports (id) VALUES ('+f_pass_id.Value+')';
+     ZQProp.SQL.Clear;
+     ZQProp.SQL.text:=st;
+     ZQProp.Open;
+  end;
+
   ZQProp.Close;
   ZQProp.SQL.Clear;
   ZQProp.SQL.Add(GetSQL('prop',StrToInt(pass_id)));

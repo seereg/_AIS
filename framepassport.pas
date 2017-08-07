@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, ComCtrls, ActnList, attabs,
   FramePassportObjects, FramePassportProperties, unit_types_and_const,
-  unit_m_data, KGrids;
+  unit_m_data, typePaspProp, KGrids;
 
 type
 
@@ -59,20 +59,17 @@ constructor TFramePassport.Create(TheOwner: TComponent; TabOwner: TATTabs;
 var
   i:integer;
   TabSheet:TTabSheet;
+  pass:TPassProp;
 begin
   inherited Create(TheOwner);
   self.Parent:=TWinControl(TheOwner);
+  pass:= TPassProp.Create(pPasspID,DataM.ZConnection1);
+  pPasspID:=strtoint(pass.pass_id);
   self.Name:='FramePassportID'+inttostr(pPasspID);
   self.PasspID:=pPasspID;
-  if pPasspID=const_pasNew
-   then  begin
-     TabOwner.AddTab(-1, 'Новый паспорт');
-     TabOwner.TabIndex:=TabOwner.TabCount-1;
-   end
-   else begin
-     TabOwner.AddTab(-1, DataM.ZQPasspList.FieldByName('pass_name').AsString);
-     TabOwner.TabIndex:=TabOwner.TabCount-1;
-   end;
+  TabOwner.AddTab(-1, pass.pass_name);
+  TabOwner.TabIndex:=TabOwner.TabCount-1;
+  freeandnil(pass); //  pass.Destroy;
    for i:=(PageControlPassport.PageCount-1) downto 0
     do PageControlPassport.Pages[i].Destroy;
    self.TabIndex:= TabOwner.TabIndex;

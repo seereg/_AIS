@@ -7,7 +7,7 @@ uses
   Classes, SysUtils, ZDataset, ZConnection;
 
 const
- const_pasNew = 0;
+ const_pasNew = -1;
  RT_VERSION   = MakeIntResource(16);
 
 type
@@ -178,6 +178,12 @@ begin
     sql:=' select * from elements'
         +' where object_id='+inttostr(param)
         +' '
+        ;
+  end else
+  //-----------------------
+  if iden='pass_new_id' then
+  begin
+    sql:=' select (max(id)+1) id from passports'
         ;
   end;
   //-----------------------

@@ -245,7 +245,6 @@ object FramePassportProperties: TFramePassportProperties
     Filtered = True
     BeforePost = ZTBranchesBeforePost
     AfterPost = ZTBranchesAfterRefresh
-    BeforeDelete = ZTBranchesBeforeDelete
     AfterDelete = ZTBranchesAfterRefresh
     TableName = 'branch'
     IndexFieldNames = 'pos Asc,id Asc'

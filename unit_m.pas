@@ -16,7 +16,10 @@ type
   { TFormM }
 
   TFormM = class(TForm)
-    ActionNewPassport: TAction;
+    ActionPassportPost: TAction;
+    ActionPassportEdit: TAction;
+    ActionPassportDel: TAction;
+    ActionPassportNew: TAction;
     ActionOpenPasp: TAction;
     ActionReconnect: TAction;
     ActionShowMap: TAction;
@@ -27,6 +30,10 @@ type
     FilterList: TCheckListBox;
     Image1: TImage;
     Image2: TImage;
+    MenuItem1: TMenuItem;
+    MenuItem2: TMenuItem;
+    MenuItem3: TMenuItem;
+    MenuItem4: TMenuItem;
     MI_Close: TMenuItem;
     PageControl2: TPageControl;
     Panel1: TPanel;
@@ -35,6 +42,7 @@ type
     PanelCAD: TPanel;
     PanelList: TPanel;
     PanelPassport: TPanel;
+    PopupMenuList: TPopupMenu;
     PopupMenuTabs: TPopupMenu;
     RxDBGrid1: TRxDBGrid;
     BBNewPassport: TSpeedButton;
@@ -50,7 +58,8 @@ type
     ToolButton2: TToolButton;
     ToolButton3: TToolButton;
     ToolButton4: TToolButton;
-    procedure ActionNewPassportExecute(Sender: TObject);
+    procedure ActionPassportDelExecute(Sender: TObject);
+    procedure ActionPassportNewExecute(Sender: TObject);
     procedure ActionOpenPaspExecute(Sender: TObject);
     procedure ActionReconnectExecute(Sender: TObject);
     procedure ActionShowCadExecute(Sender: TObject);
@@ -254,10 +263,15 @@ begin
  PassportsArr[High(PassportsArr)]:=TFramePassport.Create(PanelPassport,PasTabs,ActivPaspID);
 end;
 
-procedure TFormM.ActionNewPassportExecute(Sender: TObject);
+procedure TFormM.ActionPassportNewExecute(Sender: TObject);
 begin
    ActivPaspID:=const_pasNew;
    ActionOpenPaspExecute(Sender);
+end;
+
+procedure TFormM.ActionPassportDelExecute(Sender: TObject);
+begin
+
 end;
 
 procedure TFormM.ActionShowPaspExecute(Sender: TObject);
