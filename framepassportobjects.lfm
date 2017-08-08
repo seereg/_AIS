@@ -246,6 +246,10 @@ object FramePassportObjects: TFramePassportObjects
       Category = 'Elements'
       Caption = 'Заменить элемент'
     end
+    object ActionElemColor: TAction
+      Category = 'Elements'
+      Caption = 'Изменить цвет на схемах'
+    end
   end
   object PopupMenuObj: TPopupMenu
     left = 168
@@ -295,6 +299,9 @@ object FramePassportObjects: TFramePassportObjects
     end
     object MenuItem6: TMenuItem
       Action = ActionObjMove
+    end
+    object MenuItem7: TMenuItem
+      Action = ActionElemColor
     end
   end
   object DSElemTypeMinor: TDataSource

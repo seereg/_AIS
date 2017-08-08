@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="10"/>
+    <Version Value="9"/>
     <PathDelim Value="\"/>
     <General>
       <SessionStorage Value="InProjectDir"/>
@@ -117,9 +117,8 @@
         <ResourceBaseClass Value="Form"/>
       </Unit9>
       <Unit10>
-        <Filename Value="classes_and_types\typepaspprop.pas"/>
+        <Filename Value="classes_and_types\typePaspProp.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="typePaspProp"/>
       </Unit10>
       <Unit11>
         <Filename Value="classes_and_types\typepaspobj.pas"/>

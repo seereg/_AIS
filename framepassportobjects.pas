@@ -14,6 +14,7 @@ type
   { TFramePassportObjects }
 
   TFramePassportObjects = class(TFrame)
+    ActionElemColor: TAction;
     ActionElemReplace: TAction;
     ActionElemSplit: TAction;
     ActionElemOld: TAction;
@@ -43,6 +44,7 @@ type
     MenuItem4: TMenuItem;
     MenuItem5: TMenuItem;
     MenuItem6: TMenuItem;
+    MenuItem7: TMenuItem;
     PopupMenuObj: TPopupMenu;
     PopupMenuElem: TPopupMenu;
     Splitter1: TSplitter;
