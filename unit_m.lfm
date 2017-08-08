@@ -11575,7 +11575,7 @@ object FormM: TFormM
     FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
   }
   OnShow = FormShow
-  LCLVersion = '1.6.2.0'
+  LCLVersion = '1.6.4.0'
   object Splitter1: TSplitter
     Left = 740
     Height = 581
@@ -11739,6 +11739,7 @@ object FormM: TFormM
       DataSource = DataM.DSPasspList
       FixedCols = 0
       Options = [dgTitles, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgAutoSizeColumns]
+      PopupMenu = PopupMenuList
       Scrollbars = ssNone
       TabOrder = 1
       TitleStyle = tsNative
@@ -11762,6 +11763,7 @@ object FormM: TFormM
       Action = ActionPassportNew
       Align = alBottom
       AutoSize = True
+      Visible = False
     end
   end
   object PanelPassport: TPanel
@@ -36547,11 +36549,11 @@ object FormM: TFormM
       ImageIndex = 3
       OnExecute = ActionReconnectExecute
     end
-    object ActionOpenPasp: TAction
+    object ActionPassportOpen: TAction
       Tag = -1
       Caption = 'Открыть паспорт'
       ImageIndex = 3
-      OnExecute = ActionOpenPaspExecute
+      OnExecute = ActionPassportOpenExecute
     end
     object ActionPassportNew: TAction
       Caption = 'Новый паспорт'
@@ -36566,10 +36568,20 @@ object FormM: TFormM
     object ActionPassportEdit: TAction
       Caption = 'Редактировать паспорт'
       ImageIndex = 3
+      OnExecute = ActionPassportEditExecute
     end
     object ActionPassportPost: TAction
       Caption = 'Утвердить паспорт'
       ImageIndex = 3
+    end
+    object ActionPassportCAD: TAction
+      Caption = 'Построить схему'
+    end
+    object ActionPassportMAP: TAction
+      Caption = 'Показать на карте'
+    end
+    object ActionPasspListRefresh: TAction
+      Caption = 'Обновить список'
     end
   end
   object PopupMenuList: TPopupMenu
@@ -36577,6 +36589,9 @@ object FormM: TFormM
     top = 296
     object MenuItem1: TMenuItem
       Action = ActionPassportNew
+    end
+    object MenuItem7: TMenuItem
+      Action = ActionPassportOpen
     end
     object MenuItem2: TMenuItem
       Action = ActionPassportEdit
@@ -36586,6 +36601,15 @@ object FormM: TFormM
     end
     object MenuItem3: TMenuItem
       Action = ActionPassportDel
+    end
+    object MenuItem5: TMenuItem
+      Action = ActionPassportCAD
+    end
+    object MenuItem6: TMenuItem
+      Action = ActionPassportMAP
+    end
+    object MenuItem8: TMenuItem
+      Action = ActionPasspListRefresh
     end
   end
 end

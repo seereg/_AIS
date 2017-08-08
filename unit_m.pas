@@ -16,11 +16,14 @@ type
   { TFormM }
 
   TFormM = class(TForm)
+    ActionPasspListRefresh: TAction;
+    ActionPassportMAP: TAction;
+    ActionPassportCAD: TAction;
     ActionPassportPost: TAction;
     ActionPassportEdit: TAction;
     ActionPassportDel: TAction;
     ActionPassportNew: TAction;
-    ActionOpenPasp: TAction;
+    ActionPassportOpen: TAction;
     ActionReconnect: TAction;
     ActionShowMap: TAction;
     ActionShowCad: TAction;
@@ -34,6 +37,10 @@ type
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
+    MenuItem5: TMenuItem;
+    MenuItem6: TMenuItem;
+    MenuItem7: TMenuItem;
+    MenuItem8: TMenuItem;
     MI_Close: TMenuItem;
     PageControl2: TPageControl;
     Panel1: TPanel;
@@ -59,8 +66,10 @@ type
     ToolButton3: TToolButton;
     ToolButton4: TToolButton;
     procedure ActionPassportDelExecute(Sender: TObject);
+    procedure ActionPassportEditExecute(Sender: TObject);
     procedure ActionPassportNewExecute(Sender: TObject);
-    procedure ActionOpenPaspExecute(Sender: TObject);
+    procedure ActionPassportOpenExecute(Sender: TObject);
+    procedure PassportOpen(Pas_ID:integer);
     procedure ActionReconnectExecute(Sender: TObject);
     procedure ActionShowCadExecute(Sender: TObject);
     procedure ActionShowListExecute(Sender: TObject);
@@ -151,8 +160,7 @@ end;
 
 procedure TFormM.RxDBGrid1DblClick(Sender: TObject);
 begin
- ActivPaspID:=DataM.ZQPasspList.FieldByName('id').AsInteger;
- ActionOpenPaspExecute(Sender)
+ ActionPassportOpenExecute(Sender);
 end;
 
 procedure TFormM.TabCloseEvent(Sender: TObject; ATabIndex: Integer;
@@ -242,14 +250,20 @@ begin
    end;
 end;
 
-procedure TFormM.ActionOpenPaspExecute(Sender: TObject);
-var
-  i:integer;
-  passpAlreadyExist:boolean=false;
+procedure TFormM.ActionPassportOpenExecute(Sender: TObject);
+begin
+ ActivPaspID:=DataM.ZQPasspList.FieldByName('id').AsInteger;
+ PassportOpen(ActivPaspID);
+end;
+
+procedure TFormM.PassportOpen(Pas_ID: integer);
+  var
+    i:integer;
+    passpAlreadyExist:boolean=false;
 begin
  for i:=0 to High(PassportsArr) do
    if PassportsArr[i]<>nil then begin
-    if PassportsArr[i].PasspID=ActivPaspID
+    if PassportsArr[i].PasspID=Pas_ID
     then
     begin
      PassportsArr[i].Show;
@@ -260,18 +274,22 @@ begin
    end;
  if passpAlreadyExist then exit;
  SetLength(PassportsArr,Length(PassportsArr)+1);
- PassportsArr[High(PassportsArr)]:=TFramePassport.Create(PanelPassport,PasTabs,ActivPaspID);
+ PassportsArr[High(PassportsArr)]:=TFramePassport.Create(PanelPassport,PasTabs,Pas_ID);
 end;
 
 procedure TFormM.ActionPassportNewExecute(Sender: TObject);
 begin
-   ActivPaspID:=const_pasNew;
-   ActionOpenPaspExecute(Sender);
+  ActivPaspID:=const_pasNew;
+  PassportOpen(ActivPaspID);
 end;
 
 procedure TFormM.ActionPassportDelExecute(Sender: TObject);
 begin
+end;
 
+procedure TFormM.ActionPassportEditExecute(Sender: TObject);
+begin
+  ActionPassportOpenExecute(Sender);
 end;
 
 procedure TFormM.ActionShowPaspExecute(Sender: TObject);

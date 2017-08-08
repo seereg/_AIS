@@ -152,9 +152,9 @@ object FramePassportObjects: TFramePassportObjects
       ColWidths = (
         64
         64
-        393
-        16
+        382
         10
+        27
       )
       RowHeights = (
         21
@@ -230,6 +230,22 @@ object FramePassportObjects: TFramePassportObjects
       Category = 'Elements'
       Caption = 'Удолить элемент'
     end
+    object ActionObjMove: TAction
+      Category = 'Objects'
+      Caption = 'Переместить в другую ветку'
+    end
+    object ActionElemOld: TAction
+      Category = 'Elements'
+      Caption = 'Демонтирован'
+    end
+    object ActionElemSplit: TAction
+      Category = 'Elements'
+      Caption = 'Разделить элемент'
+    end
+    object ActionElemReplace: TAction
+      Category = 'Elements'
+      Caption = 'Заменить элемент'
+    end
   end
   object PopupMenuObj: TPopupMenu
     left = 168
@@ -240,6 +256,9 @@ object FramePassportObjects: TFramePassportObjects
     end
     object MenuItem2: TMenuItem
       Action = ActionObjDel
+    end
+    object MenuItem3: TMenuItem
+      Action = ActionObjMove
     end
   end
   object ZQElements: TZQuery
@@ -267,6 +286,15 @@ object FramePassportObjects: TFramePassportObjects
     end
     object MenuDelElem: TMenuItem
       Action = ActionElemDel
+    end
+    object MenuItem4: TMenuItem
+      Action = ActionElemOld
+    end
+    object MenuItem5: TMenuItem
+      Action = ActionElemReplace
+    end
+    object MenuItem6: TMenuItem
+      Action = ActionObjMove
     end
   end
   object DSElemTypeMinor: TDataSource
