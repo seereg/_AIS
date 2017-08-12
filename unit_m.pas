@@ -7,7 +7,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
-  ExtCtrls, Menus, ActnList, Buttons, StdCtrls, DbCtrls, CheckLst,
+  ExtCtrls, Menus, ActnList, Buttons, StdCtrls, DbCtrls, CheckLst, ExtDlgs,
   attabs, rxdbgrid, unit_m_data, db,
   unit_types_and_const, FramePassport, ZDataset, KGrids, Types;
 
@@ -30,9 +30,15 @@ type
     ActionShowPasp: TAction;
     ActionList1: TActionList;
     ActionShowList: TAction;
-    FilterList: TCheckListBox;
+    CheckGroupEditFind: TCheckGroup;
+    CheckGroupEditFind1: TCheckGroup;
+    CheckGroupFind1: TCheckGroup;
+    DBLookupFilterType: TDBLookupComboBox;
+    EditFind: TEdit;
+    EditFind1: TEdit;
     Image1: TImage;
     Image2: TImage;
+    Image3: TImage;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
@@ -42,6 +48,7 @@ type
     MenuItem7: TMenuItem;
     MenuItem8: TMenuItem;
     MI_Close: TMenuItem;
+    OpenPictureDialog1: TOpenPictureDialog;
     PageControl2: TPageControl;
     Panel1: TPanel;
     PanelMap: TPanel;
@@ -70,6 +77,13 @@ type
     procedure ActionPassportEditExecute(Sender: TObject);
     procedure ActionPassportNewExecute(Sender: TObject);
     procedure ActionPassportOpenExecute(Sender: TObject);
+    procedure CheckGroupEditFindClick(Sender: TObject);
+    procedure CheckGroupFind1ChangeBounds(Sender: TObject);
+    procedure CheckFilterClick(Sender: TObject; Index: integer);
+    procedure DBLookupFilterTypeChange(Sender: TObject);
+    procedure EditFindChange(Sender: TObject);
+    procedure Image1DblClick(Sender: TObject);
+    procedure Image3DblClick(Sender: TObject);
     procedure PassportOpen(Pas_ID:integer);
     procedure ActionReconnectExecute(Sender: TObject);
     procedure ActionShowCadExecute(Sender: TObject);
@@ -198,13 +212,13 @@ end;
 
 procedure TFormM.PasspTypeListAfterUpdate;
 begin
-  DataM.ZQPasspTypeList.First;
+{  DataM.ZQPasspTypeList.First;
   FilterList.Items.Clear;
   While not(DataM.ZQPasspTypeList.EOF) do begin
    FilterList.Items.Add(DataM.ZQPasspTypeList.FieldByName('pass_type_name').AsString);
    DataM.ZQPasspTypeList.Next;
    FilterList.Checked[FilterList.Items.Count-1]:=true;
-  end;
+  end;                                     }
 end;
 
 procedure TFormM.ActionShowListExecute(Sender: TObject);
@@ -257,6 +271,57 @@ begin
  PassportOpen(ActivPaspID);
 end;
 
+procedure TFormM.CheckGroupEditFindClick(Sender: TObject);
+begin
+
+end;
+
+procedure TFormM.CheckGroupFind1ChangeBounds(Sender: TObject);
+begin
+
+end;
+
+procedure TFormM.CheckFilterClick(Sender: TObject; Index: integer);
+var filt:string;
+begin
+ filt:='';
+ if CheckGroupFind1.Checked[0]
+ then filt:='type='''+DBLookupFilterType.Text+'''';
+ if CheckGroupEditFind1.Checked[0] then
+  begin
+   if  filt<>'' then  filt:=filt+' AND ';
+    filt:=filt+'name like''*'+EditFind1.Text+'''';
+  end;
+ if CheckGroupEditFind.Checked[0] then
+  begin
+   if  filt<>'' then  filt:=filt+' AND ';
+    filt:=filt+'comment like''*'+EditFind.Text+'*''';
+  end;
+  DataM.ZQPasspList.Filter:=filt;
+  DataM.ZQPasspList.Filtered:=(filt<>'')
+  and ((CheckGroupFind1.Checked[0]) or (CheckGroupEditFind.Checked[0]) or (CheckGroupEditFind1.Checked[0]));
+end;
+
+procedure TFormM.DBLookupFilterTypeChange(Sender: TObject);
+begin
+   CheckFilterClick(nil,0);
+end;
+
+procedure TFormM.EditFindChange(Sender: TObject);
+begin
+  CheckFilterClick(nil,0);
+end;
+
+procedure TFormM.Image1DblClick(Sender: TObject);
+begin
+  if OpenPictureDialog1.Execute then Image1.Picture.LoadFromFile(OpenPictureDialog1.FileName);
+end;
+
+procedure TFormM.Image3DblClick(Sender: TObject);
+begin
+  if OpenPictureDialog1.Execute then Image3.Picture.LoadFromFile(OpenPictureDialog1.FileName);
+end;
+
 procedure TFormM.PassportOpen(Pas_ID: integer);
   var
     i:integer;
@@ -290,24 +355,6 @@ procedure TFormM.ActionPassportDelExecute(Sender: TObject);
     ZQ: TZQuery;
     i:integer;
 begin
-
- {
- for i:=0 to High(PassportsArr) do
-   if PassportsArr[i]<>nil then
-    if ATabIndex=PassportsArr[i].TabIndex then
-     begin
-      PassportsArr[i].Destroy;
-      PassportsArr[i]:=nil;
-      for i2:=i to  High(PassportsArr) do
-       if PassportsArr[i2]<>nil then
-        PassportsArr[i2].TabIndex:=PassportsArr[i2].TabIndex-1;
-      exit;
-      }
-
-
-
-
-
  ActivPaspID:=DataM.ZQPasspList.FieldByName('id').AsInteger;
   for i:=0 to High(PassportsArr) do
     if PassportsArr[i]<>nil
@@ -316,11 +363,7 @@ begin
               then
                  begin
                   PasTabs.DeleteTab(PassportsArr[i].TabIndex, true, true);
-//                  PassportsArr[i].Destroy;
-//                  PassportsArr[i]:=nil;
                  end;
-
-
 
   ZQ:= TZQuery.Create(nil);
   ZQ.Connection:=DataM.ZConnection1;

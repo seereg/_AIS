@@ -2104,13 +2104,27 @@ object DataM: TDataM
     Connection = ZConnection1
     SQL.Strings = (
       'SELECT'
-      'passports.id id,'
+      'p.id id,'
       ' CAST(('
       '  pass_type_name||'' №''||pass_name'
-      ' ) as text(20)) as pass_name'
-      'FROM passports'
-      'LEFT JOIN passports_type'
-      'ON passports.pass_type=passports_type.id'
+      ' ) as text(20)) as pass_name,'
+      'CAST(pass_type_name as text(20)) type,'
+      'CAST(pass_name as text(20))name,'
+      'case WHEN  (obj.length is null) then 0 else obj.length end length,'
+      'CAST(ppc.value as text(200)) comment,'
+      'CAST(ppy.value as text(4)) year  '
+      'FROM passports p'
+      'LEFT JOIN passports_type pt'
+      'ON p.pass_type=pt.id'
+      'LEFT JOIN passport_prop_comment ppc'
+      'ON p.id=ppc.pass_id'
+      'LEFT JOIN passport_prop_year_built ppy'
+      'ON p.id=ppy.pass_id'
+      'LEFT JOIN ('
+      'SELECT pass_id,(length) length from objects'
+      'order by pass_id'
+      ') obj '
+      'ON p.id=obj.pass_id'
     )
     Params = <>
     left = 192

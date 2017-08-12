@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, StdCtrls, ExtCtrls, DbCtrls,
-  ActnList, Menus, unit_types_and_const, unit_m_data, typepaspBranch,
+  ActnList, Menus, Dialogs, unit_types_and_const, unit_m_data, typepaspBranch,
   typepaspobj, typePaspElem, db, KGrids, KFunctions, ZDataset, Types;
 
 type
@@ -169,7 +169,7 @@ begin
     KGridElem.ClearGrid;
     exit;
   end;
-  GroupBoxObjProp.Visible:=True;
+//  GroupBoxObjProp.Visible:=True;
   GroupBoxObjProp.Caption:='Объект №'+KGridObj.Cells[0,KGridObj.Row]+': '+KGridObj.Cells[1,KGridObj.Row];
   GroupBoxElem.Visible:=True;
   GetElements(active_obj_id); //object_id
@@ -265,6 +265,7 @@ procedure TFramePassportObjects.KGridElemChanged(Sender: TObject; ACol,
   ARow: Integer);
 var elem:TPassElem;
 begin
+ try
   elem:=active_obj.getPasElem(strtointdef(KGridElem.Cells[4,ARow],-1));
   if elem=nil then exit;
   {if ACol=0 then} elem.elem_pos :=KGridElem.Cells[0,ARow];
@@ -272,6 +273,9 @@ begin
   if ACol=3 then elem.elem_len :=KGridElem.Cells[ACol,ARow];
   if ACol=3 then active_obj.updateLen();
   if ACol=3 then KGridObj.Cells[2,active_obj_id_row]:=active_obj.obj_len+' м.';
+ except on E:Exception do
+   ShowMessage(E.Message);
+ end;
 end;
 
 procedure TFramePassportObjects.KGridElemEditorCreate(Sender: TObject; ACol,

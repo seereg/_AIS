@@ -181,6 +181,7 @@ object FramePassportObjects: TFramePassportObjects
       OnChange = DBComboBoxTypeEl_minorChange
       ScrollListDataset = True
       TabOrder = 2
+      Visible = False
     end
   end
   object Splitter1: TSplitter
