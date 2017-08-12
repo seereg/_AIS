@@ -1,27 +1,27 @@
 object FramePassportObjects: TFramePassportObjects
   Left = 0
-  Height = 525
+  Height = 541
   Top = 0
   Width = 559
   Align = alClient
-  ClientHeight = 525
+  ClientHeight = 541
   ClientWidth = 559
   TabOrder = 0
-  DesignLeft = 761
-  DesignTop = 285
+  DesignLeft = 716
+  DesignTop = 240
   object GroupBoxObj: TGroupBox
     Left = 0
-    Height = 287
+    Height = 303
     Top = 0
     Width = 559
-    Align = alTop
+    Align = alClient
     Caption = 'Объекты'
-    ClientHeight = 267
+    ClientHeight = 283
     ClientWidth = 555
     TabOrder = 0
     object KGridObj: TKGrid
       Left = 0
-      Height = 139
+      Height = 155
       Top = 23
       Width = 555
       Align = alClient
@@ -60,19 +60,21 @@ object FramePassportObjects: TFramePassportObjects
       ListSource = DSPassObjType
       LookupCache = False
       OnChange = DBComboBoxTypeObjChange
+      PopupMenu = PopupMenuObj
       TabOrder = 1
       Visible = False
     end
     object GroupBoxObjProp: TGroupBox
       Left = 0
       Height = 100
-      Top = 167
+      Top = 183
       Width = 555
       Align = alBottom
       Caption = 'Объект такой-то, свойства'
       ClientHeight = 80
       ClientWidth = 551
       TabOrder = 2
+      Visible = False
       object KGridObjProp: TKGrid
         Left = 0
         Height = 80
@@ -99,7 +101,7 @@ object FramePassportObjects: TFramePassportObjects
       Cursor = crVSplit
       Left = 0
       Height = 5
-      Top = 162
+      Top = 178
       Width = 555
       Align = alBottom
       ResizeAnchor = akBottom
@@ -109,16 +111,17 @@ object FramePassportObjects: TFramePassportObjects
   object GroupBoxElem: TGroupBox
     Left = 0
     Height = 233
-    Top = 292
+    Top = 308
     Width = 559
-    Align = alClient
+    Align = alBottom
     Caption = 'Элементы, сгруппированные по типу'
     ClientHeight = 213
     ClientWidth = 555
     TabOrder = 1
+    Visible = False
     object DBComboBoxTypeEl: TDBLookupComboBox
       Left = 0
-      Height = 24
+      Height = 23
       Top = 0
       Width = 555
       Align = alTop
@@ -127,17 +130,17 @@ object FramePassportObjects: TFramePassportObjects
       DataField = 'id'
       DataSource = DSElemType
       KeyField = 'id'
-      ListFieldIndex = 1
+      ListField = 'group_name'
+      ListFieldIndex = 0
       ListSource = DSElemType
       LookupCache = False
       OnChange = DBComboBoxTypeElChange
-      Style = csOwnerDrawFixed
       TabOrder = 0
     end
     object KGridElem: TKGrid
       Left = 0
-      Height = 165
-      Top = 48
+      Height = 167
+      Top = 46
       Width = 555
       Align = alClient
       Colors.FixedThemedCellLines = clWindow
@@ -147,6 +150,7 @@ object FramePassportObjects: TFramePassportObjects
       PopupMenu = PopupMenuElem
       RowCount = 1
       TabOrder = 1
+      OnChanged = KGridElemChanged
       OnEditorCreate = KGridElemEditorCreate
       OnRowMoved = KGridElemRowMoved
       ColWidths = (
@@ -162,33 +166,31 @@ object FramePassportObjects: TFramePassportObjects
     end
     object DBComboBoxElemTypeMinor: TDBLookupComboBox
       Left = 0
-      Height = 24
-      Top = 24
+      Height = 23
+      Top = 23
       Width = 555
       Align = alTop
-      ArrowKeysTraverseList = False
-      AutoComplete = True
       DataField = 'id'
       DataSource = DSElemTypeMinor
       KeyField = 'id'
-      ListFieldIndex = 1
+      ListField = 'elem_type_name'
+      ListFieldIndex = 0
       ListSource = DSElemTypeMinor
       LookupCache = False
       NullValueKey = 48
       OnChange = DBComboBoxTypeEl_minorChange
-      Style = csOwnerDrawFixed
+      ScrollListDataset = True
       TabOrder = 2
-      Visible = False
     end
   end
   object Splitter1: TSplitter
     Cursor = crVSplit
     Left = 0
     Height = 5
-    Top = 287
+    Top = 303
     Width = 559
-    Align = alTop
-    ResizeAnchor = akTop
+    Align = alBottom
+    ResizeAnchor = akBottom
     ResizeStyle = rsLine
   end
   object ZQObjects: TZQuery
@@ -229,6 +231,7 @@ object FramePassportObjects: TFramePassportObjects
     object ActionElemDel: TAction
       Category = 'Elements'
       Caption = 'Удолить элемент'
+      OnExecute = ActionElemDelExecute
     end
     object ActionObjMove: TAction
       Category = 'Objects'
@@ -312,7 +315,7 @@ object FramePassportObjects: TFramePassportObjects
   object ZQElemTypeMinor: TZQuery
     Connection = DataM.ZConnection1
     Params = <>
-    left = 452
-    top = 456
+    left = 448
+    top = 464
   end
 end

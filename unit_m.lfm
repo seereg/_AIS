@@ -36582,6 +36582,8 @@ object FormM: TFormM
     end
     object ActionPasspListRefresh: TAction
       Caption = 'Обновить список'
+      ImageIndex = 3
+      OnExecute = ActionPasspListRefreshExecute
     end
   end
   object PopupMenuList: TPopupMenu

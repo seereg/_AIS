@@ -21,6 +21,7 @@ type
     f_elem_colour:TMyField;
     f_elem_pos   :TMyField;
     f_elem_year  :TMyField;
+    f_pas_id     :TMyField;
     f_conn       :TZConnection;
     ZQProp: TZQuery;
     function  getValue(Index:Integer):string;
@@ -35,7 +36,8 @@ type
     property elem_len    :string  Index 2 read getValue  write setValue;
     property elem_colour :string  Index 3 read getValue  write setValue;
     property elem_pos    :string  Index 4 read getValue  write setValue;
-    property elem_year    :string  Index 5 read getValue  write setValue;
+    property elem_year   :string  Index 5 read getValue  write setValue;
+    property pas_id      :string  Index 6 read getValue  write setValue;
 
     constructor Create(TheOwner: TComponent;p_elem_id:integer;p_conn:TZConnection);
     function getPasElem():boolean;
@@ -58,6 +60,7 @@ begin
     3: fld:=addr(f_elem_colour);
     4: fld:=addr(f_elem_pos);
     5: fld:=addr(f_elem_year);
+    6: fld:=addr(f_pas_id);
     else exit;
     end;
     result:=fld^.Value;
@@ -73,30 +76,38 @@ var
 begin
   try
     case index of
-    0: fld:=addr(f_elem_obj);
-    1: fld:=addr(f_elem_type);
-    2: fld:=addr(f_elem_len);
-    3: fld:=addr(f_elem_colour);
-    4: fld:=addr(f_elem_pos);
-    5: fld:=addr(f_elem_year);
-    else exit;
+      0: fld:=addr(f_elem_obj);
+      1: fld:=addr(f_elem_type);
+      2: fld:=addr(f_elem_len);
+      3: fld:=addr(f_elem_colour);
+      4: fld:=addr(f_elem_pos);
+      5: fld:=addr(f_elem_year);
+      6: fld:=addr(f_pas_id);
+      else exit;
     end;
     if Value=fld^.Value then exit;
     if (StrToIntDef(f_elem_id.Value,-1)<0) and (index in [1])
-       then begin
-         f_elem_id.Value:=inttostr(getNewID);
-         st:=f_elem_obj.Value;
-         f_elem_obj.Value:='';
-         elem_obj:=st;//переписать по id
-       end;
-    st:='INSERT OR IGNORE INTO '+ fld^.table+' (id) VALUES ('+f_elem_id.Value+')';
-    ZQProp.SQL.Clear;
-    ZQProp.SQL.Add(st);
-    if connecting then ZQProp.ExecSQL;
-    st:='Update '+ fld^.table+' set '+fld^.name+'="'+Value+'" where id='+f_elem_id.Value;
-    ZQProp.SQL.Clear;
-    ZQProp.SQL.Add(st);
-    if connecting then ZQProp.ExecSQL;
+      then begin
+        f_elem_id.Value:=inttostr(getNewID);
+        st:=f_elem_obj.Value;
+        f_elem_obj.Value:='';
+        elem_obj:=st;//переписать по id
+        st:=f_pas_id.Value;
+        f_pas_id.Value:='';
+        pas_id:=st;//переписать по id
+        st:=f_elem_year.Value;
+        f_elem_year.Value:='';
+        elem_year:=st;//переписать по id
+      end;
+    if connecting then
+      begin
+        st:='INSERT OR IGNORE INTO '+ fld^.table+' (id) VALUES ('+f_elem_id.Value+')';
+        ZQProp.SQL.text:=(st);
+        ZQProp.ExecSQL;
+        st:='Update '+ fld^.table+' set '+fld^.name+'="'+Value+'" where id='+f_elem_id.Value;
+        ZQProp.SQL.text:=(st);
+        ZQProp.ExecSQL;
+      end;
     fld^.Value:=Value;
   except
   end;
@@ -125,7 +136,6 @@ begin
   f_conn:=p_conn;
   ZQProp:= TZQuery.Create(nil);
   ZQProp.Connection:=f_conn;
-  ZQProp.SQL.Text:=(GetSQL('elem_prop',p_elem_id));
   f_elem_id.value      :=inttostr(p_elem_id);
   f_elem_id.name       := 'id';
   f_elem_id.table      := 'elements';
@@ -135,7 +145,7 @@ begin
   f_elem_type.Value    := '0';
   f_elem_type.name     := 'elem_type';
   f_elem_type.table    := 'elements';
-  f_elem_len.Value     := '';
+  f_elem_len.Value     := '0';
   f_elem_len.name      := 'length';
   f_elem_len.table     := 'elements';
   f_elem_colour.Value  := '0';
@@ -144,9 +154,12 @@ begin
   f_elem_pos.Value     := '0';
   f_elem_pos.name      := 'pos';
   f_elem_pos.table     := 'elements';
-  f_elem_year.Value     := '1905';
-  f_elem_year.name      := 'year';
-  f_elem_year.table     := 'elements';
+  f_elem_year.Value    := '1905';
+  f_elem_year.name     := 'year';
+  f_elem_year.table    := 'elements';
+  f_pas_id.Value       := '';
+  f_pas_id.name        := 'pass_id';
+  f_pas_id.table       := 'elements';
   connecting:=true;
 end;
 
@@ -154,12 +167,14 @@ function TPassElem.getPasElem: boolean;
 begin
   try
     result:=True;
+    ZQProp.SQL.Text:=(GetSQL('elem_prop',strtointdef(f_elem_id.Value,-1)));
     ZQProp.Open;
     f_elem_type   .value :=ZQProp.FieldByName(f_elem_type  .name).AsString;
     f_elem_len    .value :=ZQProp.FieldByName(f_elem_len   .name).AsString;
     f_elem_colour .value :=ZQProp.FieldByName(f_elem_colour.name).AsString;
     f_elem_pos    .value :=ZQProp.FieldByName(f_elem_pos   .name).AsString;
     f_elem_year   .value :=ZQProp.FieldByName(f_elem_year  .name).AsString;
+    f_pas_id      .value :=ZQProp.FieldByName(f_pas_id     .name).AsString;
   except
     result:=false;
   end;

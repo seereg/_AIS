@@ -154,7 +154,7 @@ begin
   TabSheet:=PageControlPassport.AddTabSheet;
   TabSheet.Caption:=branch_name;
   TabSheet.Tag:=branch_id;
-  FPassportObjects:=TFramePassportObjects.Create(TabSheet,branch_id);
+  FPassportObjects:=TFramePassportObjects.Create(TabSheet,pass_id,branch_id);
   FPassportObjects.Name:='ObjectsBranch'+inttostr(branch_id);
   FPassportObjects.pass_id:=pass_id;
   FPassportObjects.Parent:=TabSheet;

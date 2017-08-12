@@ -28,6 +28,7 @@ type
     { private declarations }
   public
     { public declarations }
+    procedure passListRefresh();
   end;
 
 var
@@ -42,6 +43,15 @@ uses unit_m;
 procedure TDataM.ZQPasspTypeListAfterOpen(DataSet: TDataSet);
 begin
   FormM.PasspTypeListAfterUpdate();
+end;
+
+procedure TDataM.passListRefresh;
+var
+  id:integer;
+begin
+  id:=ZQPasspList.FieldByName('id').AsInteger;
+  ZQPasspList.Refresh;
+  ZQPasspList.Locate('id',id,[loCaseInsensitive]);
 end;
 
 end.

@@ -9,7 +9,7 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
   ExtCtrls, Menus, ActnList, Buttons, StdCtrls, DbCtrls, CheckLst,
   attabs, rxdbgrid, unit_m_data, db,
-  unit_types_and_const, FramePassport, KGrids, Types;
+  unit_types_and_const, FramePassport, ZDataset, KGrids, Types;
 
 type
 
@@ -65,6 +65,7 @@ type
     ToolButton2: TToolButton;
     ToolButton3: TToolButton;
     ToolButton4: TToolButton;
+    procedure ActionPasspListRefreshExecute(Sender: TObject);
     procedure ActionPassportDelExecute(Sender: TObject);
     procedure ActionPassportEditExecute(Sender: TObject);
     procedure ActionPassportNewExecute(Sender: TObject);
@@ -279,12 +280,73 @@ end;
 
 procedure TFormM.ActionPassportNewExecute(Sender: TObject);
 begin
-  ActivPaspID:=const_pasNew;
-  PassportOpen(ActivPaspID);
+//  ActivPaspID:=const_pasNew;
+  PassportOpen(const_pasNew);
+  ActionPasspListRefresh.Execute;
 end;
 
 procedure TFormM.ActionPassportDelExecute(Sender: TObject);
+  var
+    ZQ: TZQuery;
+    i:integer;
 begin
+
+ {
+ for i:=0 to High(PassportsArr) do
+   if PassportsArr[i]<>nil then
+    if ATabIndex=PassportsArr[i].TabIndex then
+     begin
+      PassportsArr[i].Destroy;
+      PassportsArr[i]:=nil;
+      for i2:=i to  High(PassportsArr) do
+       if PassportsArr[i2]<>nil then
+        PassportsArr[i2].TabIndex:=PassportsArr[i2].TabIndex-1;
+      exit;
+      }
+
+
+
+
+
+ ActivPaspID:=DataM.ZQPasspList.FieldByName('id').AsInteger;
+  for i:=0 to High(PassportsArr) do
+    if PassportsArr[i]<>nil
+       then
+           if PassportsArr[i].PasspID=ActivPaspID
+              then
+                 begin
+                  PasTabs.DeleteTab(PassportsArr[i].TabIndex, true, true);
+//                  PassportsArr[i].Destroy;
+//                  PassportsArr[i]:=nil;
+                 end;
+
+
+
+  ZQ:= TZQuery.Create(nil);
+  ZQ.Connection:=DataM.ZConnection1;
+//  ZQ.SQL.Text:=GetSQL('del_pass_id',ActivPaspID);
+  ZQ.SQL.Text:=' delete from passport_prop_comment    where pass_id='+inttostr(ActivPaspID);
+  ZQ.ExecSQL;
+  ZQ.SQL.Text:=' delete from passport_prop_year_built where pass_id='+inttostr(ActivPaspID);
+  ZQ.ExecSQL;
+  ZQ.SQL.Text:=' delete from passport_prop_comment    where pass_id='+inttostr(ActivPaspID);
+  ZQ.ExecSQL;
+  ZQ.SQL.Text:=' delete from elements                 where pass_id='+inttostr(ActivPaspID);
+  ZQ.ExecSQL;
+  ZQ.SQL.Text:=' delete from objects                  where pass_id='+inttostr(ActivPaspID);
+  ZQ.ExecSQL;
+  ZQ.SQL.Text:=' delete from branch                   where pass_id='+inttostr(ActivPaspID);
+  ZQ.ExecSQL;
+  ZQ.SQL.Text:=' delete from passports                where      id='+inttostr(ActivPaspID);
+  ZQ.ExecSQL;
+  ActionPasspListRefresh.Execute;
+  FreeAndNil(ZQ);
+  ActivPaspID:=DataM.ZQPasspList.FieldByName('id').AsInteger;
+end;
+
+procedure TFormM.ActionPasspListRefreshExecute(Sender: TObject);
+begin
+  DataM.passListRefresh;
 end;
 
 procedure TFormM.ActionPassportEditExecute(Sender: TObject);

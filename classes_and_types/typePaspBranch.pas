@@ -79,8 +79,11 @@ end;
 function TPassBranch.addPasObject: TPassObj;
 begin
   PassObj:=TPassObj.Create(self,-1,f_conn);
+  result:=PassObj;
+  if PassObj=nil then exit;
   PassObj.connecting:=false;
   PassObj.obj_branch:=inttostr(f_branch_id);
+  PassObj.pas_id    :=inttostr(f_pas_id);
   PassObj.connecting:=true;
 end;
 

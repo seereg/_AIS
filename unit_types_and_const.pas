@@ -130,6 +130,13 @@ begin
         ;
   end else
   //-----------------------
+  if iden='elem_del_obj_id' then
+  begin
+    sql:=' delete from elements'
+    +' where object_id='+inttostr(param)
+        ;
+  end else
+  //-----------------------
   if iden='objects' then
   begin
     sql:=' '
@@ -150,6 +157,15 @@ begin
         +' order by pos                                              '
         ;
   end else
+  //------------------------
+  if iden='obj_len' then
+  begin
+    sql:=' '
+        +' select sum(length) len from elements'
+        +' where object_id='+inttostr(param)
+        +' and elem_type in (select id from elements_type where elem_group_id in(0,1))'
+        ;
+  end else
   //-----------------------
   if iden='objects_type' then
   begin
@@ -167,7 +183,7 @@ begin
   //-----------------------
   if iden='elements_type' then
   begin
-    sql:=' select * from elements_type'
+    sql:=' select id,elem_type_name from elements_type'
         +' where elem_group_id in(0,'+inttostr(param)
         +' )'
         ;
@@ -177,7 +193,7 @@ begin
   begin
     sql:=' select * from elements'
         +' where object_id='+inttostr(param)
-        +' '
+        +' order by pos'
         ;
   end else
   //-----------------------
@@ -185,7 +201,21 @@ begin
   begin
     sql:=' select (max(id)+1) id from passports'
         ;
-  end;
+   end else
+  //-----------------------
+  if iden='del_pass_id' then
+  begin
+    sql:=''// delete from passports' //ON DELETE CASCADE br,obj,el !?!
+        +'  delete from passport_prop_comment    where pass_id='+inttostr(param)
+        +'; delete from passport_prop_year_built where pass_id='+inttostr(param)
+        +'; delete from passport_prop_comment    where pass_id='+inttostr(param)
+        +'; delete from elements                 where pass_id='+inttostr(param)
+        +'; delete from objects                  where pass_id='+inttostr(param)
+        +'; delete from branch                   where pass_id='+inttostr(param)
+        +'; delete from passports                where      id='+inttostr(param)
+        +' '
+        ;
+ end;
   //-----------------------
   result:=sql;
 end;

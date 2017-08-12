@@ -5,7 +5,7 @@ unit typePaspProp;
 interface
 
 uses
-  Classes, SysUtils, ZDataset, ZConnection, unit_types_and_const;
+  Classes, SysUtils, ZDataset, ZConnection, unit_types_and_const, unit_m_data;
 
 type
 
@@ -97,6 +97,7 @@ begin
         end;
       ZQProp.SQL.Add(st);
       ZQProp.ExecSQL;
+      DataM.passListRefresh();
     end;
     fld^.Value:=Value;
   except
