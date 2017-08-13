@@ -28,6 +28,7 @@ object FramePassportObjects: TFramePassportObjects
       ColCount = 4
       Colors.FixedThemedCellLines = clWindow
       Colors.FixedThemedCellShadow = clWindow
+      DefaultRowHeight = 24
       FixedRows = 0
       Options = [goAlignLastCol, goAlwaysShowEditor, goDrawFocusSelected, goEditing, goEnterMoves, goFixedHorzLine, goFixedVertLine, goHeaderAlignment, goHorzLine, goIndicateHiddenCells, goMouseCanHideCells, goMouseOverCells, goRowMoving, goThemes, goThemedCells, goVertLine]
       PopupMenu = PopupMenuObj
@@ -43,7 +44,7 @@ object FramePassportObjects: TFramePassportObjects
         27
       )
       RowHeights = (
-        21
+        24
       )
     end
     object GroupBoxObjProp: TGroupBox
@@ -146,6 +147,7 @@ object FramePassportObjects: TFramePassportObjects
       Align = alClient
       Colors.FixedThemedCellLines = clWindow
       Colors.FixedThemedCellShadow = clWindow
+      DefaultRowHeight = 24
       FixedRows = 0
       Options = [goAlignLastCol, goAlwaysShowEditor, goDrawFocusSelected, goEditing, goEnterMoves, goFixedHorzLine, goFixedVertLine, goHeaderAlignment, goHorzLine, goIndicateHiddenCells, goMouseCanHideCells, goMouseOverCells, goRowMoving, goThemes, goThemedCells, goVertLine]
       PopupMenu = PopupMenuElem
@@ -162,7 +164,7 @@ object FramePassportObjects: TFramePassportObjects
         27
       )
       RowHeights = (
-        21
+        24
       )
     end
     object DBComboBoxElemTypeMinor: TDBLookupComboBox

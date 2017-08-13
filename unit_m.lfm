@@ -11762,11 +11762,11 @@ object FormM: TFormM
       AutoSort = True
       Columns = <      
         item
+          SizePriority = 0
           Title.Alignment = taCenter
           Title.Orientation = toHorizontal
           Title.Caption = '№ (Наименование)'
-          Width = 0
-          Visible = False
+          Width = 1
           FieldName = 'pass_name'
           EditButtons = <>
           Filter.DropDownRows = 0
@@ -11777,6 +11777,7 @@ object FormM: TFormM
           Footers = <>
         end      
         item
+          SizePriority = 0
           Title.Alignment = taCenter
           Title.Orientation = toHorizontal
           Title.Caption = 'Тип'
@@ -11792,6 +11793,7 @@ object FormM: TFormM
           Footers = <>
         end      
         item
+          SizePriority = 0
           Title.Alignment = taCenter
           Title.Orientation = toHorizontal
           Title.Caption = 'Наименование'
@@ -11807,6 +11809,7 @@ object FormM: TFormM
         end      
         item
           Alignment = taRightJustify
+          SizePriority = 0
           Title.Alignment = taCenter
           Title.Orientation = toHorizontal
           Title.Caption = 'Протяж.'
@@ -11821,6 +11824,7 @@ object FormM: TFormM
           Footers = <>
         end      
         item
+          SizePriority = 0
           Title.Alignment = taCenter
           Title.Orientation = toHorizontal
           Title.Caption = 'Комментарии'
@@ -11836,10 +11840,11 @@ object FormM: TFormM
         end      
         item
           Alignment = taRightJustify
+          SizePriority = 0
           Title.Alignment = taCenter
           Title.Orientation = toHorizontal
           Title.Caption = 'Год укладки'
-          Width = 99
+          Width = 98
           FieldName = 'year'
           EditButtons = <>
           Filter.DropDownRows = 0
