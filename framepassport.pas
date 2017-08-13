@@ -67,7 +67,7 @@ begin
   pPasspID:=strtoint(pass.pass_id);
   self.Name:='FramePassportID'+inttostr(pPasspID);
   self.PasspID:=pPasspID;
-  TabOwner.AddTab(-1, pass.pass_name);
+  TabOwner.AddTab(-1,'Тип-'+pass.pass_type+': '+pass.pass_name+' (ред.)');
   TabOwner.TabIndex:=TabOwner.TabCount-1;
   freeandnil(pass); //  pass.Destroy;
    for i:=(PageControlPassport.PageCount-1) downto 0

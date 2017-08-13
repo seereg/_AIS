@@ -46,24 +46,6 @@ object FramePassportObjects: TFramePassportObjects
         21
       )
     end
-    object DBComboBoxTypeObj: TDBLookupComboBox
-      Left = 0
-      Height = 23
-      Top = 0
-      Width = 555
-      Align = alTop
-      DataField = 'id'
-      DataSource = DSPassObjType
-      KeyField = 'id'
-      ListField = 'obj_type_name'
-      ListFieldIndex = 0
-      ListSource = DSPassObjType
-      LookupCache = False
-      OnChange = DBComboBoxTypeObjChange
-      PopupMenu = PopupMenuObj
-      TabOrder = 1
-      Visible = False
-    end
     object GroupBoxObjProp: TGroupBox
       Left = 0
       Height = 100
@@ -73,7 +55,7 @@ object FramePassportObjects: TFramePassportObjects
       Caption = 'Объект такой-то, свойства'
       ClientHeight = 80
       ClientWidth = 551
-      TabOrder = 2
+      TabOrder = 1
       Visible = False
       object KGridObjProp: TKGrid
         Left = 0
@@ -106,6 +88,25 @@ object FramePassportObjects: TFramePassportObjects
       Align = alBottom
       ResizeAnchor = akBottom
       ResizeStyle = rsLine
+    end
+    object DBComboBoxTypeObj: TDBLookupComboBox
+      Left = 0
+      Height = 23
+      Top = 0
+      Width = 555
+      Align = alTop
+      DataField = 'id'
+      DataSource = DSPassObjType
+      KeyField = 'id'
+      ListField = 'obj_type_name'
+      ListFieldIndex = 0
+      ListSource = DSPassObjType
+      LookupCache = False
+      NullValueKey = 48
+      OnChange = DBComboBoxTypeObjChange
+      PopupMenu = PopupMenuObj
+      ScrollListDataset = True
+      TabOrder = 3
     end
   end
   object GroupBoxElem: TGroupBox
@@ -294,15 +295,13 @@ object FramePassportObjects: TFramePassportObjects
     end
     object MenuDelElem: TMenuItem
       Action = ActionElemDel
+      Caption = 'Удалить элемент'
     end
     object MenuItem4: TMenuItem
       Action = ActionElemOld
     end
     object MenuItem5: TMenuItem
       Action = ActionElemReplace
-    end
-    object MenuItem6: TMenuItem
-      Action = ActionObjMove
     end
     object MenuItem7: TMenuItem
       Action = ActionElemColor

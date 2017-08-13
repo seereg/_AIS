@@ -25,10 +25,10 @@ type
     ActionObjAdd: TAction;
     ActionListObjElem: TActionList;
     DBComboBoxElemTypeMinor: TDBLookupComboBox;
+    DBComboBoxTypeObj: TDBLookupComboBox;
     DSElemTypeMinor: TDataSource;
     DSPassObjType: TDataSource;
     DBComboBoxTypeEl: TDBLookupComboBox;
-    DBComboBoxTypeObj: TDBLookupComboBox;
     DSElemType: TDataSource;
     GroupBoxObjProp: TGroupBox;
     GroupBoxObj: TGroupBox;
@@ -43,7 +43,6 @@ type
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
     MenuItem5: TMenuItem;
-    MenuItem6: TMenuItem;
     MenuItem7: TMenuItem;
     PopupMenuObj: TPopupMenu;
     PopupMenuElem: TPopupMenu;
@@ -112,15 +111,13 @@ begin
  case InitialCol of
    1:
    begin
-     AEditor := TComboBox.Create(nil);
-     TComboBox(AEditor).Style := csDropDownList; // cannot set height on Win!
-     TComboBox(AEditor).OnChange:=DBComboBoxTypeObj.OnChange;
-     ZQPassObjType.First;
-     while not(ZQPassObjType.EOF) do begin
-      //переделать на tStringList, чтобы не гонять в цикле
-      TComboBox(AEditor).Items.Add(ZQPassObjType.FieldByName('obj_type_name').AsString);
-      ZQPassObjType.Next;
-     end;
+     AEditor := TDBLookupComboBox.Create(nil{DBComboBoxElemTypeMinor.Owner});
+     TDBLookupComboBox(AEditor).OnChange  :=DBComboBoxTypeObj.OnChange;
+     TDBLookupComboBox(AEditor).DataField :=DBComboBoxTypeObj.DataField;
+     TDBLookupComboBox(AEditor).DataSource:=DBComboBoxTypeObj.DataSource;
+     TDBLookupComboBox(AEditor).KeyField  :=DBComboBoxTypeObj.KeyField;
+     TDBLookupComboBox(AEditor).ListField :=DBComboBoxTypeObj.ListField;
+     TDBLookupComboBox(AEditor).ListSource:=DBComboBoxTypeObj.ListSource;
    end;
  else
    if gxEditFixedCols in KGridObj.OptionsEx then
@@ -199,9 +196,6 @@ begin
  ZQElemTypeMinor.Open;
  DBComboBoxElemTypeMinor.KeyField       :='id';
  DBComboBoxElemTypeMinor.ListField      :='elem_type_name';
-// DBComboBoxElemTypeMinor.KeyValue       :=0;
-// ZQElemTypeMinor.DisableControls;
-// DBComboBoxTypeEl_minor0.ListFieldIndex :=-1;
  //////////////
  KGridObjClick(nil);//обновляем элементы
 end;
@@ -242,17 +236,18 @@ var
  obj_id:integer;
  obj:TPassObj;
 begin
-if sender is TComboBox then
+if sender is TDBLookupComboBox then
  begin
-  if TComboBox(sender).ItemIndex<0 then exit;
+  if TDBLookupComboBox(sender).ItemIndex<0 then exit;
   InCol := KGridObj.Selection.Col1; // map column indexes
   InRow := KGridObj.Selection.Row1; // map row indexes
-  KGridObj.Cells[InCol,InRow]:= TComboBox(sender).Text;
+  KGridObj.Cells[InCol,InRow]:= TDBLookupComboBox(sender).Text;
   obj_id:=active_obj_id;//StrToIntDef(KGridObj.Cells[3,InRow],-1);
   obj:=active_obj;//PassBranch.getPasObject(obj_id);
   if obj<>nil then
    begin
-     obj.obj_type:=inttostr(TComboBox(sender).ItemIndex+1);
+     obj.obj_type:=inttostr(integer(TDBLookupComboBox(sender).KeyValue));
+//     obj.obj_type:=inttostr(TComboBox(sender).ItemIndex+1);
      KGridObj.Cells[3,InRow]:=obj.obj_id;
      KGridObj.Cells[0,InRow]:=inttostr(InRow+1);
    end;
@@ -276,6 +271,7 @@ begin
  except on E:Exception do
    ShowMessage(E.Message);
  end;
+  if ACol=3 then DataM.passListRefresh();
 end;
 
 procedure TFramePassportObjects.KGridElemEditorCreate(Sender: TObject; ACol,
@@ -299,19 +295,14 @@ begin
    2:
    begin
      AEditor := TDBLookupComboBox.Create(nil{DBComboBoxElemTypeMinor.Owner});
-//     TDBLookupComboBox(AEditor):=DBComboBoxElemTypeMinor;
-//     TDBLookupComboBox(AEditor).Style     :=DBComboBoxElemTypeMinor.Style; // cannot set height on Win!
      TDBLookupComboBox(AEditor).OnChange  :=DBComboBoxElemTypeMinor.OnChange;
      TDBLookupComboBox(AEditor).DataField :=DBComboBoxElemTypeMinor.DataField;
      TDBLookupComboBox(AEditor).DataSource:=DBComboBoxElemTypeMinor.DataSource;
      TDBLookupComboBox(AEditor).KeyField  :=DBComboBoxElemTypeMinor.KeyField;
      TDBLookupComboBox(AEditor).ListField :=DBComboBoxElemTypeMinor.ListField;
      TDBLookupComboBox(AEditor).ListSource:=DBComboBoxElemTypeMinor.ListSource;
-     //TDBLookup.UpdateData errore
-//     TDBLookupComboBox(AEditor).ScrollListDataset :=DBComboBoxElemTypeMinor.ScrollListDataset;
     end;
  else
-//   if gxEditFixedCols in KGridObj.OptionsEx then
      AEditor := TEdit.Create(nil);
  end;
 end;
@@ -347,7 +338,7 @@ var
   obj:TPassObj;
 begin
  obj:=PassBranch.addPasObject();
- obj.obj_type:=KGridObj.Cells[1,KGridObj.Row];
+ obj.obj_type:='0';//KGridObj.Cells[1,KGridObj.Row];
  AddObject({-1,}obj);
 end;
 
@@ -386,7 +377,9 @@ begin
   if (obj<>nil) and (obj.obj_type<>'') then
   begin
     KGridObj.Cells[0, ARow] := inttostr(ARow+1);
-    KGridObj.Cells[1, ARow] :=(obj.obj_type);
+    DBComboBoxTypeObj.KeyValue:=obj.obj_type;
+    KGridObj.Cells[1, ARow] :=DBComboBoxTypeObj.Text;
+//    KGridObj.Cells[1, ARow] :=(obj.obj_type);
     KGridObj.Cells[2, ARow] :=(obj.obj_len)+' м.';
     KGridObj.Cells[3, ARow] :=(obj.obj_id);
   end
@@ -456,14 +449,13 @@ procedure TFramePassportObjects.GetElements(obj_id: integer);
 var
   obj :TPassObj;
   elem:TPassElem;
-  row:integer;
 begin
  ZQElements.Close;
  ZQElements.SQL.text:=GetSQL('elements',(obj_id));
  ZQElements.Open;
- row:=0;
  KGridElem.RowCount:=0;
  KGridElem.ClearGrid;
+ KGridElem.EditorMode:=false;
  obj:=PassBranch.getPasObject(obj_id);
  if ZQElements.RecordCount<=0
     then ActionElemAddExecute(nil);//пустая для пустого списка
@@ -479,7 +471,6 @@ begin
    elem.elem_year  :=ZQElements.FieldByName('year')      .AsString;
    elem.connecting :=true;
    AddElement(elem);
-   row:=row-1;
    ZQElements.Next;
  end;
  ZQElements.Close;

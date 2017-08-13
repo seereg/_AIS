@@ -11806,6 +11806,7 @@ object FormM: TFormM
           Footers = <>
         end      
         item
+          Alignment = taRightJustify
           Title.Alignment = taCenter
           Title.Orientation = toHorizontal
           Title.Caption = 'Протяж.'
@@ -11834,6 +11835,7 @@ object FormM: TFormM
           Footers = <>
         end      
         item
+          Alignment = taRightJustify
           Title.Alignment = taCenter
           Title.Orientation = toHorizontal
           Title.Caption = 'Год укладки'

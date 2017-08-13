@@ -140,6 +140,16 @@ begin
   if iden='objects' then
   begin
     sql:=' '
+        +' select objects.id id,  obj_type,'
+        +' rad,length, pos, tan from objects '
+        +' where branch_id='+inttostr(param)
+        +' order by pos                       '
+        ;
+  end else
+  //-----------------------
+  if iden='objects_old' then
+  begin
+    sql:=' '
         +' select objects.id id, objects_type.obj_type_name obj_type,'
         +' rad,length, pos, tan from objects '
         +' LEFT JOIN objects_type            '
