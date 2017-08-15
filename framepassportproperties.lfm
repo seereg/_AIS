@@ -182,6 +182,7 @@ object FramePassportProperties: TFramePassportProperties
       Color = clWindow
       Columns = <      
         item
+          MaxSize = 30
           Title.Caption = 'id'
           Width = 0
           Visible = False
@@ -196,14 +197,14 @@ object FramePassportProperties: TFramePassportProperties
         item
           MinSize = 100
           MaxSize = 400
-          SizePriority = 0
           Title.Caption = 'Наименование'
           Width = 292
           FieldName = 'branch_name'
         end      
         item
           ButtonStyle = cbsPickList
-          MaxSize = 50
+          MaxSize = 30
+          SizePriority = 0
           Title.Caption = 'Порядковый номер'
           Width = 293
           FieldName = 'pos'
@@ -270,6 +271,7 @@ object FramePassportProperties: TFramePassportProperties
       Size = 1020
     end
     object ZTBranchesname: TStringField
+      DisplayWidth = 100
       FieldKind = fkData
       FieldName = 'branch_name'
       Index = 2
@@ -277,6 +279,7 @@ object FramePassportProperties: TFramePassportProperties
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
+      Size = 100
     end
     object ZTBranchespos: TFloatField
       FieldKind = fkData

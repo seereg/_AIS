@@ -131,6 +131,7 @@ object FramePassportObjects: TFramePassportObjects
       AutoComplete = True
       DataField = 'id'
       DataSource = DSElemType
+      Enabled = False
       KeyField = 'id'
       ListField = 'group_name'
       ListFieldIndex = 0
