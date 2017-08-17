@@ -25768,69 +25768,71 @@ object FormM: TFormM
       AutoCheck = True
       Caption = 'ActionShowList'
       Checked = True
-      ImageIndex = 1
+      ImageIndex = 0
       OnExecute = ActionShowListExecute
     end
     object ActionShowPasp: TAction
       AutoCheck = True
       Caption = 'ActionShowPasp'
       Checked = True
-      ImageIndex = 0
+      ImageIndex = 1
       OnExecute = ActionShowPaspExecute
     end
     object ActionShowCad: TAction
       AutoCheck = True
       Checked = True
       GroupIndex = 1
-      ImageIndex = 0
+      ImageIndex = 2
       OnExecute = ActionShowCadExecute
     end
     object ActionShowMap: TAction
       AutoCheck = True
       Caption = 'ActionShowMap'
       GroupIndex = 1
-      ImageIndex = 2
+      ImageIndex = 3
       OnExecute = ActionShowMapExecute
     end
     object ActionReconnect: TAction
       Caption = 'Обновить соединение'
-      ImageIndex = 3
+      ImageIndex = 4
       OnExecute = ActionReconnectExecute
     end
     object ActionPassportOpen: TAction
       Tag = -1
       Caption = 'Открыть паспорт'
-      ImageIndex = 3
+      ImageIndex = 4
       OnExecute = ActionPassportOpenExecute
     end
     object ActionPassportNew: TAction
       Caption = 'Новый паспорт'
-      ImageIndex = 3
+      ImageIndex = 4
       OnExecute = ActionPassportNewExecute
     end
     object ActionPassportDel: TAction
       Caption = 'Удалить паспорт'
-      ImageIndex = 3
+      ImageIndex = 4
       OnExecute = ActionPassportDelExecute
     end
     object ActionPassportEdit: TAction
       Caption = 'Редактировать паспорт'
-      ImageIndex = 3
+      ImageIndex = 4
       OnExecute = ActionPassportEditExecute
     end
     object ActionPassportPost: TAction
       Caption = 'Утвердить паспорт'
-      ImageIndex = 3
+      ImageIndex = 4
     end
     object ActionPassportCAD: TAction
       Caption = 'Построить схему'
+      ImageIndex = 2
     end
     object ActionPassportMAP: TAction
       Caption = 'Показать на карте'
+      ImageIndex = 3
     end
     object ActionPasspListRefresh: TAction
       Caption = 'Обновить список'
-      ImageIndex = 3
+      ImageIndex = 0
       OnExecute = ActionPasspListRefreshExecute
     end
   end

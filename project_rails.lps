@@ -19,6 +19,7 @@
         <ComponentName Value="FormM"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <TopLine Value="171"/>
         <CursorPos X="30" Y="174"/>
         <UsageCount Value="212"/>
@@ -85,10 +86,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="FramePassportObjects"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="221"/>
-        <CursorPos Y="239"/>
+        <TopLine Value="222"/>
+        <CursorPos X="108" Y="229"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
