@@ -108,6 +108,7 @@ object FramePassportObjects: TFramePassportObjects
       PopupMenu = PopupMenuObj
       ScrollListDataset = True
       TabOrder = 3
+      Visible = False
     end
   end
   object GroupBoxElem: TGroupBox
