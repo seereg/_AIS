@@ -18,7 +18,7 @@ type
   end;
 
  function GetMyVersion:string;
- function GetSQL(iden:string;param:integer):string;
+ function GetSQL(iden:string;param1:integer;param2:integer = -1):string;
 
 implementation
 
@@ -44,7 +44,7 @@ begin
   except; end;
 end;
 
-function GetSQL(iden: string; param: integer): string;
+function GetSQL(iden: string; param1: integer; param2: integer): string;
 var SQL:string;
 begin
   //нужно переделать на внешнее хранение в файлах а iden на список значений(const:int)
@@ -56,13 +56,24 @@ begin
     +'      pas.pass_type,                         '
     +'      pas.pass_name,                         '
     +'      val1.value year_built,                 '
-    +'      val2.value comment                     '
+    +'      val4.value way,                        '
+    +'      val2.value comment,                    '
+    +'      val3.value year_reconst,               '
+    +'      pas.last_edit last_edit,               '
+    +'      users.short_name user_edit,            '
+    +'      '''' contiguity                        '
     +'      FROM passports pas                     '
     +'     LEFT JOIN passport_prop_year_built val1 '
     +'      ON val1.pass_id=pas.id                 '
     +'     LEFT JOIN passport_prop_comment val2    '
     +'      ON val2.pass_id=pas.id                 '
-    +'      Where pas.id='+inttostr(param)
+    +'     LEFT JOIN passport_prop_year_reconst val3'
+    +'      ON val3.pass_id=pas.id                 '
+    +'     LEFT JOIN passport_prop_way val4        '
+    +'      ON val4.pass_id=pas.id                 '
+    +'     LEFT JOIN users users                   '
+    +'      ON users.id=pas.user_edit              '
+    +'      Where pas.id='+inttostr(param1)
     ;
   end else
   //-----------------------
@@ -80,7 +91,7 @@ begin
     +' LEFT JOIN                          '
     +' localization_fields localiz        '
     +' ON localiz.id=1                    '
-    +' WHERE pas.id='+inttostr(param)
+    +' WHERE pas.id='+inttostr(param1)
     +' UNION                              '
     +' SELECT                             '
     +'  localiz.name_text name,           '
@@ -93,14 +104,14 @@ begin
     +' LEFT JOIN                          '
     +' localization_fields localiz        '
     +' ON localiz.id=2                    '
-    +' WHERE pas.id='+inttostr(param)
+    +' WHERE pas.id='+inttostr(param1)
     ;
   end else
     //-----------------------
   if iden='branchs' then
   begin
     sql:=' select * from branch'
-        +' where pass_id='+inttostr(param)
+        +' where pass_id='+inttostr(param1)
         ;
   end else
   //-----------------------
@@ -113,7 +124,7 @@ begin
   if iden='obj_del_id' then
   begin
     sql:=' delete from objects'
-    +' where id='+inttostr(param)
+    +' where id='+inttostr(param1)
         ;
   end else
   //-----------------------
@@ -126,14 +137,14 @@ begin
   if iden='elem_del_id' then
   begin
     sql:=' delete from elements'
-    +' where id='+inttostr(param)
+    +' where id='+inttostr(param1)
         ;
   end else
   //-----------------------
   if iden='elem_del_obj_id' then
   begin
     sql:=' delete from elements'
-    +' where object_id='+inttostr(param)
+    +' where object_id='+inttostr(param1)
         ;
   end else
   //-----------------------
@@ -141,8 +152,9 @@ begin
   begin
     sql:=' '
         +' select objects.id id,  obj_type,'
+        +' point_1, point_2, '
         +' rad,length, pos, tan from objects '
-        +' where branch_id='+inttostr(param)
+        +' where branch_id='+inttostr(param1)
         +' order by pos                       '
         ;
   end else
@@ -154,7 +166,7 @@ begin
         +' rad,length, pos, tan from objects '
         +' LEFT JOIN objects_type            '
         +' on objects.obj_type=objects_type.id'
-        +' where branch_id='+inttostr(param)
+        +' where branch_id='+inttostr(param1)
         +' order by pos                       '
         ;
   end else
@@ -163,7 +175,7 @@ begin
   begin
     sql:=' '
         +' select*from objects'
-        +' where branch_id='+inttostr(param)
+        +' where branch_id='+inttostr(param1)
         +' order by pos                                              '
         ;
   end else
@@ -172,7 +184,7 @@ begin
   begin
     sql:=' '
         +' select sum(length) len from elements'
-        +' where object_id='+inttostr(param)
+        +' where object_id='+inttostr(param1)
         +' and elem_type in (select id from elements_type where elem_group_id in(0,1))'
         ;
   end else
@@ -187,14 +199,37 @@ begin
   if iden='elements_group' then
   begin
     sql:=' select * from elements_group'
-        +' where id>0'
+        +' where id>'+inttostr(param1)
         ;
   end else
   //-----------------------
   if iden='elements_type' then
   begin
     sql:=' select id,elem_type_name from elements_type'
-        +' where elem_group_id in(0,'+inttostr(param)
+        +' where elem_group_id in(0,'+inttostr(param1)
+        +' )'
+        ;
+  end else
+  //-----------------------
+  if iden='new_elements_type' then
+  begin
+    sql:=' INSERT INTO elements_type (elem_type_name,elem_group_id)'
+        +' VALUES (''новый элемент'','+inttostr(param1)
+        +' )'
+        ;
+  end else
+  //-----------------------
+  if iden='del_elements_types' then
+  begin
+    sql:=''
+    +'  delete from elements_type    where elem_group_id='+inttostr(param1)
+        ;
+  end else
+  //-----------------------
+  if iden='new_elements_group' then
+  begin
+    sql:=' INSERT INTO elements_group (group_name)'
+        +' VALUES (''новая группа'''
         +' )'
         ;
   end else
@@ -202,7 +237,26 @@ begin
   if iden='elements' then
   begin
     sql:=' select * from elements'
-        +' where object_id='+inttostr(param)
+        +' where object_id='+inttostr(param1)
+        +' order by pos'
+        ;
+  end else
+  //-----------------------
+  if iden='year_reconst' then
+  begin
+    sql:=' select max(elements.year) year from elements'
+        +' where pass_id='+inttostr(param1)
+        ;
+  end else
+  //-----------------------
+  if iden='elements_2_groups' then
+  begin
+    sql:=' select * from elements'
+        +' LEFT JOIN elements_type            '
+        +' on elements.elem_type=elements_type.id'
+        +' where object_id='+inttostr(param1)
+        +' and elem_group_id in(0,'+inttostr(param2)
+        +' )'
         +' order by pos'
         ;
   end else
@@ -216,13 +270,13 @@ begin
   if iden='del_pass_id' then
   begin
     sql:=''// delete from passports' //ON DELETE CASCADE br,obj,el !?!
-        +'  delete from passport_prop_comment    where pass_id='+inttostr(param)
-        +'; delete from passport_prop_year_built where pass_id='+inttostr(param)
-        +'; delete from passport_prop_comment    where pass_id='+inttostr(param)
-        +'; delete from elements                 where pass_id='+inttostr(param)
-        +'; delete from objects                  where pass_id='+inttostr(param)
-        +'; delete from branch                   where pass_id='+inttostr(param)
-        +'; delete from passports                where      id='+inttostr(param)
+        +'  delete from passport_prop_comment    where pass_id='+inttostr(param1)
+        +'; delete from passport_prop_year_built where pass_id='+inttostr(param1)
+        +'; delete from passport_prop_comment    where pass_id='+inttostr(param1)
+        +'; delete from elements                 where pass_id='+inttostr(param1)
+        +'; delete from objects                  where pass_id='+inttostr(param1)
+        +'; delete from branch                   where pass_id='+inttostr(param1)
+        +'; delete from passports                where      id='+inttostr(param1)
         +' '
         ;
  end;

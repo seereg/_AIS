@@ -11,7 +11,7 @@ object FormLogin: TFormLogin
   FormStyle = fsSystemStayOnTop
   Position = poScreenCenter
   ShowInTaskBar = stNever
-  LCLVersion = '1.6.2.0'
+  LCLVersion = '1.6.4.0'
   object Panel2: TPanel
     Left = 264
     Height = 219
@@ -110,7 +110,7 @@ object FormLogin: TFormLogin
         Align = alLeft
         Alignment = taRightJustify
         AutoSize = False
-        Caption = 'Пороль:   '
+        Caption = 'Пароль:   '
         Layout = tlCenter
         ParentColor = False
       end

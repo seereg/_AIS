@@ -1,12 +1,17 @@
 object FormM: TFormM
-  Left = 535
+  Left = 563
   Height = 675
-  Top = 225
+  Top = 301
   Width = 1255
   Caption = 'Служба пути'
   ClientHeight = 675
   ClientWidth = 1255
   Color = clMenuBar
+  Font.CharSet = RUSSIAN_CHARSET
+  Font.Height = -13
+  Font.Name = 'Arial'
+  Font.Pitch = fpVariable
+  Font.Quality = fqDraft
   Icon.Data = {
     96A5050000000100060000000000010020002820040066000000101000000100
     2000680400008E2004003030000001002000A8250000F6240400202000000100
@@ -11575,7 +11580,7 @@ object FormM: TFormM
     FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
   }
   OnShow = FormShow
-  LCLVersion = '1.6.2.0'
+  LCLVersion = '1.6.4.0'
   object Splitter1: TSplitter
     Left = 980
     Height = 581
@@ -11601,160 +11606,140 @@ object FormM: TFormM
     ClientHeight = 581
     ClientWidth = 491
     TabOrder = 2
-    object Panel1: TPanel
+    object PanelFind: TPanel
       Left = 0
-      Height = 188
+      Height = 160
       Top = 0
       Width = 491
       Align = alTop
       AutoSize = True
       BevelOuter = bvNone
-      Caption = 'Поиск'
-      ClientHeight = 188
+      ClientHeight = 160
       ClientWidth = 491
       TabOrder = 0
-      object PageControl2: TPageControl
+      object CheckGroupFind1: TCheckGroup
         Left = 0
-        Height = 188
+        Height = 56
         Top = 0
         Width = 491
-        ActivePage = TabSheet4
-        Align = alClient
-        TabIndex = 0
+        Align = alTop
+        AutoFill = True
+        Caption = 'Фильтровать по типу'
+        ChildSizing.LeftRightSpacing = 6
+        ChildSizing.TopBottomSpacing = 6
+        ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+        ChildSizing.EnlargeVertical = crsHomogenousChildResize
+        ChildSizing.ShrinkHorizontal = crsScaleChilds
+        ChildSizing.ShrinkVertical = crsScaleChilds
+        ChildSizing.Layout = cclLeftToRightThenTopToBottom
+        ChildSizing.ControlsPerLine = 1
+        ClientHeight = 35
+        ClientWidth = 487
+        Items.Strings = (
+          ''
+        )
+        OnItemClick = CheckFilterClick
         TabOrder = 0
-        object TabSheet4: TTabSheet
-          Caption = 'Вар.1'
-          ClientHeight = 160
-          ClientWidth = 483
-          object CheckGroupEditFind: TCheckGroup
-            Left = 0
-            Height = 52
-            Top = 108
-            Width = 483
-            Align = alTop
-            AutoFill = True
-            Caption = 'Фильтровать по комментарию'
-            ChildSizing.LeftRightSpacing = 6
-            ChildSizing.TopBottomSpacing = 6
-            ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
-            ChildSizing.EnlargeVertical = crsHomogenousChildResize
-            ChildSizing.ShrinkHorizontal = crsScaleChilds
-            ChildSizing.ShrinkVertical = crsScaleChilds
-            ChildSizing.Layout = cclLeftToRightThenTopToBottom
-            ChildSizing.ControlsPerLine = 1
-            ClientHeight = 32
-            ClientWidth = 479
-            Items.Strings = (
-              ''
-            )
-            OnClick = CheckGroupEditFindClick
-            OnItemClick = CheckFilterClick
-            TabOrder = 0
-            Data = {
-              0100000002
-            }
-            object EditFind: TEdit
-              Left = 32
-              Height = 20
-              Top = 6
-              Width = 441
-              Align = alRight
-              AutoSize = False
-              OnChange = EditFindChange
-              TabOrder = 0
-            end
-          end
-          object CheckGroupFind1: TCheckGroup
-            Left = 0
-            Height = 56
-            Top = 0
-            Width = 483
-            Align = alTop
-            AutoFill = True
-            Caption = 'Фильтровать по типу'
-            ChildSizing.LeftRightSpacing = 6
-            ChildSizing.TopBottomSpacing = 6
-            ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
-            ChildSizing.EnlargeVertical = crsHomogenousChildResize
-            ChildSizing.ShrinkHorizontal = crsScaleChilds
-            ChildSizing.ShrinkVertical = crsScaleChilds
-            ChildSizing.Layout = cclLeftToRightThenTopToBottom
-            ChildSizing.ControlsPerLine = 1
-            ClientHeight = 36
-            ClientWidth = 479
-            Items.Strings = (
-              ''
-            )
-            OnChangeBounds = CheckGroupFind1ChangeBounds
-            OnClick = CheckGroupEditFindClick
-            OnItemClick = CheckFilterClick
-            TabOrder = 1
-            Data = {
-              0100000002
-            }
-            object DBLookupFilterType: TDBLookupComboBox
-              Left = 32
-              Height = 23
-              Top = 6
-              Width = 441
-              Align = alRight
-              AutoSize = False
-              DataField = 'id'
-              DataSource = DataM.DSPasspTypeList
-              KeyField = 'id'
-              ListField = 'pass_type_name'
-              ListFieldIndex = 0
-              ListSource = DataM.DSPasspTypeList
-              LookupCache = False
-              OnChange = DBLookupFilterTypeChange
-              TabOrder = 0
-            end
-          end
-          object CheckGroupEditFind1: TCheckGroup
-            Left = 0
-            Height = 52
-            Top = 56
-            Width = 483
-            Align = alTop
-            AutoFill = True
-            Caption = 'Фильтровать по названию'
-            ChildSizing.LeftRightSpacing = 6
-            ChildSizing.TopBottomSpacing = 6
-            ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
-            ChildSizing.EnlargeVertical = crsHomogenousChildResize
-            ChildSizing.ShrinkHorizontal = crsScaleChilds
-            ChildSizing.ShrinkVertical = crsScaleChilds
-            ChildSizing.Layout = cclLeftToRightThenTopToBottom
-            ChildSizing.ControlsPerLine = 1
-            ClientHeight = 32
-            ClientWidth = 479
-            Items.Strings = (
-              ''
-            )
-            OnClick = CheckGroupEditFindClick
-            OnItemClick = CheckFilterClick
-            TabOrder = 2
-            Data = {
-              0100000002
-            }
-            object EditFind1: TEdit
-              Left = 32
-              Height = 20
-              Top = 6
-              Width = 441
-              Align = alRight
-              AutoSize = False
-              OnChange = EditFindChange
-              TabOrder = 0
-            end
-          end
+        Data = {
+          0100000002
+        }
+        object DBLookupFilterType: TDBLookupComboBox
+          Left = 40
+          Height = 24
+          Top = 6
+          Width = 441
+          Align = alRight
+          AutoSize = False
+          DataField = 'id'
+          DataSource = DataM.DSPasspTypeList
+          KeyField = 'id'
+          ListField = 'pass_type_name'
+          ListFieldIndex = 0
+          ListSource = DataM.DSPasspTypeList
+          LookupCache = False
+          OnChange = DBLookupFilterTypeChange
+          TabOrder = 0
+        end
+      end
+      object CheckGroupEditFind1: TCheckGroup
+        Left = 0
+        Height = 52
+        Top = 108
+        Width = 491
+        Align = alTop
+        AutoFill = True
+        Caption = 'Фильтровать по названию'
+        ChildSizing.LeftRightSpacing = 6
+        ChildSizing.TopBottomSpacing = 6
+        ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+        ChildSizing.EnlargeVertical = crsHomogenousChildResize
+        ChildSizing.ShrinkHorizontal = crsScaleChilds
+        ChildSizing.ShrinkVertical = crsScaleChilds
+        ChildSizing.Layout = cclLeftToRightThenTopToBottom
+        ChildSizing.ControlsPerLine = 1
+        ClientHeight = 31
+        ClientWidth = 487
+        Items.Strings = (
+          ''
+        )
+        OnItemClick = CheckFilterClick
+        TabOrder = 1
+        Data = {
+          0100000002
+        }
+        object EditFind1: TEdit
+          Left = 40
+          Height = 19
+          Top = 6
+          Width = 441
+          Align = alRight
+          AutoSize = False
+          OnChange = EditFindChange
+          TabOrder = 0
+        end
+      end
+      object CheckGroupEditFind: TCheckGroup
+        Left = 0
+        Height = 52
+        Top = 56
+        Width = 491
+        Align = alTop
+        AutoFill = True
+        Caption = 'Фильтровать по комментарию'
+        ChildSizing.LeftRightSpacing = 6
+        ChildSizing.TopBottomSpacing = 6
+        ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+        ChildSizing.EnlargeVertical = crsHomogenousChildResize
+        ChildSizing.ShrinkHorizontal = crsScaleChilds
+        ChildSizing.ShrinkVertical = crsScaleChilds
+        ChildSizing.Layout = cclLeftToRightThenTopToBottom
+        ChildSizing.ControlsPerLine = 1
+        ClientHeight = 31
+        ClientWidth = 487
+        Items.Strings = (
+          ''
+        )
+        OnItemClick = CheckFilterClick
+        TabOrder = 2
+        Data = {
+          0100000002
+        }
+        object EditFind: TEdit
+          Left = 40
+          Height = 19
+          Top = 6
+          Width = 441
+          Align = alRight
+          AutoSize = False
+          OnChange = EditFindChange
+          TabOrder = 0
         end
       end
     end
     object RxDBGrid1: TRxDBGrid
       Left = 0
-      Height = 369
-      Top = 193
+      Height = 396
+      Top = 165
       Width = 491
       AfterQuickSearch = RxDBGrid1AfterQuickSearch
       ColumnDefValues.BlobText = '(данные)'
@@ -11928,6 +11913,11 @@ object FormM: TFormM
       PopupMenu = PopupMenuList
       Scrollbars = ssAutoVertical
       TabOrder = 1
+      TitleFont.CharSet = RUSSIAN_CHARSET
+      TitleFont.Height = -13
+      TitleFont.Name = 'Arial'
+      TitleFont.Pitch = fpVariable
+      TitleFont.Quality = fqDraft
       TitleStyle = tsNative
       OnDblClick = RxDBGrid1DblClick
     end
@@ -11935,15 +11925,15 @@ object FormM: TFormM
       Cursor = crVSplit
       Left = 0
       Height = 5
-      Top = 188
+      Top = 160
       Width = 491
       Align = alTop
       ResizeAnchor = akTop
     end
     object BBNewPassport: TSpeedButton
       Left = 0
-      Height = 19
-      Top = 562
+      Height = 20
+      Top = 561
       Width = 491
       Action = ActionPassportNew
       Align = alBottom
@@ -14122,8 +14112,10 @@ object FormM: TFormM
         object ToolButton10: TToolButton
           Left = 1
           Top = 0
-          Action = ActionReconnect
           AutoSize = True
+          Caption = 'Настройка'
+          DropdownMenu = PopupMenuSettings
+          ImageIndex = 4
         end
       end
       object Image2: TImage
@@ -25753,7 +25745,7 @@ object FormM: TFormM
     Caption = 'Общие'
   end
   object PopupMenuTabs: TPopupMenu
-    left = 88
+    left = 104
     top = 96
     object MI_Close: TMenuItem
       Caption = 'Закрыть всё'
@@ -25837,8 +25829,8 @@ object FormM: TFormM
     end
   end
   object PopupMenuList: TPopupMenu
-    left = 184
-    top = 296
+    left = 24
+    top = 344
     object MenuItem1: TMenuItem
       Action = ActionPassportNew
     end
@@ -25867,5 +25859,24 @@ object FormM: TFormM
   object OpenPictureDialog1: TOpenPictureDialog
     left = 840
     top = 216
+  end
+  object PopupMenuSettings: TPopupMenu
+    TrackButton = tbLeftButton
+    OnPopup = PopupMenuSettingsPopup
+    left = 216
+    top = 96
+    object miSettingsElements: TMenuItem
+      Caption = 'Редактирование справочников'
+      object MenuItem9: TMenuItem
+        Caption = 'New Item4'
+        OnClick = MenuItemSetEditElemClick
+      end
+    end
+    object MenuItem11: TMenuItem
+      Caption = 'Настройки системы'
+    end
+    object MenuItem10: TMenuItem
+      Action = ActionReconnect
+    end
   end
 end

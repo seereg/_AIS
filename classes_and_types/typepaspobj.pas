@@ -22,6 +22,8 @@ type
     f_obj_rad    :TMyField;
     f_obj_tan    :TMyField;
     f_pas_id     :TMyField;
+    f_point_1    :TMyField;
+    f_point_2    :TMyField;
     f_conn       :TZConnection;
     ZQProp       : TZQuery;
     PassElem     : TPassElem;
@@ -39,6 +41,8 @@ type
     property obj_rad    :string  Index 4 read getValue  write setValue;
     property obj_tan    :string  Index 5 read getValue  write setValue;
     property pas_id     :string  Index 6 read getValue  write setValue;
+    property point_1    :string  Index 7 read getValue  write setValue;
+    property point_2    :string  Index 8 read getValue  write setValue;
 
     constructor Create(TheOwner: TComponent;p_obj_id:integer;p_conn:TZConnection);
     function getPasObj():boolean;
@@ -65,6 +69,8 @@ begin
     4: fld:=addr(f_obj_rad);
     5: fld:=addr(f_obj_tan);
     6: fld:=addr(f_pas_id);
+    7: fld:=addr(f_point_1);
+    8: fld:=addr(f_point_2);
     else exit;
     end;
     result:=fld^.Value;
@@ -77,6 +83,7 @@ procedure TPassObj.setValue(Index: Integer; Value: string);
 var
   fld:^TMyField;
   st:string;
+  i:integer;
 begin
   try
     case index of
@@ -87,6 +94,8 @@ begin
     4: fld:=addr(f_obj_rad);
     5: fld:=addr(f_obj_tan);
     6: fld:=addr(f_pas_id);
+    7: fld:=addr(f_point_1);
+    8: fld:=addr(f_point_2);
     else exit;
     end;
     if Value=fld^.Value then exit;
@@ -100,6 +109,13 @@ begin
          f_pas_id.Value:='';
          pas_id:=st;//переписать по id
        end;
+    if (index = 6) then
+    begin
+      for i:=0 to self.ComponentCount-1 do try
+       TPassElem(Components[i]).pas_id:= f_pas_id.Value;
+      finally
+      end;
+    end;
     if connecting then
       begin
         st:='INSERT OR IGNORE INTO '+ fld^.table+' (id) VALUES ('+f_obj_id.Value+')';
@@ -161,6 +177,12 @@ begin
   f_pas_id.Value      := '';
   f_pas_id.name       := 'pass_id';
   f_pas_id.table      := 'objects';
+  f_point_1.Value     := '';
+  f_point_1.name      := 'point_1';
+  f_point_1.table     := 'objects';
+  f_point_2.Value     := '';
+  f_point_2.name      := 'point_2';
+  f_point_2.table     := 'objects';
   connecting:=true;
 end;
 
@@ -177,6 +199,8 @@ begin
     f_obj_len .value :=ZQProp.FieldByName(f_obj_len .name).AsString;
     f_obj_tan .value :=ZQProp.FieldByName(f_obj_tan .name).AsString;
     f_pas_id  .value :=ZQProp.FieldByName(f_pas_id  .name).AsString;
+    f_point_1 .value :=ZQProp.FieldByName(f_point_1 .name).AsString;
+    f_point_2 .value :=ZQProp.FieldByName(f_point_2 .name).AsString;
   except
     result:=false;
   end;
@@ -202,7 +226,8 @@ begin
 end;
 
 function TPassObj.getPasElem(elem_id: integer): TPassElem;
-var i:integer;
+var
+  i:integer;
 begin
   result:=nil;
   for i:=0 to self.ComponentCount-1 do try
@@ -221,11 +246,15 @@ begin
 end;
 
 procedure TPassObj.updateLen;
+var
+  st:string;
 begin
   try
     ZQProp.SQL.Text:=(GetSQL('obj_len',StrToIntDef(f_obj_id.value,-1)));
     ZQProp.Open;
-    obj_len :=ZQProp.FieldByName('len').AsString;
+    st:= ZQProp.FieldByName('len').AsString;
+    if (st='') then st:= '0';
+    obj_len :=st;
   except
   end;
 end;

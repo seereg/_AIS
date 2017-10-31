@@ -1,43 +1,43 @@
 object FramePassportProperties: TFramePassportProperties
   Left = 0
-  Height = 431
+  Height = 669
   Top = 0
   Width = 606
   Align = alClient
-  ClientHeight = 431
+  ClientHeight = 669
   ClientWidth = 606
   TabOrder = 0
-  DesignLeft = 1062
-  DesignTop = 243
+  DesignLeft = 814
+  DesignTop = 188
   object PanelVL: TPanel
     Left = 0
-    Height = 112
+    Height = 309
     Top = 0
     Width = 606
     Align = alTop
     BevelOuter = bvNone
     Caption = 'PanelVL'
-    ClientHeight = 112
+    ClientHeight = 309
     ClientWidth = 606
     Color = clWindow
     ParentColor = False
     TabOrder = 1
     object PanelL: TPanel
       Left = 0
-      Height = 112
+      Height = 309
       Top = 0
-      Width = 104
+      Width = 147
       Align = alLeft
       AutoSize = True
       BevelOuter = bvNone
-      ClientHeight = 112
-      ClientWidth = 104
+      ClientHeight = 309
+      ClientWidth = 147
       TabOrder = 0
       object Lab1: TLabel
         Left = 1
         Height = 22
         Top = 1
-        Width = 102
+        Width = 145
         Align = alTop
         AutoSize = False
         BidiMode = bdRightToLeftNoAlign
@@ -53,7 +53,7 @@ object FramePassportProperties: TFramePassportProperties
         Left = 1
         Height = 22
         Top = 24
-        Width = 102
+        Width = 145
         Align = alTop
         AutoSize = False
         BidiMode = bdRightToLeftNoAlign
@@ -68,8 +68,8 @@ object FramePassportProperties: TFramePassportProperties
       object Lab4: TLabel
         Left = 1
         Height = 22
-        Top = 70
-        Width = 102
+        Top = 93
+        Width = 145
         Align = alTop
         AutoSize = False
         BidiMode = bdRightToLeftNoAlign
@@ -85,7 +85,7 @@ object FramePassportProperties: TFramePassportProperties
         Left = 1
         Height = 22
         Top = 47
-        Width = 102
+        Width = 145
         Align = alTop
         AutoSize = False
         BidiMode = bdRightToLeftNoAlign
@@ -97,23 +97,103 @@ object FramePassportProperties: TFramePassportProperties
         ParentColor = False
         Transparent = False
       end
+      object Lab5: TLabel
+        Left = 1
+        Height = 22
+        Top = 70
+        Width = 145
+        Align = alTop
+        AutoSize = False
+        BidiMode = bdRightToLeftNoAlign
+        BorderSpacing.Around = 1
+        Caption = '   :Пути трамвая по   '
+        Color = clWindow
+        Layout = tlCenter
+        ParentBidiMode = False
+        ParentColor = False
+        Transparent = False
+      end
+      object Lab6: TLabel
+        Left = 1
+        Height = 22
+        Top = 217
+        Width = 145
+        Align = alBottom
+        AutoSize = False
+        BidiMode = bdRightToLeftNoAlign
+        BorderSpacing.Around = 1
+        Caption = '   :Примыкает к   '
+        Color = clWindow
+        Layout = tlCenter
+        ParentBidiMode = False
+        ParentColor = False
+        Transparent = False
+      end
+      object Lab7: TLabel
+        Left = 1
+        Height = 22
+        Top = 240
+        Width = 145
+        Align = alBottom
+        AutoSize = False
+        BidiMode = bdRightToLeftNoAlign
+        BorderSpacing.Around = 1
+        Caption = '   :Год реконструкции   '
+        Color = clWindow
+        Layout = tlCenter
+        ParentBidiMode = False
+        ParentColor = False
+        Transparent = False
+      end
+      object Lab10: TLabel
+        Left = 1
+        Height = 22
+        Top = 263
+        Width = 145
+        Align = alBottom
+        AutoSize = False
+        BidiMode = bdRightToLeftNoAlign
+        BorderSpacing.Around = 1
+        Caption = '   :Последние изменения   '
+        Color = clWindow
+        Layout = tlCenter
+        ParentBidiMode = False
+        ParentColor = False
+        Transparent = False
+      end
+      object Lab13: TLabel
+        Left = 1
+        Height = 22
+        Top = 286
+        Width = 145
+        Align = alBottom
+        AutoSize = False
+        BidiMode = bdRightToLeftNoAlign
+        BorderSpacing.Around = 1
+        Caption = '   :Изменения внёс   '
+        Color = clWindow
+        Layout = tlCenter
+        ParentBidiMode = False
+        ParentColor = False
+        Transparent = False
+      end
     end
     object PanelV: TPanel
-      Left = 109
-      Height = 112
+      Left = 152
+      Height = 309
       Top = 0
-      Width = 497
+      Width = 454
       Align = alClient
       BevelOuter = bvNone
       Caption = 'PanelV'
-      ClientHeight = 112
-      ClientWidth = 497
+      ClientHeight = 309
+      ClientWidth = 454
       TabOrder = 1
       object EdName: TEdit
         Left = 0
         Height = 23
         Top = 0
-        Width = 497
+        Width = 454
         Align = alTop
         OnChange = EdNameChange
         TabOrder = 0
@@ -123,7 +203,7 @@ object FramePassportProperties: TFramePassportProperties
         Left = 0
         Height = 23
         Top = 46
-        Width = 497
+        Width = 454
         Align = alTop
         OnChange = EdYearBuiltChange
         TabOrder = 1
@@ -131,9 +211,9 @@ object FramePassportProperties: TFramePassportProperties
       end
       object MemoComment: TMemo
         Left = 0
-        Height = 43
-        Top = 69
-        Width = 497
+        Height = 124
+        Top = 92
+        Width = 454
         Align = alClient
         Lines.Strings = (
           'MemoComment'
@@ -145,7 +225,7 @@ object FramePassportProperties: TFramePassportProperties
         Left = 0
         Height = 23
         Top = 23
-        Width = 497
+        Width = 454
         Align = alTop
         ListFieldIndex = 0
         ListSource = DataM.DSPasspTypeList
@@ -153,27 +233,101 @@ object FramePassportProperties: TFramePassportProperties
         OnChange = DBComboBoxTypeChange
         TabOrder = 3
       end
+      object EdWay: TEdit
+        Left = 0
+        Height = 23
+        Top = 69
+        Width = 454
+        Align = alTop
+        OnChange = EdWayChange
+        TabOrder = 4
+        Text = 'EdWay'
+      end
+      object LbReconst: TLabel
+        Left = 1
+        Height = 22
+        Top = 240
+        Width = 452
+        Align = alBottom
+        AutoSize = False
+        BidiMode = bdRightToLeftNoAlign
+        BorderSpacing.Around = 1
+        Caption = 'автозаполнение по элементам'
+        Color = clWindow
+        Layout = tlCenter
+        ParentBidiMode = False
+        ParentColor = False
+        Transparent = False
+      end
+      object LbContiguity: TLabel
+        Left = 1
+        Height = 22
+        Top = 217
+        Width = 452
+        Align = alBottom
+        AutoSize = False
+        BidiMode = bdRightToLeftNoAlign
+        BorderSpacing.Around = 1
+        Caption = 'автозаполнение по  примыканиям'
+        Color = clWindow
+        Layout = tlCenter
+        ParentBidiMode = False
+        ParentColor = False
+        Transparent = False
+      end
+      object LbLastEdit: TLabel
+        Left = 1
+        Height = 22
+        Top = 263
+        Width = 452
+        Align = alBottom
+        AutoSize = False
+        BidiMode = bdRightToLeftNoAlign
+        BorderSpacing.Around = 1
+        Caption = 'автозаполнение'
+        Color = clWindow
+        Layout = tlCenter
+        ParentBidiMode = False
+        ParentColor = False
+        Transparent = False
+      end
+      object LbUserEdit: TLabel
+        Left = 1
+        Height = 22
+        Top = 286
+        Width = 452
+        Align = alBottom
+        AutoSize = False
+        BidiMode = bdRightToLeftNoAlign
+        BorderSpacing.Around = 1
+        Caption = 'автозаполнение'
+        Color = clWindow
+        Layout = tlCenter
+        ParentBidiMode = False
+        ParentColor = False
+        Transparent = False
+      end
     end
     object SplitterVL: TSplitter
-      Left = 104
-      Height = 112
+      Left = 147
+      Height = 309
       Top = 0
       Width = 5
     end
   end
   object GroupBox1: TGroupBox
     Left = 0
-    Height = 314
-    Top = 117
+    Height = 355
+    Top = 314
     Width = 606
     Align = alClient
     Caption = 'Ветки (пути)'
-    ClientHeight = 294
+    ClientHeight = 335
     ClientWidth = 602
     TabOrder = 0
     object DBGridBranches: TDBGrid
       Left = 0
-      Height = 294
+      Height = 335
       Top = 0
       Width = 602
       Align = alClient
@@ -222,7 +376,7 @@ object FramePassportProperties: TFramePassportProperties
     Cursor = crVSplit
     Left = 0
     Height = 5
-    Top = 112
+    Top = 309
     Width = 606
     Align = alTop
     ResizeAnchor = akTop
@@ -236,7 +390,7 @@ object FramePassportProperties: TFramePassportProperties
   end
   object DSBranches: TDataSource
     DataSet = ZTBranches
-    left = 112
+    left = 96
     top = 208
   end
   object ZTBranches: TZTable

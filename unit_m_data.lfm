@@ -1,8 +1,8 @@
 object DataM: TDataM
   OldCreateOrder = False
   Height = 440
-  HorizontalOffset = 538
-  VerticalOffset = 237
+  HorizontalOffset = 1225
+  VerticalOffset = 351
   Width = 645
   object IL_64: TImageList
     Height = 64
@@ -2651,12 +2651,14 @@ object DataM: TDataM
   end
   object ZConnection1: TZConnection
     ControlsCodePage = cCP_UTF8
-    AutoEncodeStrings = False
     Properties.Strings = (
       'AutoEncodeStrings=ON'
     )
     AutoCommit = False
+    Connected = True
+    DesignConnection = True
     Port = 0
+    Database = 'C:\GIT\_AIS\db\tramways.db'
     Protocol = 'sqlite-3'
     LibraryLocation = 'C:\GIT\_AIS\dll\sqlite3.dll'
     left = 24
@@ -2682,12 +2684,13 @@ object DataM: TDataM
     left = 296
     top = 136
   end
-  object ZQPasspElType: TZQuery
+  object ZQtemp: TZQuery
     Connection = ZConnection1
     AfterOpen = ZQPasspTypeListAfterOpen
     SQL.Strings = (
       'SELECT'
       'id,'
+      'elem_group_id,'
       ' CAST(('
       '  elem_type_name'
       ' ) as text(20)) as elem_type_name'
@@ -2695,11 +2698,6 @@ object DataM: TDataM
     )
     Params = <>
     left = 192
-    top = 200
-  end
-  object DSPasspElType: TDataSource
-    DataSet = ZQPasspElType
-    left = 296
     top = 200
   end
   object IL_32: TImageList

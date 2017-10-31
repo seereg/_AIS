@@ -18,9 +18,15 @@ type
     f_pass_id    :TMyField;
     f_pass_name  :TMyField;
     f_year_built :TMyField;
+    f_way        :TMyField;
     f_comment    :TMyField;
+    f_contiguity :TMyField;
+    f_reconst    :TMyField;
+    f_last_edit  :TMyField;
+    f_user_edit  :TMyField;
     f_conn       : TZConnection;
     ZQProp       : TZQuery;
+    f_user_id    : string;
     function  getValue(Index:Integer):string;
     procedure setValue(Index:Integer; Value:string);
     function  getNewID:integer;
@@ -31,8 +37,13 @@ type
     property pass_type   :string  Index 0 read getValue  write setValue;
     property pass_name   :string  Index 1 read getValue  write setValue;
     property year_built  :string  Index 2 read getValue  write setValue;
-    property comment     :string  Index 3 read getValue  write setValue;
-    constructor Create(p_pass_id:integer;p_conn:TZConnection);
+    property way         :string  Index 3 read getValue  write setValue;
+    property comment     :string  Index 4 read getValue  write setValue;
+    property contiguity  :string  Index 5 read getValue  write setValue;
+    property reconst     :string  Index 6 read getValue  write setValue;
+    property last_edit   :string  Index 7 read getValue  write setValue;
+    property user_edit   :string  Index 8 read getValue  write setValue;
+    constructor Create(p_pass_id,p_user_id:integer;p_conn:TZConnection);
     function getDate():boolean;
   end;
 
@@ -49,7 +60,12 @@ begin
     0: fld:=addr(f_pass_type);
     1: fld:=addr(f_pass_name);
     2: fld:=addr(f_year_built);
-    3: fld:=addr(f_comment);
+    3: fld:=addr(f_way);
+    4: fld:=addr(f_comment);
+    5: fld:=addr(f_contiguity);
+    6: fld:=addr(f_reconst);
+    7: fld:=addr(f_last_edit);
+    8: fld:=addr(f_user_edit);
     else exit;
     end;
     result:=fld^.Value;
@@ -66,10 +82,15 @@ begin
   try
     ZQProp.SQL.Clear;
     case index of
-    0: fld:=addr(f_pass_type);
-    1: fld:=addr(f_pass_name);
-    2: fld:=addr(f_year_built);
-    3: fld:=addr(f_comment);
+      0: fld:=addr(f_pass_type);
+      1: fld:=addr(f_pass_name);
+      2: fld:=addr(f_year_built);
+      3: fld:=addr(f_way);
+      4: fld:=addr(f_comment);
+      5: fld:=addr(f_contiguity);
+      6: fld:=addr(f_reconst);
+      7: fld:=addr(f_last_edit);
+      8: fld:=addr(f_user_edit);
     else exit;
     end;
     if Value=fld^.Value then exit;
@@ -82,6 +103,11 @@ begin
          rewValue(2);//переписать по id
          rewValue(3);//переписать по id
        end;     }
+    if fld^.table='' then begin
+//      донт сэйв
+      fld^.Value:=Value;
+      exit;
+    end;
     if not(StrToIntDef(f_pass_id.Value,-1)<0) then
     begin
       ZQProp.SQL.Clear;
@@ -100,6 +126,7 @@ begin
       DataM.passListRefresh();
     end;
     fld^.Value:=Value;
+    if (Index<>8) then setValue(8,f_user_id);
   except
   end;
 end;
@@ -129,7 +156,12 @@ begin
     0: fld:=addr(f_pass_type);
     1: fld:=addr(f_pass_name);
     2: fld:=addr(f_year_built);
-    3: fld:=addr(f_comment);
+    3: fld:=addr(f_way);
+    4: fld:=addr(f_comment);
+    5: fld:=addr(f_contiguity);
+    6: fld:=addr(f_reconst);
+    7: fld:=addr(f_last_edit);
+    8: fld:=addr(f_user_edit);
   else exit;
   end;
   st:=fld^.Value;
@@ -137,13 +169,14 @@ begin
   setValue(Index,st); //переписать по id
 end;
 
-constructor TPassProp.Create(p_pass_id: integer;p_conn: TZConnection);
+constructor TPassProp.Create(p_pass_id,p_user_id: integer;p_conn: TZConnection);
 begin
   inherited Create;
   ZQProp:= TZQuery.Create(nil);
   f_conn:= p_conn;
   ZQProp.Connection:=f_conn;
   f_pass_id.value:=inttostr(p_pass_id);
+  f_user_id:=inttostr(p_user_id);
   getDate();
 end;
 
@@ -178,9 +211,29 @@ begin
   f_year_built.table := 'passport_prop_year_built';
   f_year_built.value := ZQProp.FieldByName('year_built').AsString;
 
+  f_way.name         := 'way';
+  f_way.table        := 'passport_prop_way';
+  f_way.value        := ZQProp.FieldByName('way').AsString;
+
   f_comment.name     := 'comment';
   f_comment.table    := 'passport_prop_comment';
   f_comment.value    := ZQProp.FieldByName('comment').AsString;
+
+  f_contiguity.name  := 'contiguity';
+  f_contiguity.table := '';
+  f_contiguity.value := ZQProp.FieldByName('contiguity').AsString;
+
+  f_reconst.name     := 'year_reconst';
+  f_reconst.table    := 'passport_prop_year_reconst';
+  f_reconst.value    := ZQProp.FieldByName('year_reconst').AsString;
+
+  f_last_edit.name   := 'last_edit';
+  f_last_edit.table  := 'passports';
+  f_last_edit.value  := ZQProp.FieldByName('last_edit').AsString;
+
+  f_user_edit.name   := 'user_edit';
+  f_user_edit.table  := 'passports';
+  f_user_edit.value  := ZQProp.FieldByName('user_edit').AsString;
   except
     result:=false;
   end;

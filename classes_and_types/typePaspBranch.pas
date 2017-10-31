@@ -57,10 +57,13 @@ begin
     PassObj.connecting:=false;
     PassObj.obj_branch:=inttostr(f_branch_id);
     PassObj.obj_pos  :=ZQObjects.FieldByName('pos').AsString;
+    PassObj.pas_id   :=inttostr(f_pas_id);
     PassObj.obj_type :=ZQObjects.FieldByName('obj_type').AsString;
     PassObj.obj_len  :=ZQObjects.FieldByName('length').AsString;
     PassObj.obj_rad  :=ZQObjects.FieldByName('rad').AsString;
     PassObj.obj_tan  :=ZQObjects.FieldByName('tan').AsString;
+    PassObj.point_1  :=ZQObjects.FieldByName('point_1').AsString;
+    PassObj.point_2  :=ZQObjects.FieldByName('point_2').AsString;
     PassObj.connecting:=true;
    ZQObjects.Next;
   end;

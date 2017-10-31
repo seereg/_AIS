@@ -32,8 +32,9 @@ type
     { public declarations }
     TabIndex:integer;
     PasspID:integer;
+    UserID :integer;
   public
-    constructor Create(TheOwner: TComponent;TabOwner:TATTabs;pPasspID:integer); //override;
+    constructor Create(TheOwner: TComponent;TabOwner:TATTabs;pPasspID,pUserID:integer); //override;
   end;
 
 implementation
@@ -55,7 +56,7 @@ begin
 end;
 
 constructor TFramePassport.Create(TheOwner: TComponent; TabOwner: TATTabs;
-  pPasspID: integer);
+  pPasspID,pUserID: integer);
 var
   i:integer;
   TabSheet:TTabSheet;
@@ -63,10 +64,11 @@ var
 begin
   inherited Create(TheOwner);
   self.Parent:=TWinControl(TheOwner);
-  pass:= TPassProp.Create(pPasspID,DataM.ZConnection1);
+  pass:= TPassProp.Create(pPasspID,pUserID,DataM.ZConnection1);
   pPasspID:=strtoint(pass.pass_id);
   self.Name:='FramePassportID'+inttostr(pPasspID);
   self.PasspID:=pPasspID;
+  self.UserID :=pUserID;
   TabOwner.AddTab(-1,'Тип-'+pass.pass_type+': '+pass.pass_name+' (ред.)');
   TabOwner.TabIndex:=TabOwner.TabCount-1;
   freeandnil(pass); //  pass.Destroy;
@@ -77,6 +79,7 @@ begin
    TabSheet.Caption:='Свойства';
    FPassportProperties:=TFramePassportProperties.Create(TabSheet);
    FPassportProperties.pass_id:=PasspID;
+   FPassportProperties.user_id:=UserID;
    FPassportProperties.Parent:=TabSheet;
    FPassportProperties.PageControlPassport:=PageControlPassport;
    FPassportProperties.getDate;

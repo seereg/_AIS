@@ -24,11 +24,21 @@ type
     DBGridBranches: TDBGrid;
     EdName: TEdit;
     EdYearBuilt: TEdit;
+    EdWay: TEdit;
     GroupBox1: TGroupBox;
+    Lab10: TLabel;
+    LbLastEdit: TLabel;
+    LbUserEdit: TLabel;
+    Lab13: TLabel;
     Lab2: TLabel;
     Lab4: TLabel;
     Lab3: TLabel;
     Lab1: TLabel;
+    Lab5: TLabel;
+    Lab6: TLabel;
+    Lab7: TLabel;
+    LbReconst: TLabel;
+    LbContiguity: TLabel;
     MemoComment: TMemo;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
@@ -47,6 +57,7 @@ type
     procedure ActionDeleteBranchExecute(Sender: TObject);
     procedure DBComboBoxTypeChange(Sender: TObject);
     procedure EdNameChange(Sender: TObject);
+    procedure EdWayChange(Sender: TObject);
     procedure EdYearBuiltChange(Sender: TObject);
     procedure MemoCommentChange(Sender: TObject);
     procedure ZTBranchesAfterRefresh(DataSet: TDataSet);
@@ -57,6 +68,7 @@ type
     { public declarations }
     PageControlPassport:TPageControl;
     pass_id:integer;
+    user_id:integer;
     PassProp:TPassProp;
     procedure getDate;
     procedure AddBranchSheet(branch_id:integer;branch_name:string);
@@ -94,6 +106,11 @@ begin
  pass_id:=StrToIntDef(PassProp.pass_id,-1);
 end;
 
+procedure TFramePassportProperties.EdWayChange(Sender: TObject);
+begin
+  PassProp.way:=EdWay.Text;
+end;
+
 procedure TFramePassportProperties.EdYearBuiltChange(Sender: TObject);
 begin
   PassProp.year_built:=EdYearBuilt.Text;
@@ -119,13 +136,14 @@ begin
 end;
 
 procedure TFramePassportProperties.getDate;
+var
+  st:string;
 begin
 {  ZQBranches.Close;
   ZQBranches.SQL.Clear;
   ZQBranches.SQL.Add(GetSQL('branchs', pass_id));
   ZQBranches.Open;   }
-  PassProp:=TPassProp.Create(pass_id,DataM.ZConnection1);
-
+  PassProp:=TPassProp.Create(pass_id,user_id,DataM.ZConnection1);
   ZTBranches.Filter:='pass_id='+inttostr(pass_id);
   ZTBranches.Open;
   DBComboBoxType.KeyField:='id';
@@ -134,6 +152,17 @@ begin
   EdName     .Text:=PassProp.pass_name;
   EdYearBuilt.Text:=PassProp.year_built;
   MemoComment.Text:=PassProp.comment;
+  EdWay.Text:=PassProp.way;
+  LbContiguity.Caption:=PassProp.contiguity;
+
+  DataM.ZQtemp.SQL.Text:=(GetSQL('year_reconst',pass_id));
+  DataM.ZQtemp.Open;
+  if (DataM.ZQtemp.FieldValues['year']<>null)
+   then PassProp.reconst:= DataM.ZQtemp.FieldValues['year'];
+
+  LbReconst.Caption:=PassProp.reconst;
+  LbLastEdit.Caption:=PassProp.last_edit;
+  LbUserEdit.Caption:=PassProp.user_edit;
   ZTBranchesAfterRefresh(nil);
 end;
 

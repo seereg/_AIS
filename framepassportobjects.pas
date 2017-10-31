@@ -25,17 +25,26 @@ type
     ActionObjAdd: TAction;
     ActionListObjElem: TActionList;
     DBComboBoxElemTypeMinor: TDBLookupComboBox;
+    DBComboBoxContiguity: TDBLookupComboBox;
     DBComboBoxTypeObj: TDBLookupComboBox;
     DSElemTypeMinor: TDataSource;
     DSPassObjType: TDataSource;
     DBComboBoxTypeEl: TDBLookupComboBox;
     DSElemType: TDataSource;
+    EdPoint1: TEdit;
+    EdPoint2: TEdit;
+    EdRad: TEdit;
+    EdTan: TEdit;
     GroupBoxObjProp: TGroupBox;
     GroupBoxObj: TGroupBox;
     GroupBoxElem: TGroupBox;
     KGridObj: TKGrid;
     KGridElem: TKGrid;
-    KGridObjProp: TKGrid;
+    LabPoint1: TLabel;
+    Lab4: TLabel;
+    LabPoint2: TLabel;
+    LabRad1: TLabel;
+    LabTan1: TLabel;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     MenuAddElem: TMenuItem;
@@ -44,10 +53,23 @@ type
     MenuItem4: TMenuItem;
     MenuItem5: TMenuItem;
     MenuItem7: TMenuItem;
+    PanelL2: TPanel;
+    PanelL3: TPanel;
+    PanelPoint: TPanel;
+    PanelContiguity: TPanel;
+    PanelL: TPanel;
+    PanelL1: TPanel;
+    PanelTurn: TPanel;
+    PanelV: TPanel;
+    PanelV1: TPanel;
+    PanelV2: TPanel;
+    PanelV3: TPanel;
     PopupMenuObj: TPopupMenu;
     PopupMenuElem: TPopupMenu;
     Splitter1: TSplitter;
     Splitter2: TSplitter;
+    Splitter4: TSplitter;
+    Splitter5: TSplitter;
     ZQObjects: TZQuery;
     ZQElements: TZQuery;
     ZQPassObjType: TZQuery;
@@ -60,6 +82,10 @@ type
     procedure DBComboBoxTypeElChange(Sender: TObject);
     procedure DBComboBoxTypeEl_minorChange(Sender: TObject);
     procedure DBComboBoxTypeObjChange(Sender: TObject);
+    procedure EdPoint1Change(Sender: TObject);
+    procedure EdPoint2Change(Sender: TObject);
+    procedure EdRadChange(Sender: TObject);
+    procedure EdTanChange(Sender: TObject);
     procedure KGridElemChanged(Sender: TObject; ACol, ARow: Integer);
     procedure KGridElemEditorCreate(Sender: TObject; ACol, ARow: Integer;
       var AEditor: TWinControl);
@@ -73,7 +99,7 @@ type
     procedure AddObject({ARow: integer;}obj:TPassObj);
     procedure AddElement(elem:TPassElem);
     procedure GetObjects();
-    procedure GetElements(obj_id:integer);
+    procedure GetElements(obj_id,group_id:integer);
   public
     { public declarations }
     PassBranch:TPassBranch;
@@ -166,10 +192,18 @@ begin
     KGridElem.ClearGrid;
     exit;
   end;
-//  GroupBoxObjProp.Visible:=True;
+  PanelContiguity.Visible:=(strtoint(active_obj.obj_type)=5);
+  PanelPoint.Visible:=not (strtoint(active_obj.obj_type)=5);
+  PanelTurn.Visible :=(strtoint(active_obj.obj_type)=2) or (strtoint(active_obj.obj_type)=3);
+
+  GroupBoxObjProp.Visible:=True;
   GroupBoxObjProp.Caption:='Объект №'+KGridObj.Cells[0,KGridObj.Row]+': '+KGridObj.Cells[1,KGridObj.Row];
   GroupBoxElem.Visible:=True;
-  GetElements(active_obj_id); //object_id
+  EdRad.Text:= active_obj.obj_rad;
+  EdTan.Text:= active_obj.obj_tan;
+  EdPoint1.Text:= active_obj.point_1;
+  EdPoint2.Text:= active_obj.point_2;
+  GetElements(active_obj_id, integer(DBComboBoxTypeEl.KeyValue)); //object_id
 end;
 
 procedure TFramePassportObjects.ActionObjDelExecute(Sender: TObject);
@@ -256,16 +290,41 @@ if sender is TDBLookupComboBox then
 KGridObjClick(nil);//обновляем элементы
 end;
 
+procedure TFramePassportObjects.EdPoint1Change(Sender: TObject);
+begin
+  active_obj.point_1:=EdPoint1.Text;
+end;
+
+procedure TFramePassportObjects.EdPoint2Change(Sender: TObject);
+begin
+  active_obj.point_2:=EdPoint2.Text;
+end;
+
+procedure TFramePassportObjects.EdRadChange(Sender: TObject);
+begin
+  active_obj.obj_rad:=EdRad.Text;
+end;
+
+procedure TFramePassportObjects.EdTanChange(Sender: TObject);
+begin
+  active_obj.obj_tan:=EdTan.Text;
+end;
+
 procedure TFramePassportObjects.KGridElemChanged(Sender: TObject; ACol,
   ARow: Integer);
-var elem:TPassElem;
+var
+  elem:TPassElem;
+  st:string;
+
 begin
  try
   elem:=active_obj.getPasElem(strtointdef(KGridElem.Cells[4,ARow],-1));
   if elem=nil then exit;
   {if ACol=0 then} elem.elem_pos :=KGridElem.Cells[0,ARow];
-  if ACol=1 then elem.elem_year:=KGridElem.Cells[ACol,ARow];
-  if ACol=3 then elem.elem_len :=KGridElem.Cells[ACol,ARow];
+  st:= KGridElem.Cells[ACol,ARow];
+  if ACol=1 then elem.elem_year:=st;
+  //if ACol=3 then elem.elem_len :=st;
+  if ACol=3 then elem.elem_len :=StringReplace(st, ',', '.', [rfReplaceAll]);
   if ACol=3 then active_obj.updateLen();
   if ACol=3 then KGridObj.Cells[2,active_obj_id_row]:=active_obj.obj_len+' м.';
  except on E:Exception do
@@ -361,6 +420,7 @@ begin
  if elem=nil  then exit;
  elem.DelPasElem;
  active_obj.updateLen();
+ KGridObj.Cells[2, KGridObj.Row] :=(active_obj.obj_len)+' м.';
  KGridObjClick(nil);//обновляем элементы
 end;
 
@@ -445,13 +505,18 @@ end;
  ZQObjects.Close;
 end;
 
-procedure TFramePassportObjects.GetElements(obj_id: integer);
+procedure TFramePassportObjects.GetElements(obj_id,group_id: integer);
 var
   obj :TPassObj;
   elem:TPassElem;
+  //st:string;
 begin
  ZQElements.Close;
- ZQElements.SQL.text:=GetSQL('elements',(obj_id));
+
+ //ZQElements.SQL.text:=GetSQL('elements',(obj_id));
+ if group_id<0
+ then ZQElements.SQL.text:=GetSQL('elements',(obj_id))
+ else ZQElements.SQL.text:=GetSQL('elements_2_groups',(obj_id),(group_id));
  ZQElements.Open;
  KGridElem.RowCount:=0;
  KGridElem.ClearGrid;
@@ -465,7 +530,9 @@ begin
    elem:=obj.addPasElem(ZQElements.FieldByName('id').AsInteger);
    elem.connecting :=false;
    elem.elem_type  :=ZQElements.FieldByName('elem_type') .AsString;
-   elem.elem_len   :=ZQElements.FieldByName('length')    .AsString;
+   //st:=ZQElements.FieldByName('length').AsString;
+   //elem.elem_len   :=StringReplace(st, '.', ',', [rfReplaceAll]);
+   elem.elem_len   :=ZQElements.FieldByName('length').AsString;
    elem.elem_obj   :=ZQElements.FieldByName('object_id') .AsString;
    elem.elem_colour:=ZQElements.FieldByName('colour')    .AsString;
    elem.elem_year  :=ZQElements.FieldByName('year')      .AsString;

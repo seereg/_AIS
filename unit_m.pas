@@ -7,9 +7,9 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
-  ExtCtrls, Menus, ActnList, Buttons, StdCtrls, DbCtrls, CheckLst, ExtDlgs,
+  ExtCtrls, Menus, ActnList, Buttons, StdCtrls, DbCtrls, ExtDlgs,
   attabs, rxdbgrid, unit_m_data, db,
-  unit_types_and_const, FramePassport, ZDataset, KGrids, Types;
+  unit_types_and_const, FramePassport, FrameSettingsElements, ZDataset, KGrids;
 
 type
 
@@ -40,6 +40,8 @@ type
     Image2: TImage;
     Image3: TImage;
     MenuItem1: TMenuItem;
+    MenuItem10: TMenuItem;
+    MenuItem11: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
@@ -47,15 +49,17 @@ type
     MenuItem6: TMenuItem;
     MenuItem7: TMenuItem;
     MenuItem8: TMenuItem;
+    MenuItem9: TMenuItem;
+    miSettingsElements: TMenuItem;
     MI_Close: TMenuItem;
     OpenPictureDialog1: TOpenPictureDialog;
-    PageControl2: TPageControl;
-    Panel1: TPanel;
+    PanelFind: TPanel;
     PanelMap: TPanel;
     PanelTool: TPanel;
     PanelCAD: TPanel;
     PanelList: TPanel;
     PanelPassport: TPanel;
+    PopupMenuSettings: TPopupMenu;
     PopupMenuList: TPopupMenu;
     PopupMenuTabs: TPopupMenu;
     RxDBGrid1: TRxDBGrid;
@@ -64,7 +68,6 @@ type
     Splitter2: TSplitter;
     Splitter3: TSplitter;
     TabSheet1: TTabSheet;
-    TabSheet4: TTabSheet;
     ToolBar1: TToolBar;
     ToolBar2: TToolBar;
     ToolButton1: TToolButton;
@@ -77,13 +80,12 @@ type
     procedure ActionPassportEditExecute(Sender: TObject);
     procedure ActionPassportNewExecute(Sender: TObject);
     procedure ActionPassportOpenExecute(Sender: TObject);
-    procedure CheckGroupEditFindClick(Sender: TObject);
-    procedure CheckGroupFind1ChangeBounds(Sender: TObject);
     procedure CheckFilterClick(Sender: TObject; Index: integer);
     procedure DBLookupFilterTypeChange(Sender: TObject);
     procedure EditFindChange(Sender: TObject);
     procedure Image1DblClick(Sender: TObject);
     procedure Image3DblClick(Sender: TObject);
+    procedure MenuItemSetEditElemClick(Sender: TObject);
     procedure PassportOpen(Pas_ID:integer);
     procedure ActionReconnectExecute(Sender: TObject);
     procedure ActionShowCadExecute(Sender: TObject);
@@ -91,6 +93,7 @@ type
     procedure ActionShowMapExecute(Sender: TObject);
     procedure ActionShowPaspExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure PopupMenuSettingsPopup(Sender: TObject);
     procedure RxDBGrid1AfterQuickSearch(Sender: TObject; Field: TField;
       var AValue: string);
     procedure RxDBGrid1DblClick(Sender: TObject);
@@ -111,14 +114,16 @@ type
 var
   FormM: TFormM;
   FilePath:string;
-  ActivPaspID:integer=-1;
+  ActivPaspID:integer= -1;
   DefaultSettings:record
    PanelList_Show:boolean;
    PanelList_Width:integer;
   end;
+  userID:integer = 0;
 
   FPassport:TFramePassport;
   PassportsArr:array of TFramePassport;
+  SettingsFrame:TFrameSettingsElements;
 
 implementation
 
@@ -131,6 +136,7 @@ uses
 procedure TFormM.FormShow(Sender: TObject);
 begin
  DataM.ZConnection1.Disconnect;
+ SettingsFrame:= nil;
  Caption:=Caption+' - '+GetMyVersion+' - alfa';
  //Firefox rectangle tabs
  PasTabs:= TATTabs.Create(PanelPassport);
@@ -168,6 +174,31 @@ begin
  if FormLogin.ShowModal<>mrOK then Close;
 end;
 
+procedure TFormM.PopupMenuSettingsPopup(Sender: TObject);
+var
+  mi:TMenuItem;
+  i:integer;
+begin
+  //формируем список элементов для настройки
+  miSettingsElements.Clear;
+  DataM.ZQtemp.SQL.Text:=(GetSQL('elements_group',-1));
+  DataM.ZQtemp.Open;
+  while not DataM.ZQtemp.EOF do
+    begin
+      mi:=  TMenuItem.Create(miSettingsElements);
+      mi.Caption:=DataM.ZQtemp.FieldValues['group_name'];
+      mi.tag:= DataM.ZQtemp.FieldValues['id'];
+      mi.OnClick:= MenuItemSetEditElemClick;
+      miSettingsElements.Add(mi);
+      DataM.ZQtemp.next;
+    end;
+  mi:=  TMenuItem.Create(miSettingsElements);
+  mi.Caption:='..редактировать список';
+  mi.tag:= -1;
+  mi.OnClick:= MenuItemSetEditElemClick;
+  miSettingsElements.Add(mi);
+end;
+
 procedure TFormM.RxDBGrid1AfterQuickSearch(Sender: TObject; Field: TField;
   var AValue: string);
 begin
@@ -201,6 +232,7 @@ procedure TFormM.TabChangeQueryEvent(Sender: TObject; ANewTabIndex: Integer;
 var
   i:integer;
 begin
+ if SettingsFrame<>nil then FreeAndNil(SettingsFrame);
  for i:=0 to High(PassportsArr) do
     if PassportsArr[i]<>nil then begin
      if ANewTabIndex=PassportsArr[i].TabIndex
@@ -259,7 +291,6 @@ begin
      ZConnection1.Connect;
      ZQPasspList.Open;
      ZQPasspTypeList.Open;
-     ZQPasspElType.Open;
      ActionShowCadExecute(nil);
      ActionShowCadExecute(nil);
    end;
@@ -269,16 +300,6 @@ procedure TFormM.ActionPassportOpenExecute(Sender: TObject);
 begin
  ActivPaspID:=DataM.ZQPasspList.FieldByName('id').AsInteger;
  PassportOpen(ActivPaspID);
-end;
-
-procedure TFormM.CheckGroupEditFindClick(Sender: TObject);
-begin
-
-end;
-
-procedure TFormM.CheckGroupFind1ChangeBounds(Sender: TObject);
-begin
-
 end;
 
 procedure TFormM.CheckFilterClick(Sender: TObject; Index: integer);
@@ -322,6 +343,19 @@ begin
   if OpenPictureDialog1.Execute then Image3.Picture.LoadFromFile(OpenPictureDialog1.FileName);
 end;
 
+procedure TFormM.MenuItemSetEditElemClick(Sender: TObject);
+var
+  ElementGroupID: Integer;
+begin
+ if (sender is TMenuItem)
+  then ElementGroupID:= TMenuItem(Sender).Tag
+  else ElementGroupID:= PopupMenuSettings.PopupComponent.Tag;
+ if (SettingsFrame<>nil) then FreeAndNil(SettingsFrame);
+ SettingsFrame:= TFrameSettingsElements.Create(PanelPassport,ElementGroupID);
+ SettingsFrame.Align:= alClient;
+ SettingsFrame.Parent:= PanelPassport;
+end;
+
 procedure TFormM.PassportOpen(Pas_ID: integer);
   var
     i:integer;
@@ -340,7 +374,7 @@ begin
    end;
  if passpAlreadyExist then exit;
  SetLength(PassportsArr,Length(PassportsArr)+1);
- PassportsArr[High(PassportsArr)]:=TFramePassport.Create(PanelPassport,PasTabs,Pas_ID);
+ PassportsArr[High(PassportsArr)]:=TFramePassport.Create(PanelPassport,PasTabs,Pas_ID,userID);
 end;
 
 procedure TFormM.ActionPassportNewExecute(Sender: TObject);
