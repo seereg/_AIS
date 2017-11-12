@@ -1,0 +1,99 @@
+object FrameCad: TFrameCad
+  Left = 0
+  Height = 426
+  Top = 0
+  Width = 680
+  Align = alClient
+  ClientHeight = 426
+  ClientWidth = 680
+  OnResize = FrameResize
+  TabOrder = 0
+  DesignLeft = 637
+  DesignTop = 257
+  object ToolBar1: TToolBar
+    Left = 647
+    Height = 409
+    Top = 17
+    Width = 33
+    Align = alRight
+    AutoSize = True
+    ButtonHeight = 32
+    ButtonWidth = 32
+    Caption = 'ToolBar1'
+    Images = DataM.IL_32
+    TabOrder = 0
+    object ToolButton1: TToolButton
+      Left = 1
+      Top = 2
+      Action = ActionInit
+    end
+    object ToolButton2: TToolButton
+      Left = 1
+      Top = 38
+      Action = ActionTest
+    end
+  end
+  object CadCaption: TStaticText
+    Left = 0
+    Height = 17
+    Top = 0
+    Width = 680
+    Align = alTop
+    Caption = 'Заголовок построения'
+    TabOrder = 1
+  end
+  object PanelCad: TPanel
+    Left = 0
+    Height = 409
+    Top = 17
+    Width = 647
+    Align = alClient
+    ClientHeight = 409
+    ClientWidth = 647
+    Color = 16759739
+    ParentColor = False
+    TabOrder = 2
+    object ScrollBox1: TScrollBox
+      Left = 1
+      Height = 407
+      Top = 1
+      Width = 645
+      HorzScrollBar.Page = 536
+      VertScrollBar.Page = 186
+      Align = alClient
+      ClientHeight = 403
+      ClientWidth = 641
+      TabOrder = 0
+      object CadArea: TImage
+        Left = 0
+        Height = 186
+        Top = 0
+        Width = 536
+        DragMode = dmAutomatic
+        OnDblClick = CadAreaDblClick
+        OnMouseDown = CadAreaMouseDown
+        OnMouseMove = CadAreaMouseMove
+      end
+    end
+  end
+  object ActionListCad: TActionList
+    Images = DataM.IL_32
+    left = 47
+    top = 24
+    object ActionClear: TAction
+      Caption = 'ActionClear'
+      ImageIndex = 0
+      OnExecute = ActionClearExecute
+    end
+    object ActionInit: TAction
+      Caption = 'ActionInit'
+      ImageIndex = 1
+      OnExecute = ActionInitExecute
+    end
+    object ActionTest: TAction
+      Caption = 'ActionTest'
+      ImageIndex = 1
+      OnExecute = ActionTestExecute
+    end
+  end
+end

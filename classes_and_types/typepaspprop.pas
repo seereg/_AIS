@@ -5,13 +5,14 @@ unit typePaspProp;
 interface
 
 uses
-  Classes, SysUtils, ZDataset, ZConnection, unit_types_and_const, unit_m_data;
+  Classes, SysUtils, ZDataset, ZConnection, unit_types_and_const, unit_m_data,
+  typePaspBranch;
 
 type
 
   { TPassProp }
 
-  TPassProp = class(TObject)
+  TPassProp = class(TComponent)
   private
     { private declarations }
     f_pass_type  :TMyField;
@@ -27,6 +28,7 @@ type
     f_conn       : TZConnection;
     ZQProp       : TZQuery;
     f_user_id    : string;
+    PassBranch   : TPassBranch;
     function  getValue(Index:Integer):string;
     procedure setValue(Index:Integer; Value:string);
     function  getNewID:integer;
@@ -43,7 +45,7 @@ type
     property reconst     :string  Index 6 read getValue  write setValue;
     property last_edit   :string  Index 7 read getValue  write setValue;
     property user_edit   :string  Index 8 read getValue  write setValue;
-    constructor Create(p_pass_id,p_user_id:integer;p_conn:TZConnection);
+    constructor Create(p_pass_id,p_user_id:integer;p_conn:TZConnection; createOllBranches:Boolean = false);
     function getDate():boolean;
   end;
 
@@ -169,15 +171,30 @@ begin
   setValue(Index,st); //переписать по id
 end;
 
-constructor TPassProp.Create(p_pass_id,p_user_id: integer;p_conn: TZConnection);
+constructor TPassProp.Create(p_pass_id,p_user_id: integer;p_conn: TZConnection; createOllBranches:Boolean = false);
+var
+  ZQBranches : TZQuery;
 begin
-  inherited Create;
+  inherited Create(nil);
   ZQProp:= TZQuery.Create(nil);
   f_conn:= p_conn;
   ZQProp.Connection:=f_conn;
   f_pass_id.value:=inttostr(p_pass_id);
   f_user_id:=inttostr(p_user_id);
   getDate();
+    //Получаес список компанентов, создаём их по списку id
+  if createOllBranches then
+  begin
+    ZQBranches:=TZQuery.Create(nil);
+    ZQBranches.Connection:=f_conn;
+    ZQBranches.SQL.Add(GetSQL('branchs',p_pass_id));
+    ZQBranches.Open;
+    ZQBranches.First;
+    while not ZQBranches.EOF do begin
+      PassBranch:=TPassBranch.Create(p_pass_id,ZQBranches.FieldByName('id').AsInteger,f_conn,self);
+      ZQBranches.Next;
+    end;
+  end;
 end;
 
 function TPassProp.getDate: boolean;

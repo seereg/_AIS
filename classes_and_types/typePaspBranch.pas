@@ -24,7 +24,7 @@ public
   { public declarations }
   property count_pasObj :integer read get_count_pasObj;
   property branch_id    :integer read f_branch_id;
-  constructor Create(p_pas_id,p_branch_id:integer;conn:TZConnection);
+  constructor Create(p_pas_id,p_branch_id:integer;conn:TZConnection; TheOwner: TComponent = nil);
   function getPasObject(obj_id:integer):TPassObj;
   function addPasObject: TPassObj;
 end;
@@ -38,10 +38,10 @@ begin
  result:=self.ComponentCount;
 end;
 
-constructor TPassBranch.Create(p_pas_id,p_branch_id: integer; conn: TZConnection);
+constructor TPassBranch.Create(p_pas_id,p_branch_id: integer; conn: TZConnection; TheOwner: TComponent = nil);
 begin
   //Получаес список компанентов, создаём их по списку id
-  inherited Create(nil);
+  inherited Create(TheOwner);
   f_conn:=conn;
   f_branch_id:=p_branch_id;
   f_pas_id   :=p_pas_id;

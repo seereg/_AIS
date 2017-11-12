@@ -51,7 +51,7 @@
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="15">
+    <Units Count="16">
       <Unit0>
         <Filename Value="project_rails.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -144,6 +144,13 @@
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="FrameSettingsElements"/>
       </Unit14>
+      <Unit15>
+        <Filename Value="CadUnits\framecad.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FrameCad"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="frameCad"/>
+      </Unit15>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -154,7 +161,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="classes_and_types"/>
+      <OtherUnitFiles Value="classes_and_types;CadUnits"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

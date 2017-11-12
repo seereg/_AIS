@@ -7,9 +7,9 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
-  ExtCtrls, Menus, ActnList, Buttons, StdCtrls, DbCtrls, ExtDlgs,
-  attabs, rxdbgrid, unit_m_data, db,
-  unit_types_and_const, FramePassport, FrameSettingsElements, ZDataset, KGrids;
+  ExtCtrls, Menus, ActnList, Buttons, StdCtrls, DbCtrls, ExtDlgs, attabs,
+  rxdbgrid, unit_m_data, db, unit_types_and_const, FramePassport,
+  FrameSettingsElements, frameCad, ZDataset, KGrids;
 
 type
 
@@ -76,6 +76,7 @@ type
     ToolButton3: TToolButton;
     ToolButton4: TToolButton;
     procedure ActionPasspListRefreshExecute(Sender: TObject);
+    procedure ActionPassportCADExecute(Sender: TObject);
     procedure ActionPassportDelExecute(Sender: TObject);
     procedure ActionPassportEditExecute(Sender: TObject);
     procedure ActionPassportNewExecute(Sender: TObject);
@@ -83,10 +84,12 @@ type
     procedure CheckFilterClick(Sender: TObject; Index: integer);
     procedure DBLookupFilterTypeChange(Sender: TObject);
     procedure EditFindChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure Image1DblClick(Sender: TObject);
     procedure Image3DblClick(Sender: TObject);
     procedure MenuItemSetEditElemClick(Sender: TObject);
     procedure PassportOpen(Pas_ID:integer);
+    procedure PassportOpenCad(Pas_ID:integer);
     procedure ActionReconnectExecute(Sender: TObject);
     procedure ActionShowCadExecute(Sender: TObject);
     procedure ActionShowListExecute(Sender: TObject);
@@ -124,6 +127,7 @@ var
   FPassport:TFramePassport;
   PassportsArr:array of TFramePassport;
   SettingsFrame:TFrameSettingsElements;
+  FrameCad:TFrameCad;
 
 implementation
 
@@ -136,7 +140,6 @@ uses
 procedure TFormM.FormShow(Sender: TObject);
 begin
  DataM.ZConnection1.Disconnect;
- SettingsFrame:= nil;
  Caption:=Caption+' - '+GetMyVersion+' - alfa';
  //Firefox rectangle tabs
  PasTabs:= TATTabs.Create(PanelPassport);
@@ -262,6 +265,18 @@ procedure TFormM.ActionShowMapExecute(Sender: TObject);
 begin
   PanelCAD.Align:=alRight;
   PanelMap.Align:=alRight;
+ if (ActionShowCad.Checked)then
+  begin
+   if  FrameCad=nil then
+    begin
+     FrameCad:=TFrameCad.Create(PanelCAD);
+     FrameCad.Parent:=PanelCAD;
+    end;
+  end 
+ else 
+  begin
+    FreeAndNil(FrameCad);
+  end;
   PanelCAD.Visible:=ActionShowCad.Checked;
   PanelMap.Visible:=ActionShowMap.Checked;
   PanelCAD.Align:=alClient;
@@ -272,6 +287,18 @@ procedure TFormM.ActionShowCadExecute(Sender: TObject);
 begin
   PanelCAD.Align:=alRight;
   PanelMap.Align:=alRight;
+ if (ActionShowCad.Checked)then
+  begin
+   if  FrameCad=nil then
+    begin
+     FrameCad:=TFrameCad.Create(PanelCAD);
+     FrameCad.Parent:=PanelCAD;
+    end;
+  end 
+ else 
+  begin
+    FreeAndNil(FrameCad);
+  end;
   PanelCAD.Visible:=ActionShowCad.Checked;
   PanelMap.Visible:=ActionShowMap.Checked;
   PanelCAD.Align:=alClient;
@@ -333,6 +360,12 @@ begin
   CheckFilterClick(nil,0);
 end;
 
+procedure TFormM.FormCreate(Sender: TObject);
+begin
+ SettingsFrame:= nil;
+ FrameCad:= nil;
+end;
+
 procedure TFormM.Image1DblClick(Sender: TObject);
 begin
   if OpenPictureDialog1.Execute then Image1.Picture.LoadFromFile(OpenPictureDialog1.FileName);
@@ -375,6 +408,16 @@ begin
  if passpAlreadyExist then exit;
  SetLength(PassportsArr,Length(PassportsArr)+1);
  PassportsArr[High(PassportsArr)]:=TFramePassport.Create(PanelPassport,PasTabs,Pas_ID,userID);
+end;
+
+procedure TFormM.PassportOpenCad(Pas_ID: integer);
+begin
+ if FrameCad=nil then
+  begin
+   ActionShowCad.Execute;
+  end;
+  FrameCad.setPassport(Pas_ID,userID);
+  FrameCad.Caption:=DataM.ZQPasspList.FieldByName('type').AsString+' №'+DataM.ZQPasspList.FieldByName('name').AsString+ ' - Условный план трассы';
 end;
 
 procedure TFormM.ActionPassportNewExecute(Sender: TObject);
@@ -424,6 +467,12 @@ end;
 procedure TFormM.ActionPasspListRefreshExecute(Sender: TObject);
 begin
   DataM.passListRefresh;
+end;
+
+procedure TFormM.ActionPassportCADExecute(Sender: TObject);
+begin
+ ActivPaspID:=DataM.ZQPasspList.FieldByName('id').AsInteger;
+ PassportOpenCad(ActivPaspID);
 end;
 
 procedure TFormM.ActionPassportEditExecute(Sender: TObject);

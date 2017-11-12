@@ -11579,6 +11579,7 @@ object FormM: TFormM
     FFFFFFFFF000000FFFFFFFFFFC00003FFFFFFFFFFF8001FFFFFFFFFFFFFFFFFF
     FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
   }
+  OnCreate = FormCreate
   OnShow = FormShow
   LCLVersion = '1.6.4.0'
   object Splitter1: TSplitter
@@ -11967,9 +11968,9 @@ object FormM: TFormM
     ParentColor = False
     TabOrder = 4
     object Image1: TImage
-      Left = 0
+      Left = 8
       Height = 722
-      Top = 0
+      Top = 296
       Width = 686
       AutoSize = True
       OnDblClick = Image1DblClick
@@ -14044,6 +14045,7 @@ object FormM: TFormM
       }
       Proportional = True
       Stretch = True
+      Visible = False
     end
   end
   object PanelTool: TPanel
@@ -25817,6 +25819,7 @@ object FormM: TFormM
     object ActionPassportCAD: TAction
       Caption = 'Построить схему'
       ImageIndex = 2
+      OnExecute = ActionPassportCADExecute
     end
     object ActionPassportMAP: TAction
       Caption = 'Показать на карте'
