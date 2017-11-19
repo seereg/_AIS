@@ -51,7 +51,7 @@
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="16">
+    <Units Count="17">
       <Unit0>
         <Filename Value="project_rails.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -148,9 +148,18 @@
         <Filename Value="CadUnits\framecad.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="FrameCad"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="frameCad"/>
       </Unit15>
+      <Unit16>
+        <Filename Value="CadUnits\framepaint.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FrameCadPaint"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="framePaint"/>
+      </Unit16>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
