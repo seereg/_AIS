@@ -173,7 +173,7 @@ end;
 
 constructor TPassProp.Create(p_pass_id,p_user_id: integer;p_conn: TZConnection; createOllBranches:Boolean = false);
 var
-  ZQBranches : TZQuery;
+  ZQBranches,ZQObjects : TZQuery;
 begin
   inherited Create(nil);
   ZQProp:= TZQuery.Create(nil);
@@ -187,11 +187,24 @@ begin
   begin
     ZQBranches:=TZQuery.Create(nil);
     ZQBranches.Connection:=f_conn;
+    //ZQObjects :=TZQuery.Create(nil);
+    //ZQObjects .Connection:=f_conn;
     ZQBranches.SQL.Add(GetSQL('branchs',p_pass_id));
     ZQBranches.Open;
     ZQBranches.First;
     while not ZQBranches.EOF do begin
       PassBranch:=TPassBranch.Create(p_pass_id,ZQBranches.FieldByName('id').AsInteger,f_conn,self);
+      PassBranch.branch_name:= ZQBranches.FieldByName('branch_name').AsString;
+      //PassBranch.addPasObject;
+      ////перенести в ветки и убрать из frame passport obj
+      //  ZQObjects.SQL.Text:=GetSQL('objects',PassBranch.branch_id);
+      //  ZQObjects.Open;
+      //  ZQObjects.First;
+      //   while not(ZQObjects.EOF) do begin
+      //     PassBranch.getPasObject(ZQObjects.FieldByName('id').AsInteger);
+      //     ZQObjects.Next;
+      //   end;
+      //   ZQObjects.Close;
       ZQBranches.Next;
     end;
   end;

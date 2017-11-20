@@ -81,52 +81,63 @@ begin
 
 procedure TFrameCad.ActionTestExecute(Sender: TObject);
 var
-  i,j,posX,posY,len: integer;
+  i,j,posX,posY,len,spin,p_rad: integer;
   branch:TPassBranch;
   PassObj:TPassObj;
+  st:string;
 begin
   if passport=nil then Exit;
   ActionClear.Execute;
-  posY:=10;
+  posY:=  0;
+  spin:= 10;
+  p_rad:= 2;
   begin 
-    for i:=0 to passport.ComponentCount-1 do 
-    try
-     //CadPaint.resizeCadCanvas(-1,CadArea.Height+100);
-     branch:=TPassBranch(Components[i]);
-     CadPaint.paintLine(10,posY,CadCanvas.Width,posY);
-     CadPaint.paintText(10,posY,'Ветка '+ inttostr(i));
-     posY:=posY+20;
-     posX:=0;
-     for j:=0 to branch.ComponentCount-1 do 
-       try
-        //CadPaint.resizeCadCanvas(-1,CadArea.Height+100);
-        PassObj:=TPassObj(Components[i]);
-        len:=StrToIntDef(PassObj.obj_len,0);
-        if PassObj.obj_type = '0' then //пустой
-        begin
-          posX:=posX+len;
-        end else
-        if PassObj.obj_type = '0' then //прямой
-        begin
-          CadPaint.paintLine(posX,posY,posX+len,posY);
-          posX:=posX+len;
-        end else
-        if PassObj.obj_type = '0' then //лево
-        begin
-          CadPaint.paintLine(posX,posY,posX,posY-5);
-          CadPaint.paintLine(posX,posY-5,posX+len,posY-5);
-          CadPaint.paintLine(posX+len,posY-5,posX+len,posY);
-          posX:=posX+len;
-        end else
-        if PassObj.obj_type = '0' then //право
-        begin
-          CadPaint.paintLine(posX,posY,posX,posY+5);
-          CadPaint.paintLine(posX,posY+5,posX+len,posY+5);
-          CadPaint.paintLine(posX+len,posY+5,posX+len,posY);
-          posX:=posX+len;
-        end;
-       except end;      
-    except end;
+    for i:=0 to passport.ComponentCount-1 do
+    begin
+      try
+       CadPen.Width:=2;
+       branch:=TPassBranch(passport.Components[i]);
+       posX:=20;
+       posY:=posY+40;
+       CadPaint.paintLine(10,posY,CadCanvas.Width,posY);
+       CadPaint.paintText(10,posY,'Ветка '+ branch.branch_name);
+       posY:=posY+40;
+       if CadCanvas.Height<posY+20 then CadPaint.resizeCadCanvas(-1,posY+20);
+       CadPen.Width:=1;
+       for j:=0 to branch.ComponentCount-1 do 
+         try
+          PassObj:=TPassObj(branch.Components[j]);
+          //st:=StringReplace(PassObj.obj_len, ',', '.', [rfReplaceAll]);
+          st:=PassObj.obj_len;
+          len:=round(StrToCurrDef(st,0));
+          CadPaint.paintPoint(posX,posY,p_rad);
+          if CadCanvas.Width<posX+len+20 then CadPaint.resizeCadCanvas(posX+len+20,-1);
+          if PassObj.obj_type = '1' then //прямой
+          begin
+            CadPaint.paintLine(posX,posY,posX+len,posY);
+            posX:=posX+len;
+          end else
+          if PassObj.obj_type = '2' then //лево
+          begin
+            CadPaint.paintLine(posX,posY,posX,posY-spin);
+            CadPaint.paintLine(posX,posY-spin,posX+len,posY-spin);
+            CadPaint.paintLine(posX+len,posY-spin,posX+len,posY);
+            posX:=posX+len;
+          end else
+          if PassObj.obj_type = '3' then //право
+          begin
+            CadPaint.paintLine(posX,posY,posX,posY+spin);
+            CadPaint.paintLine(posX,posY+spin,posX+len,posY+spin);
+            CadPaint.paintLine(posX+len,posY+spin,posX+len,posY);
+            posX:=posX+len;
+          end else
+          begin
+            posX:=posX+len;
+          end;
+         except end;      
+      except end;
+      CadPaint.paintPoint(posX,posY,p_rad);
+    end;
   end;
   CadPen.Color:=clRed;
   

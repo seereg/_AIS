@@ -79,6 +79,7 @@ type
     procedure paintLine(x1,y1,x2,y2:integer);
     procedure paintText(x1,y1:integer;pText:string);
     procedure paintRect(x1,y1,x2,y2:integer);
+    procedure paintPoint(x1,y1,r:integer);
   end;
 
 implementation
@@ -340,6 +341,8 @@ end;
 
 procedure TFrameCadPaint.resizeCadCanvas(pWidth, pHeight: integer);
 begin
+  if pWidth <0 then pWidth :=paintbmp.Width;
+  if pHeight<0 then pHeight:=paintbmp.Height;
   paintbmp.SetSize(pWidth, pHeight);
   MyCanvasPaint(nil);
 end;
@@ -361,6 +364,12 @@ procedure TFrameCadPaint.paintRect(x1, y1, x2, y2: integer);
 begin
   MyCanvasPaint(nil);
   paintbmp.Canvas.Rectangle(x1, y1, x2, y2);  
+end;
+
+procedure TFrameCadPaint.paintPoint(x1, y1, r: integer);
+begin
+  MyCanvasPaint(nil);
+  paintbmp.Canvas.Ellipse(x1-r, y1-r, x1+r, y1+r); 
 end;
 
 end.
