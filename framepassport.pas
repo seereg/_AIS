@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, ComCtrls, ActnList, attabs,
   FramePassportObjects, FramePassportProperties, unit_types_and_const,
-  unit_m_data, typePaspProp, KGrids;
+  unit_m_data, unitDemoFrame1, typePaspProp, KGrids;
 
 type
 
@@ -61,6 +61,7 @@ var
   i:integer;
   TabSheet:TTabSheet;
   pass:TPassProp;
+  FDemoFrame1:TDemoFrame1;
 begin
   inherited Create(TheOwner);
   self.Parent:=TWinControl(TheOwner);
@@ -81,6 +82,13 @@ begin
    FPassportProperties.pass_id:=PasspID;
    FPassportProperties.user_id:=UserID;
    FPassportProperties.Parent:=TabSheet;
+   
+   TabSheet:=PageControlPassport.AddTabSheet;
+   TabSheet.Caption:='Продольный профиль';
+   FDemoFrame1:=  TDemoFrame1.Create(TabSheet,PasspID,UserID);
+   TabSheet:=PageControlPassport.AddTabSheet;
+   TabSheet.Caption:='Специальные объекты';
+   
    FPassportProperties.PageControlPassport:=PageControlPassport;
    FPassportProperties.getDate;
 end;

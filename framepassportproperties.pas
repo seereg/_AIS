@@ -192,7 +192,7 @@ end;
 procedure TFramePassportProperties.ClearBranchSheet;
 var i:integer;
 begin
-  for i:=PageControlPassport.PageCount-1 downto 1 do
+  for i:=PageControlPassport.PageCount-1 downto 3 do
   begin
    PageControlPassport.Page[i].Destroy;
   end;

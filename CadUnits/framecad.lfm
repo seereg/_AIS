@@ -21,6 +21,7 @@ object FrameCad: TFrameCad
     Caption = 'ToolBar1'
     Images = DataM.IL_32
     TabOrder = 0
+    Visible = False
     object ToolButton1: TToolButton
       Left = 1
       Top = 2

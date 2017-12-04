@@ -17,9 +17,9 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <BuildNr Value="9"/>
+      <BuildNr Value="10"/>
       <Language Value="0419"/>
-      <CharSet Value="04E6"/>
+      <CharSet Value="04E3"/>
       <Attributes pvaDebug="True"/>
       <StringTable ProductVersion="0.0.0.0"/>
     </VersionInfo>
@@ -51,7 +51,7 @@
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="17">
+    <Units Count="18">
       <Unit0>
         <Filename Value="project_rails.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -160,6 +160,14 @@
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="framePaint"/>
       </Unit16>
+      <Unit17>
+        <Filename Value="unitdemoframe1.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="DemoFrame1"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="unitDemoFrame1"/>
+      </Unit17>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
