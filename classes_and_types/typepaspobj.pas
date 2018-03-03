@@ -30,6 +30,7 @@ type
     function  getValue(Index:Integer):string;
     procedure setValue(Index:Integer; Value:string);
     function  getNewID:integer;
+    function  loadOllElements() :integer;
   public
     { public declarations }
     connecting:boolean; //если да, то write сразу в БД
@@ -146,6 +147,30 @@ begin
   FreeAndNil(ZQ);
 end;
 
+function TPassObj.loadOllElements: integer;
+begin
+  ZQProp.SQL.Add(GetSQL('elements',f_obj_id.Value));
+  ZQProp.Open;
+  ZQProp.First;
+  //if ZQProp.RecordCount=0
+  //   then TPassElem.Create(self,-1,f_conn); //если -1 то новый
+  while not ZQProp.EOF do begin
+    PassElem:=TPassElem.Create(self,ZQProp.FieldByName('id').AsInteger,f_conn);
+    //PassElem.connecting:=false;
+    //PassElem.obj_branch:=inttostr(f_branch_id);
+    //PassElem.obj_pos  :=ZQProp.FieldByName('pos').AsString;
+    //PassElem.pas_id   :=inttostr(f_pas_id);
+    //PassElem.obj_type :=ZQProp.FieldByName('obj_type').AsString;
+    //PassElem.obj_len  :=ZQProp.FieldByName('length').AsString;
+    //PassElem.obj_rad  :=ZQProp.FieldByName('rad').AsString;
+    //PassElem.obj_tan  :=ZQProp.FieldByName('tan').AsString;
+    //PassElem.point_1  :=ZQProp.FieldByName('point_1').AsString;
+    //PassElem.point_2  :=ZQProp.FieldByName('point_2').AsString;
+    //PassElem.connecting:=true;
+   ZQProp.Next;
+  end;
+end;
+
 constructor TPassObj.Create(TheOwner: TComponent; p_obj_id: integer;
   p_conn: TZConnection);
 begin
@@ -183,6 +208,7 @@ begin
   f_point_2.Value     := '';
   f_point_2.name      := 'point_2';
   f_point_2.table     := 'objects';
+  loadOllElements;
   connecting:=true;
 end;
 

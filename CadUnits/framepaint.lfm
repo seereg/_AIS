@@ -856,7 +856,7 @@ object FrameCadPaint: TFrameCadPaint
     Align = alClient
     ClientHeight = 597
     ClientWidth = 722
-    Color = clAppWorkspace
+    Color = clSilver
     ParentColor = False
     TabOrder = 2
     object MyCanvas: TPaintBox
@@ -864,7 +864,6 @@ object FrameCadPaint: TFrameCadPaint
       Height = 360
       Top = 0
       Width = 544
-      ParentColor = False
       OnMouseDown = MyCanvasMouseDown
       OnMouseMove = MyCanvasMouseMove
       OnMouseUp = MyCanvasMouseUp

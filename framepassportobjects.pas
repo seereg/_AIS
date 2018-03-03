@@ -522,7 +522,7 @@ begin
  KGridElem.ClearGrid;
  KGridElem.EditorMode:=false;
  obj:=PassBranch.getPasObject(obj_id);
- if ZQElements.RecordCount<=0
+ if ZQElements.RecordCount<1
     then ActionElemAddExecute(nil);//пустая для пустого списка
 // !!! дальше не формат
  KGridElem.Rows[0].Destroy; //пустая строка неформатированная

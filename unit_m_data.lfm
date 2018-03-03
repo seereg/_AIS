@@ -4,6 +4,7 @@ object DataM: TDataM
   HorizontalOffset = 1225
   VerticalOffset = 351
   Width = 645
+  PPI = 96
   object IL_64: TImageList
     Height = 64
     Width = 64

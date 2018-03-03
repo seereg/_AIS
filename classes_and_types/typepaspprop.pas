@@ -29,6 +29,8 @@ type
     ZQProp       : TZQuery;
     f_user_id    : string;
     PassBranch   : TPassBranch;
+    elementGroupsList : array of integer;
+    elementGroupsCount : Integer;
     function  getValue(Index:Integer):string;
     procedure setValue(Index:Integer; Value:string);
     function  getNewID:integer;
@@ -46,7 +48,9 @@ type
     property last_edit   :string  Index 7 read getValue  write setValue;
     property user_edit   :string  Index 8 read getValue  write setValue;
     constructor Create(p_pass_id,p_user_id:integer;p_conn:TZConnection; createOllBranches:Boolean = false);
-    function getDate():boolean;
+    function getData():boolean;
+    function getElementGroupsCount: Integer;
+    function getElementGroup(i:integer=0): integer;//use getElementGroupsCount and elementGroupsList
   end;
 
 implementation
@@ -176,12 +180,13 @@ var
   ZQBranches,ZQObjects : TZQuery;
 begin
   inherited Create(nil);
+  elementGroupsCount := -1;
   ZQProp:= TZQuery.Create(nil);
   f_conn:= p_conn;
   ZQProp.Connection:=f_conn;
   f_pass_id.value:=inttostr(p_pass_id);
   f_user_id:=inttostr(p_user_id);
-  getDate();
+  getData();
     //Получаес список компанентов, создаём их по списку id
   if createOllBranches then
   begin
@@ -210,7 +215,7 @@ begin
   end;
 end;
 
-function TPassProp.getDate: boolean;
+function TPassProp.getData: boolean;
 var
   st:string;
 begin
@@ -268,6 +273,34 @@ begin
     result:=false;
   end;
   result:=True;
+end;
+
+function TPassProp.getElementGroupsCount: Integer;
+begin
+  if elementGroupsCount<0 then getElementGroup;
+  result := elementGroupsCount;
+end;
+
+function TPassProp.getElementGroup(i:integer=0): integer;
+begin
+  if elementGroupsCount<0 then
+  begin
+    ZQProp.Close;
+    ZQProp.SQL.Clear;
+    ZQProp.SQL.Add(GetSQL('pass_element_groups_list',StrToInt(pass_id)));
+    ZQProp.Open;
+    elementGroupsCount := ZQProp.RecordCount;
+    SetLength(elementGroupsList,integer(ZQProp.RecordCount));
+    While not ZQProp.EOF do
+    begin
+      elementGroupsList[ZQProp.RecNo-1] := ZQProp.FieldByName('elem_group_id').AsInteger;
+      ZQProp.Next;
+    end;
+  end;
+  //result := @elementGroupsList;
+  if i<elementGroupsCount 
+   then result:= elementGroupsList[i]
+   else result:= -1;
 end;
 
 end.

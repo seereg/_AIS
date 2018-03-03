@@ -265,20 +265,29 @@ begin
   begin
     sql:=' select (max(id)+1) id from passports'
         ;
-   end else
-  //-----------------------
-  if iden='del_pass_id' then
-  begin
-    sql:=''// delete from passports' //ON DELETE CASCADE br,obj,el !?!
-        +'  delete from passport_prop_comment    where pass_id='+inttostr(param1)
-        +'; delete from passport_prop_year_built where pass_id='+inttostr(param1)
-        +'; delete from passport_prop_comment    where pass_id='+inttostr(param1)
-        +'; delete from elements                 where pass_id='+inttostr(param1)
-        +'; delete from objects                  where pass_id='+inttostr(param1)
-        +'; delete from branch                   where pass_id='+inttostr(param1)
-        +'; delete from passports                where      id='+inttostr(param1)
-        +' '
-        ;
+  end else
+ //-----------------------
+ if iden='del_pass_id' then
+ begin
+   sql:=''// delete from passports' //ON DELETE CASCADE br,obj,el !?!
+       +'  delete from passport_prop_comment    where pass_id='+inttostr(param1)
+       +'; delete from passport_prop_year_built where pass_id='+inttostr(param1)
+       +'; delete from passport_prop_comment    where pass_id='+inttostr(param1)
+       +'; delete from elements                 where pass_id='+inttostr(param1)
+       +'; delete from objects                  where pass_id='+inttostr(param1)
+       +'; delete from branch                   where pass_id='+inttostr(param1)
+       +'; delete from passports                where      id='+inttostr(param1)
+       +' '
+       ;
+ end else
+//-----------------------
+if iden='pass_element_groups_list' then
+begin
+  sql:=' SELECT DISTINCT et.elem_group_id elem_group_id FROM elements'
+      +' LEFT JOIN elements_type et ON elem_type = et.id'
+      +' WHERE pass_id ='+inttostr(param1)
+      +' ORDER BY elem_group_id'
+      ;
  end;
   //-----------------------
   result:=sql;

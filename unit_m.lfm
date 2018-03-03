@@ -1,7 +1,7 @@
 object FormM: TFormM
-  Left = 563
+  Left = 471
   Height = 675
-  Top = 301
+  Top = 228
   Width = 1255
   Caption = 'Служба пути'
   ClientHeight = 675

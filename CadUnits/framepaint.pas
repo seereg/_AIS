@@ -11,9 +11,17 @@ uses
 , Clipbrd
 , LCLIntf
 , LCLType
-//, StdCtrls
-//, ComCtrls
   ;
+
+const
+    backgroundColor:TColor = $009FF2C7;
+    ColorArr: Array [0..4] of TColor = (
+    $00FF8080,
+    $0037FF9B,
+    $00FFFF80,
+    $0095B8FF,
+    $0088FFFF
+    );
 
 type
   
@@ -79,6 +87,7 @@ type
     procedure paintLine(x1,y1,x2,y2:integer);
     procedure paintText(x1,y1:integer;pText:string);
     procedure paintRect(x1,y1,x2,y2:integer);
+    //procedure paintRibbon(x1,x2,h:integer);
     procedure paintPoint(x1,y1,r:integer);
   end;
 
@@ -340,10 +349,19 @@ begin
 end;
 
 procedure TFrameCadPaint.resizeCadCanvas(pWidth, pHeight: integer);
+var
+  tempColor:TColor;
 begin
   if pWidth <0 then pWidth :=paintbmp.Width;
   if pHeight<0 then pHeight:=paintbmp.Height;
+  tempColor:= paintbmp.Canvas.Brush.Color;
+  paintbmp.Canvas.Brush.Color:= backgroundColor;
+  //MyCanvas.Canvas.Brush.Color:= backgroundColor;
+  //paintbmp.Canvas.Pen.Color:= backgroundColor;
+  MyCanvas.Color:= backgroundColor;
   paintbmp.SetSize(pWidth, pHeight);
+  paintbmp.Canvas.Brush.Color:= tempColor;
+  MyCanvas.Color:= tempColor;  
   MyCanvasPaint(nil);
 end;
 
@@ -363,7 +381,7 @@ end;
 procedure TFrameCadPaint.paintRect(x1, y1, x2, y2: integer);
 begin
   MyCanvasPaint(nil);
-  paintbmp.Canvas.Rectangle(x1, y1, x2, y2);  
+  paintbmp.Canvas.Rectangle(x1, y1, x2, y2);
 end;
 
 procedure TFrameCadPaint.paintPoint(x1, y1, r: integer);
