@@ -14,7 +14,7 @@ uses
   ;
 
 const
-    backgroundColor:TColor = $009FF2C7;
+    backgroundColor:TColor = $e2f7df;
     ColorArr: Array [0..4] of TColor = (
     $00FF8080,
     $0037FF9B,

@@ -82,13 +82,14 @@ procedure TFrameCad.ActionTestExecute(Sender: TObject);
 var
   obj, pen: TPoint;
   elem: array of TPoint;
-  i, j, k, m, len, spin, p_rad, scale: integer;
+  i, j, k, m, len, spin, p_rad, scale, group_id, color_id: integer;
   branch: TPassBranch;
   passObj: TPassObj;
   passElem: TPassElem;
   st: string;
   n: double;
   test: array of integer;
+  defColor: TColor;
 begin
   if passport = nil then
     Exit;
@@ -126,22 +127,34 @@ begin
         CadPen.Width := 1;
         for j := 0 to branch.ComponentCount - 1 do
           try
+            if i>0 then break;//только первый путь пока
             passObj := TPassObj(branch.Components[j]);
             //ресуем покрытия вместе с объектами
+            defColor:=CadPen.Color;
             for m := 0 to Length(elem) - 1 do
               elem[m].x := obj.x;
             for k := 0 to passObj.ComponentCount - 1 do
             begin
-              passElem := TPassElem(passObj.Components[j]);
-              m := StrToInt(passElem.elem_type);
+              passElem := TPassElem(passObj.Components[k]);
+              group_id := StrToInt(passElem.elem_group_id);
+              for m := 0 to Length(elem) - 1 do
+                if  passport.getElementGroup(m) = group_id then break;
+              len := round(StrToCurrDef(passElem.elem_len, 0)) * scale;
+              color_id:= strtoint(passElem.elem_type);
+              while (color_id>length(ColorArr)-1) do color_id:= color_id - length(ColorArr);
+              CadBrush.Color:=ColorArr[color_id];
+              CadPen.Color:=ColorArr[color_id];
+              CadBrush.Style:=bsSolid;
               CadPaint.paintRect(
                 elem[m].x,
-                elem[m].y,
-                elem[m].x + StrToInt(passElem.elem_len),
-                elem[m].y+spin);
-                elem[m].x:= elem[m].x + StrToInt(passElem.elem_len);
+                elem[m].y+spin,
+                elem[m].x + len,
+                elem[m].y+spin*2);
+                elem[m].x:= elem[m].x + len;
             end;
-
+            CadBrush.Color:=defColor;
+            CadPen.Color:=defColor;
+            CadBrush.Style:=bsClear;
             st := passObj.obj_len;
             len := round(StrToCurrDef(st, 0)) * scale;
             CadPaint.paintPoint(obj.x, obj.y, p_rad);

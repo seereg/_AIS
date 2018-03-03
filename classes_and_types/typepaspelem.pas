@@ -22,6 +22,7 @@ type
     f_elem_pos   :TMyField;
     f_elem_year  :TMyField;
     f_pas_id     :TMyField;
+    f_elem_group_id :TMyField;
     f_conn       :TZConnection;
     ZQProp: TZQuery;
     function  getValue(Index:Integer):string;
@@ -38,9 +39,10 @@ type
     property elem_pos    :string  Index 4 read getValue  write setValue;
     property elem_year   :string  Index 5 read getValue  write setValue;
     property pas_id      :string  Index 6 read getValue  write setValue;
+    property elem_group_id :string  Index 7 read getValue  write setValue;
 
     constructor Create(TheOwner: TComponent;p_elem_id:integer;p_conn:TZConnection);
-    function getPasElem():boolean;
+    //function getPasElem():boolean;
     function DelPasElem():boolean;
   end;
 
@@ -61,6 +63,7 @@ begin
     4: fld:=addr(f_elem_pos);
     5: fld:=addr(f_elem_year);
     6: fld:=addr(f_pas_id);
+    7: fld:=addr(f_elem_group_id);
     else exit;
     end;
     result:=fld^.Value;
@@ -83,6 +86,7 @@ begin
       4: fld:=addr(f_elem_pos);
       5: fld:=addr(f_elem_year);
       6: fld:=addr(f_pas_id);
+      7: fld:=addr(f_elem_group_id);
       else exit;
     end;
     if Value=fld^.Value then exit;
@@ -99,7 +103,7 @@ begin
         f_elem_year.Value:='';
         elem_year:=st;//переписать по id
       end;
-    if connecting then
+    if (connecting) and (fld^.table = f_elem_pos.table) then
       begin
         st:='INSERT OR IGNORE INTO '+ fld^.table+' (id) VALUES ('+f_elem_id.Value+')';
         ZQProp.SQL.text:=(st);
@@ -160,26 +164,30 @@ begin
   f_pas_id.Value       := '';
   f_pas_id.name        := 'pass_id';
   f_pas_id.table       := 'elements';
+  f_elem_group_id.Value := '0';
+  f_elem_group_id.name  := 'elem_group_id';
+  f_elem_group_id.table := 'elements_type';
   connecting:=true;
 end;
 
-function TPassElem.getPasElem: boolean;
-begin
-  try
-    result:=True;
-    ZQProp.SQL.Text:=(GetSQL('elem_prop',strtointdef(f_elem_id.Value,-1)));
-    ZQProp.Open;
-    f_elem_type   .value :=ZQProp.FieldByName(f_elem_type  .name).AsString;
-    f_elem_len    .value :=ZQProp.FieldByName(f_elem_len   .name).AsString;
-    f_elem_colour .value :=ZQProp.FieldByName(f_elem_colour.name).AsString;
-    f_elem_pos    .value :=ZQProp.FieldByName(f_elem_pos   .name).AsString;
-    f_elem_year   .value :=ZQProp.FieldByName(f_elem_year  .name).AsString;
-    f_pas_id      .value :=ZQProp.FieldByName(f_pas_id     .name).AsString;
-  except
-    result:=false;
-  end;
-//    connecting:=result;
-end;
+//function TPassElem.getPasElem: boolean;
+//begin
+//  try
+//    result:=True;
+//    ZQProp.SQL.Text:=(GetSQL('elem_prop',strtointdef(f_elem_id.Value,-1)));
+//    ZQProp.Open;
+//    f_elem_type   .value :=ZQProp.FieldByName(f_elem_type  .name).AsString;
+//    f_elem_len    .value :=ZQProp.FieldByName(f_elem_len   .name).AsString;
+//    f_elem_colour .value :=ZQProp.FieldByName(f_elem_colour.name).AsString;
+//    f_elem_pos    .value :=ZQProp.FieldByName(f_elem_pos   .name).AsString;
+//    f_elem_year   .value :=ZQProp.FieldByName(f_elem_year  .name).AsString;
+//    f_pas_id      .value :=ZQProp.FieldByName(f_pas_id     .name).AsString;
+//    f_elem_group_id.value :=ZQProp.FieldByName(f_elem_group_id.name).AsString;
+//  except
+//    result:=false;
+//  end;
+////    connecting:=result;
+//end;
 
 function TPassElem.DelPasElem: boolean;
 var

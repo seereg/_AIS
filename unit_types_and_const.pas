@@ -237,6 +237,8 @@ begin
   if iden='elements' then
   begin
     sql:=' select * from elements'
+        +' LEFT JOIN elements_type            '
+        +' on elements.elem_type=elements_type.id'
         +' where object_id='+inttostr(param1)
         +' order by pos'
         ;
@@ -246,18 +248,6 @@ begin
   begin
     sql:=' select max(elements.year) year from elements'
         +' where pass_id='+inttostr(param1)
-        ;
-  end else
-  //-----------------------
-  if iden='elements_2_groups' then
-  begin
-    sql:=' select * from elements'
-        +' LEFT JOIN elements_type            '
-        +' on elements.elem_type=elements_type.id'
-        +' where object_id='+inttostr(param1)
-        +' and elem_group_id in(0,'+inttostr(param2)
-        +' )'
-        +' order by pos'
         ;
   end else
   //-----------------------

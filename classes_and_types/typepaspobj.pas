@@ -26,7 +26,7 @@ type
     f_point_2    :TMyField;
     f_conn       :TZConnection;
     ZQProp       : TZQuery;
-    PassElem     : TPassElem;
+    passElem     : TPassElem;
     function  getValue(Index:Integer):string;
     procedure setValue(Index:Integer; Value:string);
     function  getNewID:integer;
@@ -149,24 +149,22 @@ end;
 
 function TPassObj.loadOllElements: integer;
 begin
-  ZQProp.SQL.Add(GetSQL('elements',f_obj_id.Value));
+  ZQProp.SQL.Add(GetSQL('elements',strtoint(f_obj_id.value)));
   ZQProp.Open;
   ZQProp.First;
   //if ZQProp.RecordCount=0
   //   then TPassElem.Create(self,-1,f_conn); //если -1 то новый
   while not ZQProp.EOF do begin
-    PassElem:=TPassElem.Create(self,ZQProp.FieldByName('id').AsInteger,f_conn);
-    //PassElem.connecting:=false;
-    //PassElem.obj_branch:=inttostr(f_branch_id);
-    //PassElem.obj_pos  :=ZQProp.FieldByName('pos').AsString;
-    //PassElem.pas_id   :=inttostr(f_pas_id);
-    //PassElem.obj_type :=ZQProp.FieldByName('obj_type').AsString;
-    //PassElem.obj_len  :=ZQProp.FieldByName('length').AsString;
-    //PassElem.obj_rad  :=ZQProp.FieldByName('rad').AsString;
-    //PassElem.obj_tan  :=ZQProp.FieldByName('tan').AsString;
-    //PassElem.point_1  :=ZQProp.FieldByName('point_1').AsString;
-    //PassElem.point_2  :=ZQProp.FieldByName('point_2').AsString;
-    //PassElem.connecting:=true;
+   passElem:=addPasElem(ZQProp.FieldByName('id').AsInteger);
+   passElem.connecting :=false;
+   passElem.elem_type  :=ZQProp.FieldByName('elem_type') .AsString;
+   passElem.elem_len   :=ZQProp.FieldByName('length').AsString;
+   passElem.elem_obj   :=ZQProp.FieldByName('object_id') .AsString;
+   passElem.elem_colour:=ZQProp.FieldByName('colour')    .AsString;
+   passElem.elem_year  :=ZQProp.FieldByName('year')      .AsString;
+   passElem.elem_year  :=ZQProp.FieldByName('year')      .AsString;
+   passElem.elem_group_id :=ZQProp.FieldByName('elem_group_id').AsString;
+   passElem.connecting :=true;
    ZQProp.Next;
   end;
 end;

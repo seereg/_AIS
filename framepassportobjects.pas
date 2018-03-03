@@ -71,7 +71,7 @@ type
     Splitter4: TSplitter;
     Splitter5: TSplitter;
     ZQObjects: TZQuery;
-    ZQElements: TZQuery;
+    //ZQElements: TZQuery;
     ZQPassObjType: TZQuery;
     ZQElemType: TZQuery;
     ZQElemTypeMinor: TZQuery;
@@ -509,38 +509,22 @@ procedure TFramePassportObjects.GetElements(obj_id,group_id: integer);
 var
   obj :TPassObj;
   elem:TPassElem;
-  //st:string;
+  i:integer;
 begin
- ZQElements.Close;
-
- //ZQElements.SQL.text:=GetSQL('elements',(obj_id));
- if group_id<0
- then ZQElements.SQL.text:=GetSQL('elements',(obj_id))
- else ZQElements.SQL.text:=GetSQL('elements_2_groups',(obj_id),(group_id));
- ZQElements.Open;
  KGridElem.RowCount:=0;
  KGridElem.ClearGrid;
  KGridElem.EditorMode:=false;
  obj:=PassBranch.getPasObject(obj_id);
- if ZQElements.RecordCount<1
+ if obj.ComponentCount<1
     then ActionElemAddExecute(nil);//пустая для пустого списка
 // !!! дальше не формат
  KGridElem.Rows[0].Destroy; //пустая строка неформатированная
- while not(ZQElements.EOF) do begin
-   elem:=obj.addPasElem(ZQElements.FieldByName('id').AsInteger);
-   elem.connecting :=false;
-   elem.elem_type  :=ZQElements.FieldByName('elem_type') .AsString;
-   //st:=ZQElements.FieldByName('length').AsString;
-   //elem.elem_len   :=StringReplace(st, '.', ',', [rfReplaceAll]);
-   elem.elem_len   :=ZQElements.FieldByName('length').AsString;
-   elem.elem_obj   :=ZQElements.FieldByName('object_id') .AsString;
-   elem.elem_colour:=ZQElements.FieldByName('colour')    .AsString;
-   elem.elem_year  :=ZQElements.FieldByName('year')      .AsString;
-   elem.connecting :=true;
-   AddElement(elem);
-   ZQElements.Next;
+ for i:=0 to obj.ComponentCount-1 do
+ begin
+   elem := TPassElem(obj.Components[i]);
+   if strtoint(elem.elem_group_id) = group_id
+   then AddElement(elem);
  end;
- ZQElements.Close;
 end;
 
 function TFramePassportObjects.getPasElem(elem_id: integer): TPassElem;
