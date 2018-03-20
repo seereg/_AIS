@@ -25,7 +25,6 @@ type
     f_reconst    :TMyField;
     f_last_edit  :TMyField;
     f_user_edit  :TMyField;
-    f_conn       : TZConnection;
     ZQProp       : TZQuery;
     f_user_id    : string;
     PassBranch   : TPassBranch;
@@ -37,6 +36,7 @@ type
     procedure rewValue(Index:Integer);
   public
     { public declarations }
+    f_conn       : TZConnection;
     property pass_id     :string          read f_pass_id.Value  write f_pass_id.Value;
     property pass_type   :string  Index 0 read getValue  write setValue;
     property pass_name   :string  Index 1 read getValue  write setValue;

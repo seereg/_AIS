@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, ExtCtrls, ComCtrls, ActnList,
   unit_m_data, framePaint, typePaspProp, typePaspBranch, typePaspElem,
-  typePaspObj, Graphics, StdCtrls;
+  typePaspObj, Type_directories, Graphics, StdCtrls;
 
 type
 
@@ -79,9 +79,16 @@ begin
 end;
 
 procedure TFrameCad.ActionTestExecute(Sender: TObject);
+type
+  elemTemp = record 
+    x: integer;
+    y: integer;
+    elemCount: Double;
+    elemType:integer;
+end;
 var
   obj, pen: TPoint;
-  elem: array of TPoint;
+  elem: array [0..1] of array of elemTemp;
   i, j, k, m, len, spin, p_rad, scale, group_id, color_id: integer;
   branch: TPassBranch;
   passObj: TPassObj;
@@ -90,7 +97,11 @@ var
   n: double;
   test: array of integer;
   defColor: TColor;
+  directories:TDirectories; { TODO : //нужно проверить освобождение памяти  }
 begin
+  // Обновляем или заполняем объекты-справочники
+  directories := TDirectories.Create(passport.f_conn); //вынисти в общие и не пересоздавать
+  
   if passport = nil then
     Exit;
   ActionClear.Execute;
@@ -100,15 +111,27 @@ begin
   pen.x := 20 * scale;
   pen.y := 0;
   //Определяем кол-во покрытий
-  SetLength(elem, passport.getElementGroupsCount);
-  for i := 0 to Length(elem) - 1 do
+  //путь 1
+  SetLength(elem[0], passport.getElementGroupsCount);
+  for i := 0 to Length(elem[0]) - 1 do
   begin
-    elem[i].x := pen.x;
-    elem[i].y := pen.y;
-    CadPaint.paintText(10 * scale, elem[i].y, 'Покрытие ' +
-      IntToStr(passport.getElementGroup(i)));
+    elem[0,i].x := pen.x;
+    elem[0,i].y := pen.y;
+    CadPaint.paintText(10 * scale, elem[0,i].y,
+    directories.getElementGroupName(passport.getElementGroup(i)));
+    //IntToStr(passport.getElementGroup(i)));
     //ресуем покрытия вместе с объектами
     pen.y := pen.y + 40 * scale;
+  end;
+  //путь 2
+  SetLength(elem[1], passport.getElementGroupsCount);
+  for i := 0 to Length(elem[0]) - 1 do
+  begin
+    elem[1,i].x := pen.x;
+    elem[1,i].y := pen.y + (40 * scale * 4) + (40 * scale*(Length(elem[0]) - 1 - i));
+    CadPaint.paintText(10 * scale, elem[1,i].y,
+    directories.getElementGroupName(passport.getElementGroup(i)));
+    //ресуем покрытия вместе с объектами
   end;
 
   begin
@@ -127,17 +150,17 @@ begin
         CadPen.Width := 1;
         for j := 0 to branch.ComponentCount - 1 do
           try
-            if i>0 then break;//только первый путь пока
+            if i>1 then break;//только первых 2 пути пока
             passObj := TPassObj(branch.Components[j]);
             //ресуем покрытия вместе с объектами
             defColor:=CadPen.Color;
-            for m := 0 to Length(elem) - 1 do
-              elem[m].x := obj.x;
+            for m := 0 to Length(elem[i]) - 1 do
+              elem[i,m].x := obj.x;
             for k := 0 to passObj.ComponentCount - 1 do
             begin
               passElem := TPassElem(passObj.Components[k]);
               group_id := StrToInt(passElem.elem_group_id);
-              for m := 0 to Length(elem) - 1 do
+              for m := 0 to Length(elem[i]) - 1 do
                 if  passport.getElementGroup(m) = group_id then break;
               len := round(StrToCurrDef(passElem.elem_len, 0)) * scale;
               color_id:= strtoint(passElem.elem_type);
@@ -146,12 +169,26 @@ begin
               CadPen.Color:=ColorArr[color_id];
               CadBrush.Style:=bsSolid;
               CadPaint.paintRect(
-                elem[m].x,
-                elem[m].y+spin,
-                elem[m].x + len,
-                elem[m].y+spin*2);
-                elem[m].x:= elem[m].x + len;
+                elem[i,m].x,
+                elem[i,m].y+spin,
+                elem[i,m].x + len,
+                elem[i,m].y+spin*2);
+                elem[i,m].x:= elem[i,m].x + len;
+                if (elem[i,m].elemCount=2.1) 
+                 then elem[i,m].elemCount:= 2.9
+                 else elem[i,m].elemCount:= 2.1;
+                
+                CadPen.Color:=defColor;
+                CadPaint.paintRect(
+                  elem[i,m].x - 1,
+                  elem[i,m].y+spin,
+                  elem[i,m].x,
+                  elem[i,m].y+spin*2);
+                CadPen.Color:=ColorArr[color_id];
+                
+              CadPaint.paintText((elem[i,m].x - len/2), elem[i,m].y+spin*elem[i,m].elemCount,passElem.elem_year + ' - ' + directories.getElementName(strtoint(passElem.elem_type)));
             end;
+            
             CadBrush.Color:=defColor;
             CadPen.Color:=defColor;
             CadBrush.Style:=bsClear;
@@ -160,6 +197,7 @@ begin
             CadPaint.paintPoint(obj.x, obj.y, p_rad);
             if CadCanvas.Width < obj.x + len + 20 * scale then
               CadPaint.resizeCadCanvas(obj.x + len + 20 * scale, -1);
+            
             if passObj.obj_type = '1' then //прямой
             begin
               CadPaint.paintText(round(obj.x + len * 0.45), obj.y - 20, 'L= ' +

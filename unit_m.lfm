@@ -11582,6 +11582,7 @@ object FormM: TFormM
   OnCreate = FormCreate
   OnShow = FormShow
   LCLVersion = '1.6.4.0'
+  WindowState = wsMaximized
   object Splitter1: TSplitter
     Left = 980
     Height = 581

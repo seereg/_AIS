@@ -85,7 +85,7 @@ type
     constructor Create(TheOwner: TComponent); override;
     procedure resizeCadCanvas(pWidth,pHeight: integer);
     procedure paintLine(x1,y1,x2,y2:integer);
-    procedure paintText(x1,y1:integer;pText:string);
+    procedure paintText(x1,y1:Double;pText:string);
     procedure paintRect(x1,y1,x2,y2:integer);
     //procedure paintRibbon(x1,x2,h:integer);
     procedure paintPoint(x1,y1,r:integer);
@@ -372,10 +372,10 @@ begin
       //MyCanvas.Canvas.Line(x1, y1, x2, y2);
 end;
 
-procedure TFrameCadPaint.paintText(x1, y1: integer; pText: string);
+procedure TFrameCadPaint.paintText(x1, y1: Double; pText: string);
 begin
   MyCanvasPaint(nil);
-  paintbmp.Canvas.TextOut(x1, y1,pText);
+  paintbmp.Canvas.TextOut(round(x1), round(y1),pText);
 end;
 
 procedure TFrameCadPaint.paintRect(x1, y1, x2, y2: integer);
