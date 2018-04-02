@@ -89,6 +89,7 @@ type
     procedure paintRect(x1,y1,x2,y2:integer);
     //procedure paintRibbon(x1,x2,h:integer);
     procedure paintPoint(x1,y1,r:integer);
+    procedure paintArc(ax,ay,bx,by,cx,cy:single);
   end;
 
 implementation
@@ -388,6 +389,39 @@ procedure TFrameCadPaint.paintPoint(x1, y1, r: integer);
 begin
   MyCanvasPaint(nil);
   paintbmp.Canvas.Ellipse(x1-r, y1-r, x1+r, y1+r); 
+end;
+
+procedure TFrameCadPaint.paintArc(ax, ay, bx, by, cx, cy: single);
+var
+  ta,tb,tc,td,te,tf,tg,R,Ox,Oy:Single;
+  //O:TPoint;
+begin
+    //  if shape is TMyElliArc then
+    //begin
+      //A:=shape.GetPoint(0);
+      //A.X:=A.X*zoom;
+      //A.Y:=A.Y*zoom;
+      //B:=shape.GetPoint(1);
+      //B.X:=B.X*zoom;
+      //B.Y:=B.Y*zoom;
+      //C:=shape.GetPoint(2);
+      //C.X:=C.X*zoom;
+      //C.Y:=C.Y*zoom;
+       tA := Bx - Ax;
+       tB := By - Ay;
+       tC := Cx - Ax;
+       tD := Cy - Ay;
+       tE := tA * (Ax + Bx) + tB * (Ay + By);
+       tF := tC * (Ax + Cx) + tD * (Ay + Cy);
+       tG := 2 * (tA * (Cy - By) - tB * (Cx - Bx));
+       if tG = 0 then Exit;
+       Ox := Round((tD * tE - tB * tF) / tG);
+       Oy := Round((tA * tF - tC * tE) / tG);
+       R:=sqrt(sqr(oX-ax)+sqr(oY-ay));
+      if AY<OY
+       then paintbmp.Canvas.Arc(Round((oX-R)),Round((oY-R)),Round((oX+R)),Round((oY+R)),Round(CX),Round(CY),Round(AX),Round(AY))
+       else paintbmp.Canvas.Arc(Round((oX-R)),Round((oY-R)),Round((oX+R)),Round((oY+R)),Round(AX),Round(AY),Round(CX),Round(CY));
+    //end;
 end;
 
 end.

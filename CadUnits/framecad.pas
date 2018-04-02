@@ -6,9 +6,15 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, ExtCtrls, ComCtrls, ActnList,
-  unit_m_data, framePaint, typePaspProp, typePaspBranch, typePaspElem,
-  typePaspObj, Type_directories, Graphics, StdCtrls;
+  unit_m_data, unit_types_and_const, ZDataset, framePaint, typePaspProp,
+  typePaspBranch, typePaspElem, typePaspObj, Type_directories, Graphics,
+  StdCtrls;
 
+const
+  railBetween = 30;
+  penAxisWidth = 1;
+  penRailWidth = 2;
+  
 type
 
   { TFrameCad }
@@ -37,16 +43,28 @@ type
     moveY: integer;
     function getCaption(): string;
     procedure setCaption(Value: string);
+    //схема
+    function toStright(a:TCursor;lenght:double; draw :boolean=true):TCursor;//TMyShape
+    function toStrightRail(a:TCursor;lenght,RailBetween:double; draw :boolean=true):TCursor;//TMyShape
+    function toLeft (a:TCursor;lenght,angle:double; draw :boolean=true; chording: boolean=false):TCursor;//TMyShape
+    function toRight(a:TCursor;lenght,angle:double; draw :boolean=true; chording: boolean=false):TCursor;//TMyShape
+    function chord(a: TCursor; r, angle: double; draw :boolean=true): TCursor;
+    //
+
   public
     { public declarations }
     CadPaint: TFrameCadPaint;
     CadCanvas: TCanvas;
     CadPen: TPen;
     CadBrush: TBrush;
-    passport: TPassProp;
+    p_passport: TPassProp;
     property Caption: string read getCaption write setCaption;
     constructor Create(TheOwner: TComponent); //override;
     procedure setPassport(Pas_ID: integer; User_ID: integer = -1);
+    procedure paintConditional(passport:TPassProp);
+    procedure paintScheme(passport:TPassProp);
+    procedure paintEpure(passport:TPassProp);
+    
   end;
 
 implementation
@@ -79,169 +97,40 @@ begin
 end;
 
 procedure TFrameCad.ActionTestExecute(Sender: TObject);
-type
-  elemTemp = record 
-    x: integer;
-    y: integer;
-    elemCount: Double;
-    elemType:integer;
-end;
 var
-  obj, pen: TPoint;
-  elem: array [0..1] of array of elemTemp;
-  i, j, k, m, len, spin, p_rad, scale, group_id, color_id: integer;
-  branch: TPassBranch;
-  passObj: TPassObj;
-  passElem: TPassElem;
-  st: string;
-  n: double;
-  test: array of integer;
-  defColor: TColor;
-  directories:TDirectories; { TODO : //нужно проверить освобождение памяти  }
+  pos:TCursor;
 begin
-  // Обновляем или заполняем объекты-справочники
-  directories := TDirectories.Create(passport.f_conn); //вынисти в общие и не пересоздавать
+  pos.x:=300;
+  pos.y:=300;
   
-  if passport = nil then
-    Exit;
-  ActionClear.Execute;
-  p_rad := 2;
-  scale := 2;
-  spin := 10 * scale;
-  pen.x := 20 * scale;
-  pen.y := 0;
-  //Определяем кол-во покрытий
-  //путь 1
-  SetLength(elem[0], passport.getElementGroupsCount);
-  for i := 0 to Length(elem[0]) - 1 do
-  begin
-    elem[0,i].x := pen.x;
-    elem[0,i].y := pen.y;
-    CadPaint.paintText(10 * scale, elem[0,i].y,
-    directories.getElementGroupName(passport.getElementGroup(i)));
-    //IntToStr(passport.getElementGroup(i)));
-    //ресуем покрытия вместе с объектами
-    pen.y := pen.y + 40 * scale;
-  end;
-  //путь 2
-  SetLength(elem[1], passport.getElementGroupsCount);
-  for i := 0 to Length(elem[0]) - 1 do
-  begin
-    elem[1,i].x := pen.x;
-    elem[1,i].y := pen.y + (40 * scale * 4) + (40 * scale*(Length(elem[0]) - 1 - i));
-    CadPaint.paintText(10 * scale, elem[1,i].y,
-    directories.getElementGroupName(passport.getElementGroup(i)));
-    //ресуем покрытия вместе с объектами
-  end;
-
-  begin
-    for i := 0 to passport.ComponentCount - 1 do
-    begin
-      try
-        CadPen.Width := 2;
-        branch := TPassBranch(passport.Components[i]);
-        obj.x := pen.x;
-        obj.y := pen.y;
-        CadPaint.paintLine(10 * scale, obj.y, CadCanvas.Width, obj.y);
-        CadPaint.paintText(10 * scale, obj.y, 'Ветка ' + branch.branch_name);
-        obj.y := obj.y + 40 * scale;
-        if CadCanvas.Height < obj.y + 20 * scale then
-          CadPaint.resizeCadCanvas(-1, obj.y + 20 * scale);
-        CadPen.Width := 1;
-        for j := 0 to branch.ComponentCount - 1 do
-          try
-            if i>1 then break;//только первых 2 пути пока
-            passObj := TPassObj(branch.Components[j]);
-            //ресуем покрытия вместе с объектами
-            defColor:=CadPen.Color;
-            for m := 0 to Length(elem[i]) - 1 do
-              elem[i,m].x := obj.x;
-            for k := 0 to passObj.ComponentCount - 1 do
-            begin
-              passElem := TPassElem(passObj.Components[k]);
-              group_id := StrToInt(passElem.elem_group_id);
-              for m := 0 to Length(elem[i]) - 1 do
-                if  passport.getElementGroup(m) = group_id then break;
-              len := round(StrToCurrDef(passElem.elem_len, 0)) * scale;
-              color_id:= strtoint(passElem.elem_type);
-              while (color_id>length(ColorArr)-1) do color_id:= color_id - length(ColorArr);
-              CadBrush.Color:=ColorArr[color_id];
-              CadPen.Color:=ColorArr[color_id];
-              CadBrush.Style:=bsSolid;
-              CadPaint.paintRect(
-                elem[i,m].x,
-                elem[i,m].y+spin,
-                elem[i,m].x + len,
-                elem[i,m].y+spin*2);
-                elem[i,m].x:= elem[i,m].x + len;
-                if (elem[i,m].elemCount=2.1) 
-                 then elem[i,m].elemCount:= 2.9
-                 else elem[i,m].elemCount:= 2.1;
-                
-                CadPen.Color:=defColor;
-                CadPaint.paintRect(
-                  elem[i,m].x - 1,
-                  elem[i,m].y+spin,
-                  elem[i,m].x,
-                  elem[i,m].y+spin*2);
-                CadPen.Color:=ColorArr[color_id];
-                
-              CadPaint.paintText((elem[i,m].x - len/2), elem[i,m].y+spin*elem[i,m].elemCount,passElem.elem_year + ' - ' + directories.getElementName(strtoint(passElem.elem_type)));
-            end;
-            
-            CadBrush.Color:=defColor;
-            CadPen.Color:=defColor;
-            CadBrush.Style:=bsClear;
-            st := passObj.obj_len;
-            len := round(StrToCurrDef(st, 0)) * scale;
-            CadPaint.paintPoint(obj.x, obj.y, p_rad);
-            if CadCanvas.Width < obj.x + len + 20 * scale then
-              CadPaint.resizeCadCanvas(obj.x + len + 20 * scale, -1);
-            
-            if passObj.obj_type = '1' then //прямой
-            begin
-              CadPaint.paintText(round(obj.x + len * 0.45), obj.y - 20, 'L= ' +
-                CurrToStr((StrToCurrDef(st, 0))) + 'м.');
-              CadPaint.paintLine(obj.x, obj.y, obj.x + len, obj.y);
-              obj.x := obj.x + len;
-            end
-            else
-            if passObj.obj_type = '2' then //лево
-            begin
-              CadPaint.paintLine(obj.x, obj.y, obj.x, obj.y - spin);
-              CadPaint.paintText(round(obj.x + len * 0.45), obj.y - 20 - spin, 'L= ' +
-                CurrToStr((StrToCurrDef(st, 0))) + 'м.');
-              CadPaint.paintLine(obj.x, obj.y - spin, obj.x + len, obj.y - spin);
-              CadPaint.paintLine(obj.x + len, obj.y - spin, obj.x + len, obj.y);
-              obj.x := obj.x + len;
-            end
-            else
-            if passObj.obj_type = '3' then //право
-            begin
-              CadPaint.paintLine(obj.x, obj.y, obj.x, obj.y + spin);
-              CadPaint.paintText(round(obj.x + len * 0.45), obj.y - 20 + spin, 'L= ' +
-                CurrToStr((StrToCurrDef(st, 0))) + 'м.');
-              CadPaint.paintLine(obj.x, obj.y + spin, obj.x + len, obj.y + spin);
-              CadPaint.paintLine(obj.x + len, obj.y + spin, obj.x + len, obj.y);
-              obj.x := obj.x + len;
-            end
-            else
-            begin
-              obj.x := obj.x + len;
-            end;
-          except
-          end;
-      except
-      end;
-      CadPaint.paintPoint(obj.x, obj.y, p_rad);
-      pen.y := pen.y + 40 * scale;
-      pen.y := pen.y + 40 * scale;
-    end;
-  end;
-  CadPen.Color := clRed;
-
-  //Покрытия
-
+  //pos.angle:=0;
+  //pos:=toStright(pos,200);
+  //pos.angle:=pos.angle+30;
+  //pos:=toStright(pos,200);
+  //pos.angle:=pos.angle-30;
+  //pos:=toStright(pos,200);
+  //pos.angle:=pos.angle+30;
+  //pos:=toStright(pos,200);
+  //pos:=toRight(pos,200,30);
+  //pos:=toStright(pos,200);
+  //pos:=toLeft(pos,200,30);
+  //pos:=toStright(pos,200);
+  
+  pos.angle:=0;
+  pos:=toStrightRail(pos,200,railBetween);
+  pos.angle:=pos.angle+30;
+  pos:=toStrightRail(pos,200,railBetween);
+  pos.angle:=pos.angle-30;
+  pos:=toStrightRail(pos,200,railBetween);
+  pos.angle:=pos.angle+30;
+  pos:=toStrightRail(pos,200,railBetween);
+  pos:=toRight(pos,200,30);
+  pos:=toStrightRail(pos,200,railBetween);
+  pos:=toLeft(pos,200,30);
+  pos:=toStrightRail(pos,200,railBetween);
+  
+  
+  
 end;
 
 procedure TFrameCad.CadAreaDblClick(Sender: TObject);
@@ -306,6 +195,72 @@ begin
   CadCaption.Caption := Value;
 end;
 
+function TFrameCad.toStright(a: TCursor; lenght: double; draw: boolean
+  ): TCursor;
+begin
+  result.x:= a.x+cos(a.angle*pi/180)*lenght;
+  result.y:= a.y+sin(a.angle*pi/180)*lenght;
+  result.angle:=a.angle;
+  if draw then CadPaint.paintLine(round(a.x),round(a.y),round(result.x),round(result.y));
+end;
+
+function TFrameCad.toStrightRail(a: TCursor; lenght, RailBetween: double; 
+  draw: boolean): TCursor;
+var 
+  a1,a2,b1,b2:TCursor;
+begin
+  CadPen.Width:=penAxisWidth;
+  result:=toStright(a,lenght,draw);
+  a1.x:= a.x+cos((a.angle+90)*pi/180)*RailBetween/2;
+  a1.y:= a.y+sin((a.angle+90)*pi/180)*RailBetween/2;
+  a1.angle:=a.angle;
+  a2.x:= a.x+cos((a.angle-90)*pi/180)*RailBetween/2;
+  a2.y:= a.y+sin((a.angle-90)*pi/180)*RailBetween/2;
+  a2.angle:=a.angle;
+  CadPen.Width:=penRailWidth;
+  toStright(a1,lenght,draw);
+  toStright(a2,lenght,draw);
+end;
+
+function TFrameCad.toLeft(a: TCursor; lenght, angle: double; draw: boolean; 
+  chording: boolean): TCursor;
+var 
+  r:double;
+  b,c:TCursor;
+begin
+  r:= lenght*180/Pi/angle;
+  if chording then
+  begin
+    result:=a;
+    result:=chord(result,r,angle/3,draw);
+    result:=chord(result,r,angle/3,draw);
+    result:=chord(result,r,angle/3,draw);
+  end
+  else
+  begin
+    b:=chord(a,r,angle/2,false);
+    c:=chord(a,r,angle,false);
+    result:=c;
+    if draw
+    then CadPaint.paintArc(a.x,a.y,b.x,b.y,c.x,c.y);
+  end;
+end;
+
+function TFrameCad.toRight(a: TCursor; lenght, angle: double; draw: boolean; 
+  chording: boolean): TCursor;
+begin
+  result:=toLeft(a, lenght, -angle, draw,chording)
+end;
+
+function TFrameCad.chord(a: TCursor; r, angle: double; draw: boolean): TCursor;
+var lenghtCord:double;
+begin
+  lenghtCord:= 2*r*sin((angle*pi/180)/2);
+  a.angle:=a.angle+angle/2;
+  result:=toStright(a,lenghtCord,draw);
+  result.angle:=result.angle+angle/2;
+end;
+
 constructor TFrameCad.Create(TheOwner: TComponent);
 begin
   inherited Create(TheOwner);
@@ -313,14 +268,238 @@ begin
   CadPaint := TFrameCadPaint.Create(PanelCad);
   CadPaint.Parent := PanelCad;
   CadCanvas := CadPaint.paintbmp.Canvas;
-  passport := nil;
+  p_passport := nil;
 end;
 
 procedure TFrameCad.setPassport(Pas_ID: integer; User_ID: integer);
+var
+  passType:integer;
 begin
-  passport := TPassProp.Create(Pas_ID, User_ID, DataM.ZConnection1, True);
+  if p_passport <> nil
+  then FreeAndNil(p_passport);
+  p_passport := TPassProp.Create(Pas_ID, User_ID, DataM.ZConnection1, True);
   ActionInit.Execute;
-  ActionTest.Execute;
+  passType:=strtoint(p_passport.pass_type);
+   if passType = 0//фрагмент
+    then paintConditional(p_passport) 
+    else
+   if passType = 1//участок
+    then paintConditional(p_passport) 
+    else
+   if passType = 2//узел
+    then paintScheme(p_passport) 
+    else
+   if passType = 3//эпюр
+    then paintEpure(p_passport);
+  //ActionTest.Execute;
+end;
+
+procedure TFrameCad.paintConditional(passport: TPassProp);
+type
+  elemTemp = record 
+    x: integer;
+    y: integer;
+    elemCount :Double;
+    elemType  :integer;
+end;
+type
+  TLongProf = record 
+    lenght :Double;
+    value  :Double;
+end;
+var
+  obj, pen, prof: TPoint;
+  elem: array [0..1] of array of elemTemp;
+  i, j, k, m, len, spin, p_rad, scale, group_id, color_id: integer;
+  branch: TPassBranch;
+  passObj: TPassObj;
+  passElem: TPassElem;
+  st: string;
+  n: double;
+  test: array of integer;
+  defColor: TColor;
+  directories:TDirectories; { TODO : //нужно проверить освобождение памяти  }
+  longitudinalProfile:TZQuery;
+  longProf:TLongProf;
+begin
+  // Обновляем или заполняем объекты-справочники
+  if passport = nil then exit;
+  directories := TDirectories.Create(passport.f_conn); //вынисти в общие и не пересоздавать
+  ActionClear.Execute;
+  p_rad := 2;
+  scale := 2;
+  spin := 10 * scale;
+  pen.x := 20 * scale;
+  pen.y := 0;
+  //Определяем кол-во покрытий
+  //путь 1
+  SetLength(elem[0], passport.getElementGroupsCount);
+  for i := 0 to Length(elem[0]) - 1 do
+  begin
+    elem[0,i].x := pen.x;
+    elem[0,i].y := pen.y;
+    CadPaint.paintText(10 * scale, elem[0,i].y,
+    directories.getElementGroupName(passport.getElementGroup(i)));
+    //IntToStr(passport.getElementGroup(i)));
+    //ресуем покрытия вместе с объектами
+    pen.y := pen.y + 40 * scale;
+  end;
+  //путь 2
+  SetLength(elem[1], passport.getElementGroupsCount);
+  for i := 0 to Length(elem[0]) - 1 do
+  begin
+    elem[1,i].x := pen.x;
+    elem[1,i].y := pen.y + (40 * scale * 4) + (40 * scale*(Length(elem[0]) - 1 - i));
+    CadPaint.paintText(10 * scale, elem[1,i].y,
+    directories.getElementGroupName(passport.getElementGroup(i)));
+    //ресуем покрытия вместе с объектами
+  end;
+
+  begin
+    for i := 0 to passport.ComponentCount - 1 do
+    begin
+      try
+        CadPen.Width := 2;
+        branch := TPassBranch(passport.Components[i]);
+        obj.x := pen.x;
+        obj.y := pen.y;
+        //CadPaint.paintLine(10 * scale, obj.y, CadCanvas.Width, obj.y);
+        CadPaint.paintText(10 * scale, obj.y+spin, 'Ветка ' + branch.branch_name);
+        obj.y := obj.y + 40 * scale;
+        if CadCanvas.Height < obj.y + 20 * scale then
+          CadPaint.resizeCadCanvas(-1, obj.y + 20 * scale);
+        CadPen.Width := 1;
+        for j := 0 to branch.ComponentCount - 1 do
+          try
+            if i>1 then break;//только первых 2 пути пока
+            passObj := TPassObj(branch.Components[j]);
+            //ресуем покрытия вместе с объектами
+            defColor:=CadPen.Color;
+            for m := 0 to Length(elem[i]) - 1 do
+              elem[i,m].x := obj.x;
+            for k := 0 to passObj.ComponentCount - 1 do
+            begin
+              passElem := TPassElem(passObj.Components[k]);
+              group_id := StrToInt(passElem.elem_group_id);
+              for m := 0 to Length(elem[i]) - 1 do
+                if  passport.getElementGroup(m) = group_id then break;
+              len := round(StrToCurrDef(passElem.elem_len, 0)) * scale;
+              color_id:= strtoint(passElem.elem_type);
+              while (color_id>length(ColorArr)-1) do color_id:= color_id - length(ColorArr);
+              CadBrush.Color:=ColorArr[color_id];
+              CadPen.Color:=ColorArr[color_id];
+              CadBrush.Style:=bsSolid;
+              CadPaint.paintRect(
+                elem[i,m].x,
+                elem[i,m].y+spin,
+                elem[i,m].x + len,
+                elem[i,m].y+spin*2);
+                elem[i,m].x:= elem[i,m].x + len;
+                if (elem[i,m].elemCount=2.1) 
+                 then elem[i,m].elemCount:= 2.9
+                 else elem[i,m].elemCount:= 2.1;
+                
+                CadPen.Color:=defColor;
+                CadPaint.paintRect(
+                  elem[i,m].x - 1,
+                  elem[i,m].y+spin,
+                  elem[i,m].x,
+                  elem[i,m].y+spin*2);
+                CadPen.Color:=ColorArr[color_id];
+                
+              CadPaint.paintText((elem[i,m].x - len/2), elem[i,m].y+spin*elem[i,m].elemCount,passElem.elem_year + ' - ' + directories.getElementName(strtoint(passElem.elem_type)));
+            end;
+            
+            CadBrush.Color:=defColor;
+            CadPen.Color:=defColor;
+            CadBrush.Style:=bsClear;
+            st := passObj.obj_len;
+            len := round(StrToCurrDef(st, 0)) * scale;
+            CadPaint.paintPoint(obj.x, obj.y, p_rad);
+            if CadCanvas.Width < obj.x + len + 20 * scale then
+              CadPaint.resizeCadCanvas(obj.x + len + 20 * scale, -1);
+            
+            if passObj.obj_type = '1' then //прямой
+            begin
+              CadPaint.paintText(round(obj.x + len * 0.45), obj.y - 20, 'L= ' +
+                CurrToStr((StrToCurrDef(st, 0))) + 'м.');
+              CadPaint.paintLine(obj.x, obj.y, obj.x + len, obj.y);
+              obj.x := obj.x + len;
+            end
+            else
+            if passObj.obj_type = '3' then //лево
+            begin
+              CadPaint.paintLine(obj.x, obj.y, obj.x, obj.y - spin);
+              CadPaint.paintText(round(obj.x + len * 0.45), obj.y - 20 - spin, 'L= ' +
+                CurrToStr((StrToCurrDef(st, 0))) + 'м.');
+              CadPaint.paintLine(obj.x, obj.y - spin, obj.x + len, obj.y - spin);
+              CadPaint.paintLine(obj.x + len, obj.y - spin, obj.x + len, obj.y);
+              obj.x := obj.x + len;
+            end
+            else
+            if passObj.obj_type = '2' then //право
+            begin
+              CadPaint.paintLine(obj.x, obj.y, obj.x, obj.y + spin);
+              CadPaint.paintText(round(obj.x + len * 0.45), obj.y + 5 + spin, 'L= ' +
+                CurrToStr((StrToCurrDef(st, 0))) + 'м.');
+              CadPaint.paintLine(obj.x, obj.y + spin, obj.x + len, obj.y + spin);
+              CadPaint.paintLine(obj.x + len, obj.y + spin, obj.x + len, obj.y);
+              obj.x := obj.x + len;
+            end
+            else
+            begin
+              obj.x := obj.x + len;
+            end;
+          except
+          end;
+      except
+      end;
+      CadPaint.paintPoint(obj.x, obj.y, p_rad);
+      pen.y := pen.y + 40 * scale;
+    end;
+  end;
+  //Продольный профиль
+  longitudinalProfile:=passport.getLongitudinalProfile;
+  pen.y := pen.y + 40 * scale;
+  prof.x := pen.x;
+  prof.y := pen.y;
+  CadPaint.paintText(10 * scale, prof.y-spin*2, 'Продольный профиль ');
+  while not longitudinalProfile.EOF do
+  begin
+    longProf.value := longitudinalProfile.FieldByName('value').AsFloat;
+    longProf.lenght:= longitudinalProfile.FieldByName('length').AsFloat;
+    if longitudinalProfile.FieldByName('value').AsString <> '' then
+    begin
+      CadPaint.paintRect(
+        prof.x,
+        prof.y,
+        round(prof.x + longProf.lenght * scale+1),
+        prof.y+spin*2);
+      if longitudinalProfile.FieldByName('value').AsString <> '' then
+      if longProf.value<0 
+       then CadPaint.paintLine(prof.x, prof.y, round(prof.x + longProf.lenght * scale), prof.y + spin*2)
+       else if longProf.value>0
+        then CadPaint.paintLine(prof.x, prof.y + spin*2, round(prof.x + longProf.lenght * scale), prof.y)
+        else CadPaint.paintLine(prof.x, round(prof.y + spin), round(prof.x + longProf.lenght * scale), round(prof.y + spin));
+        
+       CadPaint.paintText(round(prof.x + len * 0.1), prof.y - 15, CurrToStr(longProf.value));
+       CadPaint.paintText(round(prof.x + len * 0.1), prof.y + spin*2 + 5, CurrToStr(longProf.lenght));
+     end;
+     prof.x := round(prof.x + longProf.lenght * scale);
+     prof.y := pen.y;
+     longitudinalProfile.Next;
+  end;
+  CadPen.Color := clRed;
+end;
+
+procedure TFrameCad.paintScheme(passport: TPassProp);
+begin
+
+end;
+
+procedure TFrameCad.paintEpure(passport: TPassProp);
+begin
+
 end;
 
 end.

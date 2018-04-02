@@ -17,6 +17,13 @@ type
     table:string;
   end;
 
+type
+  TCursor= record
+    x :double;
+    y :double;
+    angle:double;
+  end;
+
  function GetMyVersion:string;
  function GetSQL(iden:string;param1:integer;param2:integer = -1):string;
 

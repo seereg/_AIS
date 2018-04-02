@@ -21,7 +21,6 @@ object FrameCad: TFrameCad
     Caption = 'ToolBar1'
     Images = DataM.IL_32
     TabOrder = 0
-    Visible = False
     object ToolButton1: TToolButton
       Left = 1
       Top = 2
@@ -56,17 +55,17 @@ object FrameCad: TFrameCad
     top = 24
     object ActionClear: TAction
       Caption = 'ActionClear'
-      ImageIndex = 0
+      ImageIndex = 4
       OnExecute = ActionClearExecute
     end
     object ActionInit: TAction
       Caption = 'ActionInit'
-      ImageIndex = 1
+      ImageIndex = 4
       OnExecute = ActionInitExecute
     end
     object ActionTest: TAction
       Caption = 'ActionTest'
-      ImageIndex = 1
+      ImageIndex = 5
       OnExecute = ActionTestExecute
     end
   end

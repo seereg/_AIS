@@ -26,6 +26,7 @@ type
     f_last_edit  :TMyField;
     f_user_edit  :TMyField;
     ZQProp       : TZQuery;
+    LongitudinalProfile: TZQuery;
     f_user_id    : string;
     PassBranch   : TPassBranch;
     elementGroupsList : array of integer;
@@ -36,7 +37,8 @@ type
     procedure rewValue(Index:Integer);
   public
     { public declarations }
-    f_conn       : TZConnection;
+    f_conn       : TZConnection;  //нужно переделать в гетер
+    function getLongitudinalProfile(): TZQuery;//нужно переделать
     property pass_id     :string          read f_pass_id.Value  write f_pass_id.Value;
     property pass_type   :string  Index 0 read getValue  write setValue;
     property pass_name   :string  Index 1 read getValue  write setValue;
@@ -175,6 +177,19 @@ begin
   setValue(Index,st); //переписать по id
 end;
 
+function TPassProp.getLongitudinalProfile: TZQuery;
+begin
+if LongitudinalProfile = nil then
+begin
+  LongitudinalProfile:= TZQuery.Create(self);
+  LongitudinalProfile.Connection:=f_conn;
+  LongitudinalProfile.sql.Text:='SELECT*FROM longitudinal_profile WHERE pass_id='+f_pass_id.Value+' ORDER BY pos';
+  LongitudinalProfile.Open;
+end;
+LongitudinalProfile.First;
+Result:= LongitudinalProfile;
+end;
+
 constructor TPassProp.Create(p_pass_id,p_user_id: integer;p_conn: TZConnection; createOllBranches:Boolean = false);
 var
   ZQBranches,ZQObjects : TZQuery;
@@ -186,6 +201,7 @@ begin
   ZQProp.Connection:=f_conn;
   f_pass_id.value:=inttostr(p_pass_id);
   f_user_id:=inttostr(p_user_id);
+  LongitudinalProfile:=nil;
   getData();
     //Получаес список компанентов, создаём их по списку id
   if createOllBranches then
