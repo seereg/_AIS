@@ -25876,8 +25876,17 @@ object FormM: TFormM
         OnClick = MenuItemSetEditElemClick
       end
     end
-    object MenuItem11: TMenuItem
+    object miSettingsSystemAll: TMenuItem
       Caption = 'Настройки системы'
+      object miSettingsConnect: TMenuItem
+        Caption = 'Настройка соединений'
+      end
+      object miSettingsUsers: TMenuItem
+        Caption = 'Настройка пользователей'
+      end
+      object MenuItem12: TMenuItem
+        Caption = 'Настройка правил оформления'
+      end
     end
     object MenuItem10: TMenuItem
       Action = ActionReconnect

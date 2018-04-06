@@ -41,7 +41,10 @@ type
     Image3: TImage;
     MenuItem1: TMenuItem;
     MenuItem10: TMenuItem;
-    MenuItem11: TMenuItem;
+    miSettingsSystemAll: TMenuItem;
+    MenuItem12: TMenuItem;
+    miSettingsUsers: TMenuItem;
+    miSettingsConnect: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;

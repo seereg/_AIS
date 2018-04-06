@@ -21,6 +21,7 @@ object FrameCad: TFrameCad
     Caption = 'ToolBar1'
     Images = DataM.IL_32
     TabOrder = 0
+    OnClick = ToolBar1Click
     object ToolButton1: TToolButton
       Left = 1
       Top = 2
@@ -30,6 +31,37 @@ object FrameCad: TFrameCad
       Left = 37
       Top = 2
       Action = ActionTest
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object ToolButton3: TToolButton
+      Left = 81
+      Top = 2
+      Action = ActionPaint1
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object ToolButton4: TToolButton
+      Left = 117
+      Top = 2
+      Action = ActionPaint2
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object ToolButton5: TToolButton
+      Left = 153
+      Top = 2
+      Action = ActionPaint3
+      ParentShowHint = False
+      ShowHint = True
+    end
+    object ToolButton6: TToolButton
+      Left = 73
+      Height = 32
+      Top = 2
+      Width = 8
+      Caption = 'ToolButton6'
+      Style = tbsSeparator
     end
   end
   object CadCaption: TStaticText
@@ -64,9 +96,28 @@ object FrameCad: TFrameCad
       OnExecute = ActionInitExecute
     end
     object ActionTest: TAction
-      Caption = 'ActionTest'
+      Caption = 'Блок тестирования'
+      Hint = 'Блок тестирования'
       ImageIndex = 5
       OnExecute = ActionTestExecute
+    end
+    object ActionPaint1: TAction
+      Caption = 'Условный план'
+      Hint = 'Условный план'
+      ImageIndex = 5
+      OnExecute = ActionPaint1Execute
+    end
+    object ActionPaint2: TAction
+      Caption = 'Схема'
+      Hint = 'Схема'
+      ImageIndex = 5
+      OnExecute = ActionPaint2Execute
+    end
+    object ActionPaint3: TAction
+      Caption = 'Эпюра'
+      Hint = 'Эпюра'
+      ImageIndex = 5
+      OnExecute = ActionPaint3Execute
     end
   end
 end

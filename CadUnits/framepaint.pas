@@ -10,7 +10,7 @@ uses
 , Graphics
 , Clipbrd
 , LCLIntf
-, LCLType
+, LCLType, unit_types_and_const
   ;
 
 const
